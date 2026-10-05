@@ -8,6 +8,14 @@ work is Hendri's direction, not more build.
 
 ## Waiting on Hendri
 
+0. **Pick a direction from the Figma explorations.** Eight cover + page-one
+   variations (display face, palette, image treatment, marks, tab position):
+   https://www.figma.com/design/COEWX2JAX3PEiYMsANgtJH — 2026-10-05. Hendri's
+   review of the live build said: headline face and treatment not liked,
+   eyebrows not liked, underline not liked, hierarchy and colour off, tabs
+   maybe on a side or the bottom, consider overlays / transparency / scans.
+   Nothing in the codebase changes until a direction is chosen.
+
 1. **The rest of the board.** 24 of 59 pins were visible signed out and set
    the zine direction (Q8). Unbuilt from what was seen: a tracing-paper
    overlay clipping (`kind="trace"`: a translucent sheet over a picture), a
