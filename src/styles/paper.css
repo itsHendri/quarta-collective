@@ -83,7 +83,7 @@
     right: 0;
     width: 1px;
     background: color-mix(in srgb, var(--tc-fg) 22%, transparent);
-    box-shadow: -10px 0 14px -10px rgba(40, 30, 10, 0.35);
+    box-shadow: -10px 0 14px -10px rgb(var(--shadow-rgb) / 0.35);
     pointer-events: none;
 }
 
@@ -114,8 +114,8 @@
     width: 5px;
     height: 34px;
     border-radius: 2px;
-    background: linear-gradient(to right, #9a9a96, #d6d6d2 45%, #8d8d89);
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+    background: linear-gradient(to right, var(--steel), var(--steel-light) 45%, var(--steel-dark));
+    box-shadow: 0 1px 1px rgb(var(--shadow-rgb) / 0.25);
 }
 .binding::before {
     top: 28%;
@@ -337,9 +337,9 @@
     background: radial-gradient(
         circle,
         transparent 0 46%,
-        #8a5a2b 47% 50%,
+        var(--coffee) 47% 50%,
         transparent 51% 53%,
-        #8a5a2b 54% 55.5%,
+        var(--coffee) 54% 55.5%,
         transparent 56%
     );
     /* An incomplete ring — the cup was lifted before it dried. */

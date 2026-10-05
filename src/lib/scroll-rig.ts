@@ -330,7 +330,7 @@ export function initScrollRig(options: ScrollRigOptions = {}): () => void {
            the transition or the plate drops behind its neighbours mid-settle,
            so it is cleared on a timer. */
         const E = "cubic-bezier(0.33,0,0.2,1)"
-        el.style.transition = `translate 460ms ${E}, rotate 460ms ${E}, box-shadow 460ms linear`
+        el.style.transition = `translate 220ms ${E}, rotate 220ms ${E}, box-shadow 220ms linear`
         el.style.translate = ""
         el.style.scale = ""
         el.style.rotate = ""
@@ -338,7 +338,7 @@ export function initScrollRig(options: ScrollRigOptions = {}): () => void {
         window.setTimeout(() => {
             // Only if nothing has re-hovered it in the meantime.
             if (hoveredEl !== el) el.style.zIndex = ""
-        }, 480)
+        }, 240)
     }
 
     function itemFrom(target: EventTarget | null): HTMLElement | null {

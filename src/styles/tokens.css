@@ -40,6 +40,12 @@
     --riso-yellow: #ffe800; /* decorative only */
     --tape: rgba(217, 207, 163, 0.6); /* masking tape, kraft-coloured, translucent */
 
+    --steel: #9a9a96; /* a staple */
+    --steel-light: #d6d6d2;
+    --steel-dark: #8d8d89;
+    --coffee: #8a5a2b; /* the ring */
+    --shadow-rgb: 40 30 10; /* every shadow is warm ink, not black */
+
     /* ── Semantic aliases ───────────────────────────────────────────────── */
     --rule: color-mix(in srgb, var(--graphite) 30%, transparent);
     --ruled-line: color-mix(in srgb, #a8956c 45%, transparent); /* sepia ruling */

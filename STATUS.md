@@ -1,6 +1,6 @@
 # Status — 2026-10-05
 
-**Sixth pass: exploration 02, the typewriter, applied (Q12).** Quarta Collective
+**Seventh pass: exploration 02 applied (Q12) and the UI audit fixed (Q13).** Quarta Collective
 is a space to make and create with friends; the website is a visual
 representation of that — twelve printed spreads telling the story of how a
 thing gets made there. The thing, this season, is a notebook made by hand:

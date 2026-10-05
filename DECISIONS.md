@@ -402,3 +402,38 @@ What 02 is, as built here:
 Not from 02, kept from before: the write and draw pages, the lightbox, the
 page-edge dividers and the alternating rulings, the corner page number (now
 typed rather than handwritten).
+
+---
+
+### Q13. The audit, applied
+
+**2026-10-05.** A six-lens review of the live build (visual, UX, a11y, motion,
+copy, consistency), all findings fixed in one pass:
+
+- **The index comes first in the document.** It is the only navigation; a
+  keyboard user met it after 24 clippings. Now it is the first focusable
+  thing on the page.
+- **Focus follows the pan** (`initFocusFollow`): focusing anything inside a
+  spread that is not on screen jumps the pan there, so Enter never opens a
+  lightbox for a picture nobody saw. memory-lane's "focus should settle the
+  pan" backlog item, closed.
+- **A jump reveals the headline at once and makes the spread's clippings
+  eager** (`jumpToSector`). After a jump the title was the last thing to
+  arrive and the scans landed as white mattes.
+- **Spreads re-laid at the 96px headline.** The body grew to 15px and the
+  headline to two lines, which pushed the column to y ≈ 455; everything in
+  the left column now starts at y ≥ 470 and nothing ends below 800. Checked
+  by script at 1440: no text box overlaps an authored element except two
+  harmless box-only cases (the cover title's box under the polaroid).
+- **Typed lines sit on the ruling**: 28px body pitch on ruled spreads.
+- **Index rows are 44px** with the full gutter as hit area.
+- **Captions are what the stylesheet says**: the hand classes that were
+  winning on size are gone; captions are 14px Special Elite.
+- **Lazy pictures land on newsprint**, not white; the draw page says "draw
+  here…" until the first stroke.
+- **Hover-off is 220ms** rather than 460 — the clipping settles, it no
+  longer sinks.
+- **Shadows, steel and coffee are tokens**; `paper.css` and `spread.css`
+  carry no literal colours but one tape clip.
+- **Credits moved to the last page**, where a zine prints them; the cover
+  colophon is three lines.

@@ -43,7 +43,10 @@ const nn = String(n).padStart(2, "0")
                     spellcheck="false"
                 />
             ) : (
-                <canvas class="notebook-ink" data-nb-ink aria-label="Your sketch" />
+                <>
+                    <span class="notebook-cue t-hand">draw here…</span>
+                    <canvas class="notebook-ink" data-nb-ink aria-label="Your sketch" />
+                </>
             )
         }
     </div>

@@ -59,7 +59,7 @@
     mask-image: linear-gradient(to right, #000 0 47%, transparent 53% 100%);
     mask-size: 220% 100%;
     mask-position: 100% 0;
-    transition: mask-position 1100ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    transition: mask-position 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 .spread-title.is-revealed {
     mask-position: 0 0;
@@ -79,7 +79,7 @@
     max-width: 0;
     overflow: hidden;
     white-space: nowrap;
-    transition: max-width 700ms 500ms steps(34);
+    transition: max-width 500ms 250ms steps(34);
 }
 .spread-title.is-revealed::after {
     max-width: 340px;
@@ -88,6 +88,11 @@
 .spread-note {
     margin-top: 18px;
     max-width: 420px;
+}
+/* On a ruled page the typed lines sit ON the ruling: the pitch is 28px, so
+ * the body takes the same pitch and stops drifting off the rules (Q13). */
+.is-ruled .spread-note {
+    line-height: 28px;
 }
 
 /* ── Clippings ─────────────────────────────────────────────────────────── */
@@ -103,14 +108,16 @@
     margin: 0;
     background: var(--white);
     box-shadow:
-        0 1px 1px rgba(40, 30, 10, 0.12),
-        0 10px 24px -14px rgba(40, 30, 10, 0.45);
+        0 1px 1px rgb(var(--shadow-rgb) / 0.12),
+        0 10px 24px -14px rgb(var(--shadow-rgb) / 0.45);
 }
 .clipping img {
     display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    /* Lazy pictures land as a stock-coloured rectangle, not a white hole. */
+    background: var(--newsprint);
 }
 /* A thing that lifts on hover opens on click. */
 .clipping {
@@ -145,7 +152,7 @@
 .clipping[data-kind="scrap"] {
     padding: 0;
     background: var(--paper-warm);
-    box-shadow: 0 6px 18px -12px rgba(40, 30, 10, 0.5);
+    box-shadow: 0 6px 18px -12px rgb(var(--shadow-rgb) / 0.5);
 }
 
 /* riso — kept for later: the photograph printed in one ink. Not used in
@@ -250,6 +257,16 @@
     opacity: 1;
 }
 
+/* ── Credits (last spread) ─────────────────────────────────────────────── */
+.credits {
+    position: absolute;
+    left: 72px;
+    right: 72px;
+    bottom: 56px;
+    max-width: 700px;
+    line-height: 1.8;
+}
+
 /* ── Colophon (spread 00 only) ─────────────────────────────────────────── */
 
 /* Lives on the cover, not after the strip: nothing may come after the track
@@ -286,7 +303,8 @@
     .spread-title::after {
         width: min(36%, 300px);
     }
-    .colophon {
+    .colophon,
+    .credits {
         position: static;
         margin-top: 32px;
         max-width: none;
@@ -381,6 +399,17 @@
     touch-action: none;
     cursor: crosshair;
 }
+/* The draw page says so, until the first stroke. */
+.notebook-cue {
+    position: absolute;
+    left: 8px;
+    top: 4px;
+    color: var(--tc-fg-dim);
+    pointer-events: none;
+}
+.notebook.has-ink .notebook-cue {
+    display: none;
+}
 .notebook-tools {
     position: absolute;
     left: 72px;
@@ -424,8 +453,8 @@
     padding: 10px 10px 14px;
     background: var(--white);
     box-shadow:
-        0 1px 1px rgba(40, 30, 10, 0.12),
-        0 24px 48px -24px rgba(40, 30, 10, 0.5);
+        0 1px 1px rgb(var(--shadow-rgb) / 0.12),
+        0 24px 48px -24px rgb(var(--shadow-rgb) / 0.5);
     transform: rotate(-1deg);
     cursor: default;
 }

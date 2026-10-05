@@ -47,12 +47,12 @@
 
 @media (min-width: 810px) {
     .t-display {
-        font-size: 68px;
+        font-size: 72px;
     }
 }
 @media (min-width: 1200px) {
     .t-display {
-        font-size: 92px;
+        font-size: 96px;
     }
 }
 

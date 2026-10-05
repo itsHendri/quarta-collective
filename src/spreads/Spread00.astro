@@ -2,7 +2,6 @@
 import Clipping from "~/components/Clipping.astro"
 import Note from "~/components/Note.astro"
 import SketchMark from "~/components/SketchMark.astro"
-import { CREDITS } from "~/content/clippings"
 
 /*
  * Spread 00 — the cover.
@@ -48,15 +47,15 @@ import { CREDITS } from "~/content/clippings"
     <Note x={740} y={560} rotate={-4} size="lg">open me</Note>
     <SketchMark motif="arrow" x={870} y={560} w={72} ink="ink" />
 
-    <SketchMark motif="asterisk" x={580} y={380} w={64} rotate={-8} ink="red" weight={3} />
+    <SketchMark motif="asterisk" x={660} y={430} w={64} rotate={-8} ink="red" weight={3} />
 
     <div class="colophon t-eyebrow">
         <p>
             Quarta Collective is a space to make and create with friends —
             Hendri and a few others, once a week. This site tells the story;
-            the notebook itself is made by hand. Placeholder photographs from Unsplash
-            by {CREDITS.map((c) => `@${c}`).join(", ")}. Type: Special Elite ·
-            Caveat · Courier Prime. hendri.design · 2026.
+            the notebook itself is made by hand. Photographs are placeholders
+            (credits on the last page). Type: Special Elite · Caveat · Courier
+            Prime. hendri.design · 2026.
         </p>
     </div>
 </section>

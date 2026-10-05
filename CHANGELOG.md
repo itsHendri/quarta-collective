@@ -5,6 +5,12 @@ All notable changes to this project are documented here. The format is
 
 ## [Unreleased]
 
+### Fixed
+- Audit pass (Q13): index first in the document, focus follows the pan,
+  headline and pictures ready on jump, spreads re-laid at 96px, body on
+  the ruling, 44px index rows, caption size, lazy placeholders, draw cue,
+  220ms hover-off, colour tokens, credits on the last page.
+
 ### Changed
 - Direction: exploration 02, the typewriter, in colour (Q12). Special Elite
   headlines with a typed red rule, bracketed eyebrows, warm stock, one red,

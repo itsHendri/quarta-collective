@@ -105,6 +105,7 @@ export function initNotebook(root: ParentNode = document): () => void {
                 ctx.lineWidth = 2.2
                 paintSaved()
             }
+            if (saved.ink) page.classList.add("has-ink")
             size()
             const ro = new ResizeObserver(size)
             ro.observe(canvas)
@@ -116,6 +117,7 @@ export function initNotebook(root: ParentNode = document): () => void {
             }
             const onDown = (e: PointerEvent) => {
                 drawing = true
+                page.classList.add("has-ink")
                 canvas.setPointerCapture(e.pointerId)
                 ctx.strokeStyle = ink()
                 ctx.beginPath()
@@ -162,6 +164,7 @@ export function initNotebook(root: ParentNode = document): () => void {
             if (btn.dataset.armed === "1") {
                 if (text) text.textContent = ""
                 if (canvas && ctx) ctx.clearRect(0, 0, canvas.width, canvas.height)
+                page.classList.remove("has-ink")
                 saved = {}
                 save()
                 btn.dataset.armed = "0"

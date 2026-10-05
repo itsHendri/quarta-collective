@@ -15,6 +15,59 @@
  * pinned horizontal story without them is a trap.
  */
 
+/* ═══════════════════════════════════════════════════ jumping ═══ */
+
+/**
+ * Scroll so that spread `i` sits CENTRED in the stage. Geometry comes from
+ * the DOM, so a change to --sector-w or a resize cannot drift it (Q5).
+ *
+ * Two things happen on the way (Q13): the spread's headline is revealed at
+ * once rather than waiting for the observer — after a jump the title is the
+ * first thing the reader looks for and used to be the last to arrive — and
+ * its lazy clippings are switched to eager so the pictures are loading
+ * while the pan is still travelling, instead of landing as blank mattes.
+ */
+export function jumpToSector(i: number): void {
+    const track = document.getElementById("tc-track")
+    const strip = document.getElementById("tc-strip")
+    const sector = strip?.children[i] as HTMLElement | undefined
+    if (!track || !strip || !sector) return
+    sector.querySelector(".spread-title")?.classList.add("is-revealed")
+    sector.querySelectorAll<HTMLImageElement>('img[loading="lazy"]').forEach((img) => {
+        img.loading = "eager"
+    })
+    const stageW = strip.parentElement?.clientWidth || window.innerWidth
+    const distance = Math.max(1, strip.scrollWidth - stageW)
+    const centre = sector.offsetLeft + sector.offsetWidth / 2 - stageW / 2
+    const p = Math.min(1, Math.max(0, centre / distance))
+    const top = window.scrollY + track.getBoundingClientRect().top
+    const travel = track.offsetHeight - window.innerHeight
+    window.scrollTo({ top: top + travel * p, behavior: "smooth" })
+}
+
+/**
+ * Focus follows the pan. A clipping or a notebook control three spreads away
+ * can take keyboard focus while the stage clips it out of view; Enter would
+ * then open a lightbox for a picture nobody saw. When something inside the
+ * strip is focused and its spread is not the one on screen, jump there.
+ * (memory-lane's backlog item "focus should settle the pan"; Q13.)
+ */
+export function initFocusFollow(options: { strip: HTMLElement }): () => void {
+    const { strip } = options
+    const onFocus = (e: FocusEvent) => {
+        const target = e.target as HTMLElement | null
+        const sector = target?.closest<HTMLElement>(".tc-sector")
+        if (!sector || sector.parentElement !== strip) return
+        if (window.innerWidth <= 810) return // vertical read: the browser scrolls
+        const stage = strip.parentElement!.getBoundingClientRect()
+        const r = sector.getBoundingClientRect()
+        const visible = r.left >= stage.left - 2 && r.right <= stage.right + 2
+        if (!visible) jumpToSector(Array.prototype.indexOf.call(strip.children, sector))
+    }
+    strip.addEventListener("focusin", onFocus)
+    return () => strip.removeEventListener("focusin", onFocus)
+}
+
 /* ═══════════════════════════════════════════════════ index tabs ═══ */
 
 export interface ProgressRailOptions {
@@ -62,29 +115,7 @@ export function initProgressRail(options: ProgressRailOptions): () => void {
         if (d) paint(d.p ?? 0)
     }
 
-    /**
-     * Scroll to a spread. The piece's skip-ahead and its keyboard nav.
-     *
-     * Lands the spread CENTRED in the stage rather than at the fixed fraction
-     * (i + 0.5) / n memory-lane used. Those are the same thing only when the
-     * stage is exactly one spread wide; at 1440px the fraction left every
-     * spread 160px to the left of centre and cut the first letter of its
-     * headline. Geometry comes from the DOM so a change to --sector-w here
-     * or a resize there cannot drift this.
-     */
-    const jump = (i: number) => {
-        const track = document.getElementById("tc-track")
-        const strip = document.getElementById("tc-strip")
-        const sector = strip?.children[i] as HTMLElement | undefined
-        if (!track || !strip || !sector) return
-        const stageW = strip.parentElement?.clientWidth || window.innerWidth
-        const distance = Math.max(1, strip.scrollWidth - stageW)
-        const centre = sector.offsetLeft + sector.offsetWidth / 2 - stageW / 2
-        const p = Math.min(1, Math.max(0, centre / distance))
-        const top = window.scrollY + track.getBoundingClientRect().top
-        const travel = track.offsetHeight - window.innerHeight
-        window.scrollTo({ top: top + travel * p, behavior: "smooth" })
-    }
+    const jump = (i: number) => jumpToSector(i)
 
     const onClick = (e: Event) => {
         const btn = (e.target as HTMLElement).closest<HTMLElement>("[data-cell]")

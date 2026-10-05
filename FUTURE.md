@@ -45,8 +45,6 @@ work is Hendri's direction, not more build.
   measure it.
 - **Click-to-centre** (inherited idea): hover lifts a clipping; a click could
   pan it to centre. Fits the notebook — pulling a photo toward you.
-- **Focus should settle the pan.** Clippings are not focusable today; a
-  focused one that keeps scrolling off is a keyboard trap.
 - **A page-turn gesture for the horizontal wheel.** The rig converts
   horizontal trackpad swipes to page scroll already; a snap to the next
   spread on a flick is the notebook version.

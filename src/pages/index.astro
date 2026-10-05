@@ -36,6 +36,10 @@ const SPREADS = TITLES.length
 ---
 
 <Base>
+    {/* The index comes FIRST in the document: it is the only navigation, so a
+        keyboard user reaches it before the 24 clippings, not after. (Q13) */}
+    <NotebookChrome sectors={SPREADS} titles={TITLES} />
+
     <div class="tc-track" id="tc-track" style={`--tc-sectors:${SPREADS}`}>
         <div class="tc-stage" id="tc-stage">
             <div class="tc-strip" id="tc-strip">
@@ -56,8 +60,6 @@ const SPREADS = TITLES.length
             </div>
         </div>
     </div>
-
-    <NotebookChrome sectors={SPREADS} titles={TITLES} />
 
     {/* A clipping held up to the light. Under the grain, over everything else. */}
     <div
@@ -87,6 +89,7 @@ const SPREADS = TITLES.length
         initProgressRail,
         initPageCounter,
         initCloseButton,
+        initFocusFollow,
     } from "~/lib/chrome"
 
     const byId = (id: string) => document.getElementById(id)
@@ -108,6 +111,9 @@ const SPREADS = TITLES.length
 
     const rail = byId("tc-rail")
     if (rail) initProgressRail({ root: rail, sectors: spreads })
+
+    const strip = byId("tc-strip")
+    if (strip) initFocusFollow({ strip })
 
     const page = byId("tc-page")
     if (page) initPageCounter({ root: page, sectors: spreads })
