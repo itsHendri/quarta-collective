@@ -1,0 +1,50 @@
+---
+import Plate from "~/components/Plate.astro"
+import mainframe from "~/assets/plates/mainframe.jpg"
+import tape from "~/assets/plates/tape.jpg"
+
+/*
+ * Sector 03 — "Index recovered".
+ *
+ * The keeper's order is visible. `mainframe` is the second of the two
+ * portrait sources and takes the tall plate.
+ */
+---
+
+<section class="tc-sector" id="tc-sector-03" aria-label="Sector 03: Index recovered">
+    <p class="sector-head t-eyebrow">
+        <span>sector 03</span>
+        <span class="rule" aria-hidden="true"></span>
+        <span>2 frames</span>
+    </p>
+
+    <h2 class="sector-title t-display" data-scramble>Index recovered</h2>
+
+    <p class="sector-note t-body">a filing system, kept by someone who trusted it.</p>
+
+    <p><span class="sector-tag t-eyebrow">archival priority</span></p>
+
+    <Plate
+        id="03-0"
+        src={mainframe}
+        label="machine floor, racks"
+        fmt="TIF"
+        file="mainframe"
+        x={72}
+        y={322}
+        w={260}
+        h={330}
+    />
+
+    <Plate
+        id="03-1"
+        src={tape}
+        label="recording room, reels"
+        fmt="RAW"
+        file="tape"
+        x={382}
+        y={356}
+        w={440}
+        h={264}
+    />
+</section>

@@ -1,0 +1,61 @@
+---
+import Plate from "~/components/Plate.astro"
+import directors from "~/assets/plates/directors.jpg"
+import firing from "~/assets/plates/firing.jpg"
+import mcc from "~/assets/plates/mcc.jpg"
+
+/*
+ * Sector 05 — "Room, occupied".
+ *
+ * People at last — all working. The line that carries the whole tone, and
+ * it is verifiably true of all three plates.
+ */
+---
+
+<section class="tc-sector" id="tc-sector-05" aria-label="Sector 05: Room, occupied">
+    <p class="sector-head t-eyebrow">
+        <span>sector 05</span>
+        <span class="rule" aria-hidden="true"></span>
+        <span>3 frames</span>
+    </p>
+
+    <h2 class="sector-title t-display" data-scramble>Room, occupied</h2>
+
+    <p class="sector-note t-body">nobody in frame is looking at the camera.</p>
+
+    <Plate
+        id="05-0"
+        src={mcc}
+        label="operator at console"
+        fmt="JPG"
+        file="mcc"
+        x={62}
+        y={358}
+        w={320}
+        h={216}
+    />
+
+    <Plate
+        id="05-1"
+        src={directors}
+        label="operators, conferring"
+        fmt="JPG"
+        file="directors"
+        x={428}
+        y={392}
+        w={320}
+        h={216}
+    />
+
+    <Plate
+        id="05-2"
+        src={firing}
+        label="control room, wide"
+        fmt="JPG"
+        file="firing"
+        x={794}
+        y={350}
+        w={360}
+        h={168}
+    />
+</section>

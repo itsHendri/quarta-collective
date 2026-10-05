@@ -1,0 +1,40 @@
+---
+import Plate from "~/components/Plate.astro"
+import applause from "~/assets/plates/applause.jpg"
+
+/*
+ * Sector 11 — "Read complete".
+ *
+ * The climax, and the only UNIQUE frame in the back half: Mission Control
+ * applauding the Apollo 13 splashdown. The only frame on the card where anyone
+ * reacts, printed large and completely clean — the payoff after eleven sectors
+ * of head-down work. It used to reuse `firing` from sector 05, which spent the
+ * ending on a repeat.
+ *
+ * Still keeps sector 05's rule: nobody in frame is looking at the camera.
+ */
+---
+
+<section class="tc-sector" id="tc-sector-11" aria-label="Sector 11: Read complete">
+    <p class="sector-head t-eyebrow">
+        <span>sector 11</span>
+        <span class="rule" aria-hidden="true"></span>
+        <span>1 frame</span>
+    </p>
+
+    <h2 class="sector-title t-display" data-scramble>Read complete</h2>
+
+    <p class="sector-note t-body">100% · archival priority: maximum</p>
+
+    <Plate
+        id="11-0"
+        src={applause}
+        label="final frame, clean read"
+        fmt="JPG"
+        file="applause"
+        x={180}
+        y={320}
+        w={640}
+        h={300}
+    />
+</section>

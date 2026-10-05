@@ -1,0 +1,56 @@
+---
+import Plate from "~/components/Plate.astro"
+import rover from "~/assets/plates/rover.jpg"
+import tunnel from "~/assets/plates/tunnel.jpg"
+
+/*
+ * Sector 08 — "Duplicate blocks".
+ *
+ * The dedup thread begins: the card holds the same frames twice, and the
+ * rig keeps both.
+ *
+ * Duplicate plates carry their ORIGINAL's exact dimensions, because the slug
+ * prints them as file metadata and a "bit for bit" copy listing a different
+ * size is a contradiction the reader can catch. They also share the original's
+ * `file` key, so the readout reports the same record for both showings.
+ * (Upstream #39.)
+ */
+---
+
+<section class="tc-sector" id="tc-sector-08" aria-label="Sector 08: Duplicate blocks">
+    <p class="sector-head t-eyebrow">
+        <span>sector 08</span>
+        <span class="rule" aria-hidden="true"></span>
+        <span>2 frames</span>
+    </p>
+
+    <h2 class="sector-title t-display" data-scramble>Duplicate blocks</h2>
+
+    <p class="sector-note t-body">both frames match earlier records, bit for bit. retained.</p>
+
+    <Plate
+        id="08-0"
+        src={rover}
+        label="duplicate of 01·01"
+        alt="boards, unhoused"
+        fmt="RAW"
+        file="rover"
+        x={100}
+        y={352}
+        w={430}
+        h={268}
+    />
+
+    <Plate
+        id="08-1"
+        src={tunnel}
+        label="duplicate of 04·01"
+        alt="instrumentation, damaged read"
+        fmt="RAW"
+        file="tunnel"
+        x={590}
+        y={336}
+        w={340}
+        h={238}
+    />
+</section>

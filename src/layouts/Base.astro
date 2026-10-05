@@ -1,0 +1,80 @@
+---
+import "~/styles/tokens.css"
+import "~/styles/type.css"
+import "~/styles/base.css"
+
+interface Props {
+    title?: string
+    description?: string
+}
+
+/*
+ * Real metadata. The Framer build shipped `<title>My Framer Site</title>` and
+ * `description="Made with Framer"` — it was never set, so this is free ground
+ * against the original on every audit that looks at the document head.
+ *
+ * The title is still open (SECTOR READ vs Return to Sender, story/beats.md).
+ * It lives here and in the wordmark component only, so a swap is two files.
+ */
+const {
+    title = "SECTOR READ",
+    description = "A recovery machine reads a memory card that never arrived.",
+} = Astro.props
+
+const canonical = new URL(Astro.url.pathname, Astro.site)
+
+/*
+ * Files in public/ are served verbatim under the deploy base, and nothing
+ * rewrites them for us — astro:assets only rebases what it processes. On a
+ * GitHub Pages project site the base is /memory-lane, so a bare "/fonts/..."
+ * would 404 and the page would silently fall back to system faces.
+ */
+const base = import.meta.env.BASE_URL.replace(/\/$/, "")
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <link rel="canonical" href={canonical} />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:url" content={canonical} />
+        <meta name="twitter:card" content="summary_large_image" />
+
+        <meta name="theme-color" content="#05060f" />
+
+        {/* Without this the browser requests /favicon.ico and logs a 404. */}
+        <link rel="icon" href={`${base}/favicon.svg`} type="image/svg+xml" />
+
+        {/*
+          Both faces are used above the fold — the headline and every chrome
+          readout — so both preload. `crossorigin` is required even same-origin
+          for fonts, or the preload is fetched twice.
+        */}
+        <link
+            rel="preload"
+            href={`${base}/fonts/archivo-700-latin.woff2`}
+            as="font"
+            type="font/woff2"
+            crossorigin
+        />
+        <link
+            rel="preload"
+            href={`${base}/fonts/jetbrains-mono-var-latin.woff2`}
+            as="font"
+            type="font/woff2"
+            crossorigin
+        />
+
+        <slot name="head" />
+    </head>
+    <body>
+        <slot />
+    </body>
+</html>

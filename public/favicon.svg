@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- The card, cut corner and contacts — the object being read. -->
+  <rect width="32" height="32" fill="#05060F"/>
+  <path d="M9 6h11l4 4v16H9z" fill="#141826" stroke="#F2F3F7" stroke-width="1.4"/>
+  <g fill="#C9A227">
+    <rect x="11" y="18" width="2" height="6"/>
+    <rect x="14.5" y="18" width="2" height="6"/>
+    <rect x="18" y="18" width="2" height="6"/>
+  </g>
+  <rect x="11" y="9" width="9" height="5" fill="#F2F3F7"/>
+</svg>

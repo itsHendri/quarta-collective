@@ -1,0 +1,64 @@
+---
+import Plate from "~/components/Plate.astro"
+import cockpit from "~/assets/plates/cockpit.jpg"
+import manometer from "~/assets/plates/manometer.jpg"
+import tape from "~/assets/plates/tape.jpg"
+
+/*
+ * Sector 10 — "Remainder".
+ *
+ * The tonal north star, and the only note carried unchanged from v1 of the
+ * story.
+ */
+---
+
+<section class="tc-sector" id="tc-sector-10" aria-label="Sector 10: Remainder">
+    <p class="sector-head t-eyebrow">
+        <span>sector 10</span>
+        <span class="rule" aria-hidden="true"></span>
+        <span>3 frames</span>
+    </p>
+
+    <h2 class="sector-title t-display" data-scramble>Remainder</h2>
+
+    <p class="sector-note t-body">unsorted. filed anyway.</p>
+
+    <Plate
+        id="10-0"
+        src={tape}
+        label="duplicate of 03·01"
+        alt="recording room, reels"
+        fmt="RAW"
+        file="tape"
+        x={60}
+        y={356}
+        w={440}
+        h={264}
+    />
+
+    <Plate
+        id="10-1"
+        src={cockpit}
+        label="duplicate of 02·02"
+        alt="flight panel"
+        fmt="TIF"
+        file="cockpit"
+        x={560}
+        y={390}
+        w={250}
+        h={196}
+    />
+
+    <Plate
+        id="10-2"
+        src={manometer}
+        label="duplicate of 04·00"
+        alt="columns, partial frame"
+        fmt="RAW"
+        file="manometer"
+        x={870}
+        y={348}
+        w={400}
+        h={272}
+    />
+</section>

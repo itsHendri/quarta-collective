@@ -1,0 +1,61 @@
+---
+import Plate from "~/components/Plate.astro"
+import pcb from "~/assets/plates/pcb.jpg"
+import rover from "~/assets/plates/rover.jpg"
+
+/*
+ * Sector 01 — "The card". The specimen itself: substrate before subject.
+ *
+ * Plates are placed left-of-centre in the sector's span. The first beat after
+ * the title card originally put its whole right half on empty field, which read
+ * as a layout accident rather than as space.
+ *
+ * Copy rule (beats.md v2): every note must be VERIFIABLY TRUE of the plates
+ * under it. The machine never lies, and when copy and pixels disagree the
+ * fiction dies. Both plates here are circuit boards, and the note claims
+ * exactly that — a substrate, oxidised, with intact contacts.
+ *
+ * `pcb` is one of only two portrait sources in the set, and gets the only
+ * portrait plate here on purpose.
+ */
+---
+
+<section class="tc-sector" id="tc-sector-01" aria-label="Sector 01: The card">
+    <p class="sector-head t-eyebrow">
+        <span>sector 01</span>
+        <span class="rule" aria-hidden="true"></span>
+        <span>2 frames</span>
+    </p>
+
+    <h2 class="sector-title t-display" data-scramble>The card</h2>
+
+    <p class="sector-note t-body">
+        recovered from a returned-mail bin. surface oxidised, contacts intact.
+    </p>
+
+    <Plate
+        id="01-0"
+        src={pcb}
+        label="board, component side"
+        fmt="RAW"
+        file="pcb"
+        x={260}
+        y={330}
+        w={300}
+        h={320}
+        eager
+    />
+
+    <Plate
+        id="01-1"
+        src={rover}
+        label="boards, unhoused"
+        fmt="RAW"
+        file="rover"
+        x={610}
+        y={372}
+        w={430}
+        h={268}
+        eager
+    />
+</section>

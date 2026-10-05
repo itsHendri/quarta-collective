@@ -1,0 +1,47 @@
+---
+import Plate from "~/components/Plate.astro"
+import lrl from "~/assets/plates/lrl.jpg"
+import ramjet from "~/assets/plates/ramjet.jpg"
+
+/*
+ * Sector 06 — "Thermal record".
+ *
+ * Patience made visible. The keeper logged stillness.
+ */
+---
+
+<section class="tc-sector" id="tc-sector-06" aria-label="Sector 06: Thermal record">
+    <p class="sector-head t-eyebrow">
+        <span>sector 06</span>
+        <span class="rule" aria-hidden="true"></span>
+        <span>2 frames</span>
+    </p>
+
+    <h2 class="sector-title t-display" data-scramble>Thermal record</h2>
+
+    <p class="sector-note t-body">two exposures, eleven hours apart. nothing has moved.</p>
+
+    <Plate
+        id="06-0"
+        src={ramjet}
+        label="test cell, exposure one"
+        fmt="RAW"
+        file="ramjet"
+        x={90}
+        y={340}
+        w={460}
+        h={292}
+    />
+
+    <Plate
+        id="06-1"
+        src={lrl}
+        label="instrument bay, exposure two"
+        fmt="JPG"
+        file="lrl"
+        x={600}
+        y={372}
+        w={340}
+        h={226}
+    />
+</section>

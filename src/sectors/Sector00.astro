@@ -1,0 +1,47 @@
+---
+/*
+ * Sector 00 — the title card.
+ *
+ * "Memory loaded", not "media detected": the boot sequence already detects the
+ * card, reads its contacts and mounts it, so a title card announcing detection
+ * AFTER all that runs the story backwards. The header says "media mounted" for
+ * the same reason, and the log's first line reads MEDIA MOUNTED rather than
+ * repeating MEDIA DETECTED. (Upstream #44.)
+ *
+ * Identity, not a fraction: `sector 00`, never `sector 00 / 11`. Against the
+ * title card's "12 sectors" a fraction scans as an off-by-one bug — the map
+ * carries position, the title card carries the count.
+ *
+ * This is the only sector with no plates, and the only out-of-fiction surface
+ * in the piece (the colophon). Both live here because nothing may come after
+ * the scroll track. (Upstream #36.)
+ */
+---
+
+<section
+    class="tc-sector"
+    id="tc-sector-00"
+    aria-label="Sector 00: Memory loaded"
+>
+    <p class="sector-head t-eyebrow">
+        <span>sector 00</span>
+        <span class="rule" aria-hidden="true"></span>
+        <span>media mounted</span>
+    </p>
+
+    <h1 class="sector-title t-display" data-scramble>Memory loaded</h1>
+
+    <p class="sector-note t-body">PKT-1987-113 · 12 sectors · head at 00</p>
+
+    <div class="credits">
+        <div class="asciimark" id="tc-asciimark">
+            <canvas id="tc-asciimark-canvas" role="img" aria-label="Sector Read"
+            ></canvas>
+        </div>
+        <p>
+            A recovery machine reads a memory card that never arrived. Imagery:
+            NASA Image and Video Library, public domain. Type: Archivo ·
+            JetBrains Mono. A piece by hendri.design · 2026.
+        </p>
+    </div>
+</section>

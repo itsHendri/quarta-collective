@@ -1,0 +1,105 @@
+/*
+ * SECTOR READ — base / reset
+ *
+ * Deliberately small. The piece is one page of art-directed layout, so a
+ * heavyweight reset would mostly be undone again.
+ */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    /*
+     * The rig owns horizontal motion; the browser owns vertical scroll and
+     * must keep owning it. Never add scroll-behavior: smooth here — it fights
+     * the rig's own lerp and makes the rail's seek buttons overshoot.
+     * (DECISIONS #2.)
+     */
+    background: var(--tc-bg);
+    color: var(--tc-fg);
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    margin: 0;
+    background: transparent;
+    font-family: var(--font-mono);
+}
+
+/*
+ * The strip is far wider than the viewport and is moved with a transform.
+ * Without this, some browsers still expose a horizontal scrollbar for it.
+ *
+ * Scoped to the panning range deliberately. `overflow-x` on the body makes the
+ * body a scroll container, and a scroll container with no scrollable block
+ * axis of its own leaves every `view()` timeline inside it INACTIVE — which is
+ * what the vertical read's plate masks hang off. It was also hiding rather
+ * than fixing the mobile overflow: iOS pans a clipped body anyway, so the
+ * runaway headline read as a page that drifts sideways. Below the breakpoint
+ * nothing pans, so nothing needs clipping, and the real fix is that the
+ * headline now wraps (type.css).
+ */
+@media (min-width: 811px) {
+    body {
+        overflow-x: hidden;
+    }
+}
+
+h1,
+h2,
+h3,
+p,
+figure {
+    margin: 0;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+button {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+/* Keyboard users must be able to see where they are — the rail's seek buttons
+ * are the piece's only navigation. */
+:focus-visible {
+    outline: 2px solid var(--tc-fg);
+    outline-offset: 2px;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+/*
+ * Reduced motion is handled properly in the rig (it positions instantly rather
+ * than lerping, per DECISIONS #9) — this only catches incidental transitions.
+ */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

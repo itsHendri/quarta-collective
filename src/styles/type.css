@@ -1,0 +1,169 @@
+/*
+ * SECTOR READ — type system
+ *
+ * Two faces, and the split is the fiction: Archivo is the ARCHIVE (what was
+ * recovered — headlines, printed large, bleeding past the sector edge), and
+ * JetBrains Mono is the MACHINE (everything the rig itself says). Nothing
+ * else is allowed in. Inter, which the Framer build loaded as a fallback and
+ * never used, is deliberately gone.
+ *
+ * Tracking is expressed in `em`, not `px`. The Framer original hardcoded three
+ * px values per breakpoint (-5.9 / -3.8 / -2.1 at 132 / 84 / 46px); those are
+ * the same ratio to within half a percent, so one em value replaces all three
+ * and the display size becomes the only thing a breakpoint changes.
+ */
+
+/* ── Faces ──────────────────────────────────────────────────────────────── */
+
+/*
+ * Archivo is a STATIC 700 instance — display type only ever uses one weight,
+ * and the instance is smaller than the variable file. Do not change this to a
+ * weight range: the file carries no `wght` axis, so a range makes the browser
+ * treat it as the whole spectrum and synthesize the rest.
+ */
+@font-face {
+    font-family: "Archivo";
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url("/fonts/archivo-700-latin.woff2") format("woff2");
+    /* latin */
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+        U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122,
+        U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/*
+ * JetBrains Mono IS variable (Google serves one file for 400/500/700), so it
+ * gets a real range and the browser sets the `wght` axis per use.
+ */
+@font-face {
+    font-family: "JetBrains Mono";
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+    src: url("/fonts/jetbrains-mono-var-latin.woff2") format("woff2");
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+        U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122,
+        U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+    --font-display: "Archivo", ui-sans-serif, system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+/* ── Presets ────────────────────────────────────────────────────────────── */
+
+/*
+ * Display. Uppercase, tight to the point of touching, and sized to BLEED — a
+ * contained headline reads as a slide, a cut one reads as a surface larger
+ * than the window, which is the premise of a strip that pans. The element must
+ * be allowed `width: auto` and must not be wrapped in a fixed-width box, or it
+ * silently wraps onto three lines instead of running off the edge.
+ * (DECISIONS #27.)
+ */
+.t-display {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 46px;
+    line-height: 0.86;
+    letter-spacing: -0.045em;
+    text-transform: uppercase;
+    color: var(--tc-fg);
+    text-wrap: nowrap;
+}
+
+/*
+ * Below the breakpoint the strip does not pan, so there is no surface for a
+ * headline to bleed onto — #27's `nowrap` is load-bearing only while the
+ * window is a moving window onto something wider. Left on, it was the whole
+ * of the mobile horizontal scroll: "Duplicate blocks" paints 405px into a
+ * 335px column, and the document measured 424px wide against a 375px
+ * viewport. Wrapping is the only reading of #27 that survives here.
+ *
+ * `balance` rather than `normal` so a two-word title breaks evenly instead of
+ * dropping one short word onto its own line.
+ */
+@media (max-width: 810px) {
+    .t-display {
+        text-wrap: balance;
+        /* 0.86 is set for a single bleeding line; stacked, uppercase lines at
+         * that leading collide. This is the smallest value that clears the
+         * cap height at 46px. */
+        line-height: 0.95;
+    }
+}
+
+@media (min-width: 810px) {
+    .t-display {
+        font-size: 84px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .t-display {
+        font-size: 132px;
+    }
+}
+
+/* Eyebrow — the sector's own address line, above the headline. */
+.t-eyebrow {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 1.5;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--tc-fg-dim);
+}
+
+/* Label — chrome headings and chip text. Brighter than a slug. */
+.t-label {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 1.5;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--tc-fg);
+}
+
+/* Body — the notes under a headline, and the recovery log's prose. */
+.t-body {
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 1.7;
+    letter-spacing: 0.015em;
+    color: var(--tc-fg-dim);
+}
+
+/*
+ * Value — numbers the rig reports.
+ *
+ * Labels are tracked; values are NOT. Tracking a monospace value destroys the
+ * fixed character cell that makes it read as an instrument. Values are
+ * tabular and zero-padded to a fixed width (`042%`, never `42%`) so nothing
+ * reflows as it counts. (DECISIONS #16.)
+ */
+.t-value {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 1.5;
+    letter-spacing: 0;
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
+    color: var(--tc-fg);
+}
+
+/*
+ * Inverted — anything filled with ink needs its text painted in whatever the
+ * page currently IS, or it goes black-on-black the moment the ramp lightens.
+ * (DECISIONS #34, #35.)
+ */
+.t-inverted {
+    background: var(--tc-fg);
+    color: var(--tc-field);
+}

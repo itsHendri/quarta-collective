@@ -1,0 +1,186 @@
+---
+import Base from "~/layouts/Base.astro"
+
+/*
+ * Type specimen — a permanent dev surface, not part of the piece.
+ *
+ * It exists to prove three things that are easy to get silently wrong:
+ *   1. Both faces actually load (a failed woff2 falls back to a system face
+ *      that looks close enough to pass a glance).
+ *   2. The mono's variable `wght` axis really varies — if the file were a
+ *      static instance, 400 / 500 / 700 would render identically.
+ *   3. Every preset binds to the DERIVED colour tokens, so dragging the ramp
+ *      slider must recolour all of them at once. Anything that stays put is
+ *      bound to a static colour and will fail somewhere in the read.
+ */
+
+const ramp = [
+    { p: "0.00", label: "void", bg: "#05060f" },
+    { p: "0.20", label: "signal", bg: "#1500e1" },
+    { p: "0.40", label: "void", bg: "#05060f" },
+    { p: "0.60", label: "ember deep", bg: "#43200a" },
+    { p: "0.80", label: "ember", bg: "#ff8a1e" },
+    { p: "1.00", label: "void deep", bg: "#0a0710" },
+]
+---
+
+<Base title="SECTOR READ — type specimen">
+    <main class="specimen">
+        <header class="head">
+            <p class="t-eyebrow">Sector read · type system</p>
+            <h1 class="t-display">Memory loaded</h1>
+            <p class="t-body">
+                Archivo is the archive. JetBrains Mono is the machine.
+            </p>
+        </header>
+
+        <section class="block">
+            <h2 class="t-label">Display — Archivo 700</h2>
+            <p class="t-display">CRC fail</p>
+            <p class="t-body">
+                46px below 810 · 84px to 1200 · 132px above. Tracking is one em
+                value across all three sizes.
+            </p>
+        </section>
+
+        <section class="block">
+            <h2 class="t-label">Mono weight axis</h2>
+            <p class="t-body">
+                These three lines must look different. If they are identical the
+                variable axis is not being applied.
+            </p>
+            <p class="axis" style="font-weight:400">400 · READING CONTACTS</p>
+            <p class="axis" style="font-weight:500">500 · READING CONTACTS</p>
+            <p class="axis" style="font-weight:700">700 · READING CONTACTS</p>
+        </section>
+
+        <section class="block">
+            <h2 class="t-label">Presets</h2>
+            <p class="t-eyebrow">Eyebrow · sector 04 · media mounted</p>
+            <p class="t-label">Label · recovery rig 04</p>
+            <p class="t-body">
+                Body · retry 3/3 · 212 bad blocks · recovered partial. The
+                machine never editorialises, except once, at the very end.
+            </p>
+            <p class="t-value">Value · 042% · 24/24 · PKT-1987-113</p>
+            <p><span class="t-label t-inverted chip">unreadable</span></p>
+        </section>
+
+        <section class="block">
+            <h2 class="t-label">Derived tokens across the ramp</h2>
+            <p class="t-body">
+                Each swatch sets <code>--tc-bg</code> and the foreground the rig
+                would derive for it. Type must stay legible on every one.
+            </p>
+            <div class="ramp">
+                {
+                    ramp.map((s) => (
+                        <div class="swatch" data-bg={s.bg} style={`background:${s.bg}`}>
+                            <p class="t-eyebrow">{s.label}</p>
+                            <p class="t-value">p {s.p}</p>
+                            <p class="t-label">Aa</p>
+                        </div>
+                    ))
+                }
+            </div>
+        </section>
+    </main>
+</Base>
+
+<script>
+    /*
+     * The real derivation lives in the rig; this is the same maths inlined so
+     * the specimen can prove the contract before the rig exists. Kept in sync
+     * by being deliberately trivial — relative luminance, flip at 0.179, then
+     * walk the dim tone toward the background and take the dimmest step that
+     * still measures 4.6:1.
+     */
+    const lin = (c: number) => {
+        const s = c / 255
+        return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4
+    }
+    const lum = (r: number, g: number, b: number) =>
+        0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b)
+    const ratio = (a: number, b: number) =>
+        (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05)
+    const hex = (h: string): [number, number, number] => {
+        const t = h.replace("#", "")
+        return [
+            parseInt(t.slice(0, 2), 16),
+            parseInt(t.slice(2, 4), 16),
+            parseInt(t.slice(4, 6), 16),
+        ]
+    }
+
+    for (const el of document.querySelectorAll<HTMLElement>(".swatch")) {
+        const [r, g, b] = hex(el.dataset.bg!)
+        const L = lum(r, g, b)
+        // Pure black or pure white — never the palette's near-black (#33).
+        const light = L < 0.179
+        const fg = light ? 255 : 0
+        let dim: [number, number, number] = [fg, fg, fg]
+        for (let t = 0.1; t <= 0.8; t += 0.05) {
+            const mix: [number, number, number] = [
+                Math.round(fg + (r - fg) * t),
+                Math.round(fg + (g - fg) * t),
+                Math.round(fg + (b - fg) * t),
+            ]
+            if (ratio(lum(...mix), L) < 4.6) break
+            dim = mix
+        }
+        el.style.setProperty("--tc-fg", light ? "#fff" : "#000")
+        el.style.setProperty("--tc-fg-dim", `rgb(${dim.join(",")})`)
+        el.style.setProperty("--tc-field", el.dataset.bg!)
+    }
+</script>
+
+<style>
+    .specimen {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 64px 24px 120px;
+        display: flex;
+        flex-direction: column;
+        gap: 56px;
+    }
+    .head {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+    .block {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding-top: 28px;
+        border-top: 1px solid var(--rule);
+    }
+    .axis {
+        font-family: var(--font-mono);
+        font-size: 18px;
+        letter-spacing: 0;
+        color: var(--tc-fg);
+        margin: 0;
+    }
+    .chip {
+        display: inline-block;
+        padding: 3px 8px;
+    }
+    .ramp {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 2px;
+        margin-top: 8px;
+    }
+    .swatch {
+        padding: 14px 12px 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        min-height: 120px;
+    }
+    code {
+        font-family: var(--font-mono);
+        color: var(--tc-fg);
+    }
+</style>

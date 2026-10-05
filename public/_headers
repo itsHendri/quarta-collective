@@ -1,0 +1,18 @@
+# Cloudflare Pages headers.
+#
+# Everything Astro emits under /_astro/ carries a content hash in its filename,
+# so it can be cached forever — a change produces a new filename.
+
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Fonts are NOT content-hashed, so `immutable` is a promise this repo has to
+# keep: if a face is ever re-subset or swapped, rename the file rather than
+# overwriting it, or returning visitors will hold a stale copy for a year.
+# The names encode family + weight + subset for exactly this reason.
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin

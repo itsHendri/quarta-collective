@@ -1,0 +1,81 @@
+/*
+ * SECTOR READ — design tokens
+ *
+ * Two layers, and the distinction is the whole colour system:
+ *
+ *   1. STATIC tokens (below) — authored values that never change.
+ *   2. DERIVED tokens (--tc-*) — rewritten every frame by the scroll rig from
+ *      the live background luminance. These are what type binds to.
+ *
+ * Type must NEVER bind to a static colour. The page tints through the ramp as
+ * it pans, so a fixed ink colour is legible for part of the read and fails for
+ * the rest. Bind type to --tc-fg / --tc-fg-dim; bind anything INVERTED (a chip
+ * filled with ink needs its text painted in whatever the page currently is) to
+ * --tc-field. Ported from DECISIONS #21, #33, #34.
+ *
+ * Semantic names alias primitives, so a value appears exactly once. Swapping
+ * the palette later is a matter of repointing the primitives.
+ */
+
+:root {
+    /* ── Primitives ─────────────────────────────────────────────────────── */
+    --void: #05060f; /* near-black ground; the ramp's anchor */
+    --void-deep: #0a0710; /* the ramp's final stop — colder than --void */
+    --panel: #141826; /* raised chrome surfaces */
+    --sheet: #ffffff; /* pure white; the bright end of derived ink */
+    --paper: #f2f3f7; /* off-white, for material surfaces (the card label) */
+    --steel: #7e8ba6; /* the authored dim tone; derived dim overrides it */
+    --signal: #1500e1; /* electric blue */
+    --signal-deep: #03049c;
+    --ember: #ff8a1e; /* warm accent + the rig's own indicator lights */
+    --ember-deep: #43200a; /* keeps the warm transit out of the mud (#41) */
+    --alert: #ff4d3d; /* CRC ERR only — never on the travelling strip (#35) */
+    --contact: #c9a227; /* the card's gold pads: material colour, not palette */
+
+    /* ── Semantic aliases ───────────────────────────────────────────────── */
+    --ground: var(--void);
+    --chrome-surface: var(--panel);
+    --rule: color-mix(in srgb, var(--steel) 30%, transparent);
+
+    /*
+     * The tint ramp. Every hue transit routes back through a dark anchor —
+     * RGB interpolation between two distant hues passes through their average,
+     * which is duller than either end, and that is where the "dirty grey" came
+     * from. Not a stop, the space between stops. (DECISIONS #32, #41.)
+     *
+     * Consumed by the rig in JS; declared here so the ramp is authored in one
+     * place and readable by a human.
+     */
+    --ramp-0: var(--void);
+    --ramp-1: var(--signal);
+    --ramp-2: var(--void);
+    --ramp-3: var(--ember-deep);
+    --ramp-4: var(--ember);
+    --ramp-5: var(--void-deep);
+
+    /* ── Derived, written per-frame by the rig ──────────────────────────── */
+    /*
+     * The fallbacks are the values the ramp holds at progress 0, so the page is
+     * correct and legible before the rig's first frame — and stays correct if
+     * JS never runs at all.
+     *
+     * --tc-fg is PURE BLACK or PURE WHITE, never the palette's near-black.
+     * White clears 4.6:1 while background luminance is <= 0.178; #05060F only
+     * clears it from >= 0.194. Those windows do not overlap, so any threshold
+     * between them drops type to ~2.6:1 — and the ramp crosses that band twice
+     * per read. Pure #000 clears from 0.175, which does overlap. Flip at 0.179.
+     * (DECISIONS #33 — do not "tidy" this to the palette's near-black.)
+     */
+    --tc-p: 0; /* read progress, 0..1 */
+    --tc-pan: 0px; /* strip pan, negative px */
+    --tc-bg: var(--void);
+    --tc-fg: var(--sheet);
+    --tc-fg-dim: #9aa3b5; /* measured against --void, not an alpha (#33) */
+    --tc-field: var(--void); /* the live background, for inverted elements */
+
+    /* ── Geometry ───────────────────────────────────────────────────────── */
+    --sector-w: 1400px; /* one sector's width in the strip */
+    --stage-h: 100vh;
+    --bp-phone: 810px; /* below this the rig goes inert; vertical read */
+    --bp-desk: 1200px;
+}

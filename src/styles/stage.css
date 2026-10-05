@@ -1,0 +1,106 @@
+/*
+ * SECTOR READ — the scroll mechanism's layout.
+ *
+ *   .tc-track   tall, ordinary page height (sectors × 100vh). This is what the
+ *               browser actually scrolls.
+ *   .tc-stage   100vh, position: sticky — pins while the track scrolls past.
+ *   .tc-strip   the wide surface, translated horizontally by the rig.
+ *   .tc-sector  one screen of story, a fixed 1400px wide.
+ *
+ * NOTHING MAY COME AFTER THE TRACK. A section below it keeps scrolling once
+ * the read is done and takes the pinned stage — memory card included — off the
+ * top of the screen. The colophon lives on sector 00 for exactly this reason.
+ * (Upstream #36.)
+ *
+ * Upstream additionally needed the track and every ancestor to keep
+ * `overflow: visible`, because Framer clips containers by default and any
+ * clipping ancestor becomes the sticky containing block, which silently stops
+ * the stage pinning (upstream #14). We do not clip anything here, but that is
+ * the failure mode if the stage ever stops sticking.
+ */
+
+.tc-track {
+    position: relative;
+    width: 100%;
+    /* Set per-page from the sector count: sectors × 100vh. */
+    height: calc(var(--tc-sectors, 12) * 100vh);
+}
+
+.tc-stage {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    /*
+     * The one element that clips. It should: it hides the parts of the strip
+     * that have not arrived yet.
+     */
+    overflow: clip;
+    background: var(--tc-bg);
+    /*
+     * Upstream wrote this colour imperatively onto the element every frame,
+     * because in Framer the stage's fill was authored and a CSS variable could
+     * never reach it. Here the variable is the whole mechanism.
+     */
+}
+
+.tc-strip {
+    position: absolute;
+    inset-block: 0;
+    left: 0;
+    display: flex;
+    /*
+     * `max-content` so the strip's own width equals its content and
+     * `scrollWidth` is unambiguous — the rig measures travel as
+     * `strip.scrollWidth - stage.clientWidth`.
+     */
+    width: max-content;
+    height: 100%;
+    /* The rig writes translate3d here. Do not add a transition: the lerp IS
+     * the smoothing, and a CSS transition on top double-smooths and lags. */
+    will-change: transform;
+}
+
+.tc-sector {
+    position: relative;
+    flex: none;
+    width: var(--sector-w);
+    height: 100%;
+    /* Plates are positioned absolutely within a sector, and a hovered plate
+     * tips in 3D — so the sector is the containing block AND the element that
+     * carries `perspective` (the rig sets it on first hover, because an
+     * element's own perspective applies to its children, not itself). */
+}
+
+/*
+ * Below the cutoff the strip does not pan: the page becomes an ordinary
+ * vertical read. The rig keeps publishing progress from vertical scroll so the
+ * chrome stays alive — without a publisher the rail, log, ticks and card park
+ * all go inert. (Upstream #9.)
+ */
+@media (max-width: 810px) {
+    .tc-track {
+        height: auto;
+    }
+
+    .tc-stage {
+        position: static;
+        height: auto;
+        overflow: visible;
+    }
+
+    .tc-strip {
+        position: static;
+        flex-direction: column;
+        width: 100%;
+        height: auto;
+        transform: none !important;
+        will-change: auto;
+    }
+
+    .tc-sector {
+        width: 100%;
+        height: auto;
+        min-height: 100svh;
+    }
+}

@@ -1,0 +1,275 @@
+/*
+ * SECTOR READ — sector interior: headings, notes, plates, slugs, credits.
+ *
+ * The two worlds never mix (upstream #15): the ARCHIVE (plates, headlines) is
+ * what came off the card; the MACHINE (chrome, readouts, rails) is the rig
+ * reporting. Scanlines and phosphor belong to the machine and never touch a
+ * plate; rotation and photographic warmth belong to the archive and never touch
+ * the chrome. The only place they meet is the dither gradient at the screen's
+ * edges — that boundary IS the piece.
+ */
+
+.sector-head {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    max-width: 520px;
+}
+
+/* A rule that fills the gap between the sector's identity and its frame count. */
+.sector-head .rule {
+    flex: 1;
+    max-width: 180px;
+    height: 1px;
+    background: var(--tc-fg);
+    opacity: 0.35;
+}
+
+/*
+ * The headline BLEEDS. It is `width: auto` and `nowrap`, so it runs past the
+ * sector's edge and gets cut by the viewport.
+ *
+ * A contained headline reads as a slide; a cut one reads as a surface larger
+ * than the window, which is the whole premise of a strip that pans. Note the
+ * trap upstream hit: putting this in a fixed-width box silently wraps the
+ * 132px type onto three lines instead of letting it bleed. (Upstream #27.)
+ */
+.sector-title {
+    margin-top: 10px;
+}
+
+.sector-note {
+    margin-top: 16px;
+    max-width: 460px;
+}
+
+/*
+ * An INVERTED chip, not outlined alert red.
+ *
+ * Alert (#FF4D3D) measures 1.6:1 on the signal-blue section and 1.4:1 on the
+ * warm one — as an outline AND as its own text colour — so the stamp was
+ * effectively invisible for half the strip, and nobody noticed because on the
+ * near-black sections it looks great. Filling with the derived foreground and
+ * setting the text to the derived background is contrast-proof by construction
+ * against every colour the page passes through. (Upstream #35.)
+ */
+.sector-tag {
+    display: inline-block;
+    margin-top: 14px;
+    padding: 5px 9px;
+    background: var(--tc-fg);
+    color: var(--tc-field);
+}
+
+/* ── Plates ─────────────────────────────────────────────────────────────── */
+
+.plate {
+    position: absolute;
+    background: color-mix(in srgb, var(--steel) 10%, transparent);
+    outline: 1px solid var(--rule);
+    outline-offset: -1px;
+}
+
+.plate img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Corner ticks — a registration mark, not a photo corner. */
+.plate::before,
+.plate::after {
+    content: "";
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border: 1px solid var(--tc-fg);
+    opacity: 0.55;
+    /* The ticks belong to the machine's reading of the plate, so they must not
+     * be captured by the WebGL layer or tilted with the picture. */
+    pointer-events: none;
+}
+.plate::before {
+    left: -1px;
+    top: -1px;
+    border-right: none;
+    border-bottom: none;
+}
+.plate::after {
+    right: -1px;
+    bottom: -1px;
+    border-left: none;
+    border-top: none;
+}
+
+/*
+ * Every plate carries its own record. This is most of what makes the page read
+ * as an instrument rather than as a gallery. (Upstream #28.)
+ *
+ * Note the typographic rule: the index is tracked (it is a label), the format
+ * and dimensions are not (they are values). Tracking a monospace value destroys
+ * the fixed character cell that makes it read as an instrument. (Upstream #16.)
+ */
+.plate-slug {
+    position: absolute;
+    left: 0;
+    top: 100%;
+    margin-top: 7px;
+    display: flex;
+    gap: 10px;
+    white-space: nowrap;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--tc-fg-dim);
+}
+.plate-slug b {
+    font-weight: 500;
+    color: var(--tc-fg);
+}
+.plate-slug span {
+    letter-spacing: 0;
+    font-variant-numeric: tabular-nums;
+}
+
+/* ── Credits (sector 00 only) ───────────────────────────────────────────── */
+
+/*
+ * The colophon lives on the TITLE CARD, not in a section below the strip.
+ * A section below the track keeps scrolling once the read is done and takes the
+ * pinned stage — memory card included — off the top of the screen. That is also
+ * what finally put the ASCII wordmark somewhere anyone actually reaches.
+ * (Upstream #36.)
+ */
+.credits {
+    position: absolute;
+    left: 72px;
+    right: 72px;
+    top: 372px;
+}
+
+.credits p {
+    max-width: 520px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.9;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--tc-fg-dim);
+}
+
+/*
+ * Tall enough for ~16 character rows. At 88px the letterforms sampled down to
+ * 8 rows and the mark read as static rather than as a word.
+ */
+.asciimark {
+    width: 100%;
+    max-width: 620px;
+    height: 112px;
+    margin: 0 0 26px;
+}
+
+@media (max-width: 810px) {
+    .credits {
+        position: static;
+        margin-top: 32px;
+    }
+    /* Plates stack in flow on the vertical read rather than being placed. */
+    .plate {
+        position: relative;
+        left: auto !important;
+        top: auto !important;
+        width: 100% !important;
+        height: auto !important;
+        aspect-ratio: 3 / 2;
+        margin-bottom: 38px;
+    }
+
+    /*
+     * The read head, turned ninety degrees.
+     *
+     * Desktop pans a strip under a fixed centre and the WebGL layer keeps a
+     * clean band there, dithering toward both edges. There is no WebGL here
+     * (upstream #9: a phone viewport leaves no meaningful clean band between
+     * two treated edges, and a multi-thousand-pixel strip of textures is the
+     * GPU risk). So the same model is rebuilt in three mask layers, moved by a
+     * ViewTimeline — the browser drives it off scroll position, so there is no
+     * per-frame loop and nothing to keep in sync with the rig.
+     *
+     * The timeline is attached from `vertical-read.ts` rather than with
+     * `animation-timeline: view()` in CSS. Both are the same primitive, but the
+     * CSS form measured INACTIVE here — `currentTime` null on every plate, and
+     * on a plain opacity probe too, while `new ViewTimeline({subject})` on the
+     * same element reported 17.54%. Rather than ship an effect that could not
+     * be verified, the driver uses the API that measurably works.
+     *
+     * Three layers, because a single dotted ramp would lay a permanent screen
+     * door over the whole picture:
+     *
+     *   dots     a 3px grid, CONTENT-anchored — it must not swim as the plate
+     *            travels. This is upstream #4 (gpx = spx + pan) restated for
+     *            the vertical read: the grid belongs to the picture, the ramp
+     *            belongs to the screen.
+     *   fringe   the feather. Intersected with the dots, so the edges break
+     *            into a dot pattern instead of fading smoothly.
+     *   core     a hard plateau, ADDED on top, so the band actually being read
+     *            is completely clean rather than 55% covered.
+     *
+     * The mask sits on the <img>, not the .plate: the outline and corner ticks
+     * are the machine's reading of the plate and must not dissolve with the
+     * picture (see the ::before/::after note above).
+     */
+    @supports (mask-composite: intersect) {
+        .plate img {
+            mask-image: radial-gradient(
+                    circle at 50% 50%,
+                    #000 0 45%,
+                    transparent 46%
+                ),
+                linear-gradient(
+                    to bottom,
+                    transparent 0 20%,
+                    #000 42% 58%,
+                    transparent 80% 100%
+                ),
+                linear-gradient(
+                    to bottom,
+                    transparent 0 44%,
+                    #000 44% 56%,
+                    transparent 56% 100%
+                );
+            mask-size: 3px 3px, 100% 300%, 100% 300%;
+            mask-repeat: repeat, no-repeat, no-repeat;
+            mask-composite: intersect, add;
+            /*
+             * The ramps are three times the box, so the box sees one third of
+             * them at a time and the Y position walks the clean band down the
+             * plate. 50% — the band dead centre, plate fully clean — is the
+             * REST STATE on purpose: if the driver never runs (no ViewTimeline,
+             * reduced motion, JS off) the picture is simply readable rather
+             * than stuck half-dissolved. `vertical-read.ts` animates it from
+             * 0% to 100% across the plate's travel through the viewport.
+             */
+            mask-position: 0 0, 0 50%, 0 50%;
+        }
+    }
+}
+
+/* Sector padding lives here rather than in stage.css: the stage owns the
+ * mechanism, the sector owns its interior. */
+.tc-sector {
+    padding: 108px 72px;
+}
+
+@media (max-width: 810px) {
+    .tc-sector {
+        padding: 72px 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+}

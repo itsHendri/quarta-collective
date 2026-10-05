@@ -1,0 +1,74 @@
+---
+/*
+ * Beat zero. A Signal-blue screen UNDER the tube.
+ *
+ * It used to sit above ScreenFX, which made it the one screen in the piece
+ * with no screen on it: a flat rectangle of type. At z-index 9 it is below the
+ * tube (10) and above all other fixed chrome (6–7), so the vignette, scanlines,
+ * static and grunge faceplate all land on it. (Upstream #50.)
+ *
+ * The field is Signal — the rig warming up blue before the read tints the page.
+ */
+---
+
+<div class="boot" id="tc-boot" role="status" aria-label="Boot sequence">
+    <div class="boot-list" id="tc-boot-list"></div>
+    <i class="boot-caret" id="tc-boot-caret" aria-hidden="true"></i>
+</div>
+
+<style>
+    .boot {
+        position: fixed;
+        inset: 0;
+        z-index: 9;
+        background: var(--signal);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+    .boot-list {
+        width: min(560px, calc(100vw - 48px));
+        font-family: var(--font-mono);
+        font-size: 11px;
+        font-weight: 400;
+        line-height: 1.85;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        /* Set by the script, derived from the field's own luminance rather than
+         * from the page's --tc-fg-dim: that is computed against the page
+         * background, which at progress 0 is near-black, and a dim measured for
+         * near-black lands at about 2.3:1 on Signal blue. */
+        color: var(--boot-dim, #b9c4ff);
+    }
+
+    /* Rides the end of the line being typed rather than parking under the
+     * block. */
+    .boot-caret {
+        display: inline-block;
+        width: 7px;
+        height: 12px;
+        margin-left: 2px;
+        vertical-align: -2px;
+        background: var(--boot-ink, #fff);
+        animation: tc-boot-blink 1.06s steps(1) infinite;
+    }
+
+    @keyframes tc-boot-blink {
+        0%,
+        50% {
+            opacity: 1;
+        }
+        50.01%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .boot-caret {
+            animation: none;
+        }
+    }
+</style>

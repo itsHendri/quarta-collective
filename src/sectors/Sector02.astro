@@ -1,0 +1,64 @@
+---
+import Plate from "~/components/Plate.astro"
+import cockpit from "~/assets/plates/cockpit.jpg"
+import fdo from "~/assets/plates/fdo.jpg"
+import switches from "~/assets/plates/switches.jpg"
+
+/*
+ * Sector 02 — "First surface".
+ *
+ * First decoded content. Walls of instruments, no people yet — the note
+ * claims three exposures and there are three plates.
+ */
+---
+
+<section class="tc-sector" id="tc-sector-02" aria-label="Sector 02: First surface">
+    <p class="sector-head t-eyebrow">
+        <span>sector 02</span>
+        <span class="rule" aria-hidden="true"></span>
+        <span>3 frames</span>
+    </p>
+
+    <h2 class="sector-title t-display" data-scramble>First surface</h2>
+
+    <p class="sector-note t-body">three exposures. every one a wall of instruments.</p>
+
+    <Plate
+        id="02-0"
+        src={fdo}
+        label="console wall, lit"
+        fmt="JPG"
+        file="fdo"
+        x={60}
+        y={352}
+        w={400}
+        h={260}
+        eager
+    />
+
+    <Plate
+        id="02-1"
+        src={switches}
+        label="switch panel, rows"
+        fmt="JPG"
+        file="switches"
+        x={510}
+        y={388}
+        w={360}
+        h={234}
+        eager
+    />
+
+    <Plate
+        id="02-2"
+        src={cockpit}
+        label="flight panel"
+        fmt="TIF"
+        file="cockpit"
+        x={920}
+        y={344}
+        w={250}
+        h={196}
+        eager
+    />
+</section>
