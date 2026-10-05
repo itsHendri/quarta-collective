@@ -18,21 +18,18 @@ work is Hendri's direction, not more build.
 2. **Real photographs.** One key at a time in `src/content/clippings.ts`;
    local files work in the same `Clipping` (import them, pass the import as
    `src`). The colophon regenerates itself.
-3. **Copy.** The eleven printed spreads are a first draft of the story —
-   the rule, noticing, bad drawings, the argument, materials, the bench,
-   prototype one, again, the thing itself, next Wednesday — with the lamp
-   as a placeholder thread. The three prompts on the visitor's pages are
-   first drafts too.
+3. **Copy.** The twelve spreads are a first draft of the story — the rule,
+   noticing, bad drawings, the argument, materials, the bench, prototype
+   one, printing, again, the thing itself, next Wednesday — around the
+   hand-made notebook. Hendri knows the real project; the beats should
+   follow it.
 4. **"wednesdays"** in the wordmark and eyebrows: a reading of "Quarta"
    (quarta-feira), not a brief.
 
 ## Backlog
 
-- **The visitor's pages, further.** Pen colours (the other inks), an
-  eraser, undo, a way to export a page as PNG or to print the whole thing.
-  All local; none of it needs a backend.
-- **Shared pages** — if the collective wants to see each other's pages,
-  that is accounts + sync, a different project (Q9).
+- **A digital twin of the notebook** — writable pages in the browser —
+  exists at commit `24deb04` if it is ever wanted as its own project (Q10).
 
 - **An OG image.** There is none. The cover at 1200×630 would do.
 - **Lighthouse against the deployed URL.** memory-lane's rebuild scored 94;

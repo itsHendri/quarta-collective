@@ -280,3 +280,33 @@ Storage is per browser, per device, and the only "backend". That is a
 deliberate floor, not a ceiling: if the pages should ever travel with a
 person, that is an account and a sync, which is a different project
 (memory-lane A1 — static, no backend — still holds for this one).
+
+---
+
+### Q10. The website tells the story; the notebook is made by hand — supersedes Q9
+
+**2026-10-05, Hendri's second correction.** Q9 built writable pages into the
+site, reading "pages like a notebook for the users and pages of pre-set
+content like a zine" as a description of the website. It describes the
+PHYSICAL object: a notebook the collective is making by hand, half printed
+(zine), half blank (notebook), that goes home with whoever holds it. The
+website is something else entirely — a visual representation of Quarta
+Collective, the storytelling piece about what the collective is and does.
+
+So the site is back to twelve printed spreads, no interactivity beyond the
+rig, and the thing being made in the story is that notebook: the one real
+project Hendri has described, and the reason the board is a zine board.
+`NotebookPage`, `lib/notebook.ts` and their CSS are deleted; the lamp thread
+and its seven photographs are gone with them; the spreads are restored from
+the Q8 commit (`5b549f7`) with three copy changes — the cover states what
+the space is for, the argument on p. 04 lands on "half printed, half
+blank", and p. 10 describes the finished object that way.
+
+The lesson, recorded so it is not repeated: when Hendri describes an object
+("it will have pages… for the users"), ask whether it is the site or the
+thing the site is about before building it. Two passes went into the wrong
+one of those.
+
+Q8's visual language is untouched. Q9's code is one `git show 24deb04` away
+if the collective ever wants a digital twin of the notebook — but that would
+be a different project.

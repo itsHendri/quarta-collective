@@ -1,11 +1,12 @@
 # Status — 2026-10-05
 
-**Third pass: the hybrid.** Quarta Collective is a space to make and create
-with friends; the site is printed zine pages of the collective's story plus
-ruled notebook pages that belong to the visitor (Q9). Fourteen spreads,
-three of them writable and drawable, persisted in the browser. Built,
-measured, deployed to GitHub Pages. What remains is Hendri's eye and real
-photographs.
+**Fourth pass: the storytelling piece, and nothing else.** Quarta Collective
+is a space to make and create with friends; the website is a visual
+representation of that — twelve printed spreads telling the story of how a
+thing gets made there. The thing, this season, is a notebook made by hand:
+half printed like a zine, half blank (Q10). The writable pages of the third
+pass were a misreading and are gone. Built, measured, deployed to GitHub
+Pages. What remains is Hendri's eye and real photographs.
 
 ## Done
 
@@ -34,13 +35,9 @@ photographs.
   from the first pick 404'd at build and were replaced; all are HEAD-checked
   (Q4).
 - Tab jumps centre the spread in the stage (Q5).
-- **Notebook pages** (`NotebookPage.astro` + `lib/notebook.ts`): write mode
-  (contenteditable, plain text, hand face on the ruling) and draw mode
-  (canvas, pen in riso blue, pointer capture, coalesced events, device-pixel
-  sized with redraw on resize), both in `localStorage` under a stable key;
-  two-press clear. (Q9)
-- Story retold around the collective's making, with the lamp as the thread;
-  seven new placeholder photographs, all HEAD-checked.
+- Story: the collective's weekly making, with the hand-made notebook as the
+  thread — materials, the bench, prototype one, printing, again, the thing
+  itself. Cover states what the space is for. (Q10)
 - GitHub Pages: repo public, Pages set to workflow builds, remote-image cache
   restored between runs.
 
@@ -56,7 +53,6 @@ photographs.
 | Reveal coverage | 55/55 `[data-reveal]` elements observed; heading now intersects (was ratio 0 under clip-path) |
 | Mobile 375×812 | `scrollWidth === innerWidth`, no element past the right edge, tabs hidden, close + page counter present |
 | Fonts loaded | Syne Variable, Caveat Variable, Courier Prime 400/700 |
-| Notebook page round-trip | typed text and a drawn stroke survive a reload from localStorage; clear empties both |
 
 ## Not verified
 
@@ -73,5 +69,5 @@ photographs.
 3. **Real photographs**, one key at a time in `src/content/clippings.ts`.
    Riso duotones want high-contrast source pictures.
 4. Decide whether "wednesdays" stays in the wordmark.
-5. The three prompts on the visitor's pages, and whether three is the
-   right number.
+5. The copy is a first draft of the real project. Hendri knows what the
+   notebook actually is; the spreads should follow that.

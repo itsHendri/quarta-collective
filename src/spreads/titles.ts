@@ -1,21 +1,18 @@
 /**
  * One title per spread, in order. Read by the index tabs. Keep in step with
- * the list in pages/index.astro and each spread's own <h2>. Three of the
- * fourteen are the visitor's own pages.
+ * the <Spread…/> list in pages/index.astro and each spread's own <h2>.
  */
 export const TITLES = [
     "Quarta Collective",
     "One evening a week",
     "Noticing",
     "Bad drawings first",
-    "Your page",
     "What are we actually making?",
-    "Paper, wire, wood",
+    "Paper, ink, blade",
     "The bench",
     "Prototype one",
-    "Your page",
+    "Printing",
     "Again, but slower",
     "The thing itself",
     "Next Wednesday",
-    "Your page",
 ]

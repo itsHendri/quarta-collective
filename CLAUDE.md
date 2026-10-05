@@ -2,10 +2,12 @@
 
 **Quarta Collective** — a space to make and create with friends. Hendri and
 a few others meet once a week (quarta-feira: Wednesday) to build things.
-The site is a HYBRID: printed zine spreads carry the collective's story, and
-ruled notebook pages between them belong to the visitor — written and
-drawn on, kept in their browser (Q9). Vertical scroll turns a wide strip of
-fourteen spreads left→right under a pinned viewport. The look comes from
+The website is a VISUAL REPRESENTATION of that: a storytelling piece, twelve
+printed spreads, about what the collective is and how a thing gets made
+there. It is not the thing. The thing — this season — is a notebook made by
+hand, half printed like a zine, half blank; the site only tells its story
+(Q10). Vertical scroll turns a wide strip of twelve spreads left→right
+under a pinned viewport. The look comes from
 Hendri's "Zine" Pinterest board: white stock, riso inks, misregistered
 headlines, block prints, duotone photographs, staples, handwritten notes,
 tape, torn scraps.
@@ -47,10 +49,10 @@ those files. Our own `DECISIONS.md` records only what is NEW here, as
   (upstream #2, #20). Never add `scroll-behavior: smooth` to `html`.
 - The index tabs are real `<button>`s: the piece's only keyboard navigation
   (upstream #16).
-- **Notebook pages persist under stable keys** (`qc:notebook:first|broke|next`),
-  never under the page number — renumbering must not lose anyone's page.
-- **No backend.** The visitor's pages live in their localStorage and go
-  nowhere; the colophon says so. Accounts and sync are a different project.
+- **No interactivity beyond the rig.** The site tells a story; it is not an
+  app, a notebook, or a tool. Q9 built writable pages by mistake and Q10
+  removed them. Before building any "feature", check whether Hendri is
+  describing the site or the object the site is about.
 
 ## How to work here
 
@@ -75,6 +77,6 @@ node scripts/sweep-contrast.ts
   collective's own photographs when they exist.
 - Only 24 of the board's 59 pins were visible signed out. Tracing-paper
   overlays, bulldog clips and pixel motifs are unbuilt (FUTURE.md).
-- The three prompts on the visitor's pages are first drafts.
+- The copy is a first draft of the real notebook project; Hendri owns it.
 - "Quarta = Wednesday" is a reading of the name, not a brief. Easy to change
   in `NotebookChrome.astro` (wordmark) and the spread eyebrows.

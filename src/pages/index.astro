@@ -4,14 +4,14 @@ import Spread00 from "~/spreads/Spread00.astro"
 import Spread01 from "~/spreads/Spread01.astro"
 import Spread02 from "~/spreads/Spread02.astro"
 import Spread03 from "~/spreads/Spread03.astro"
+import Spread04 from "~/spreads/Spread04.astro"
 import Spread05 from "~/spreads/Spread05.astro"
 import Spread06 from "~/spreads/Spread06.astro"
 import Spread07 from "~/spreads/Spread07.astro"
 import Spread08 from "~/spreads/Spread08.astro"
+import Spread09 from "~/spreads/Spread09.astro"
 import Spread10 from "~/spreads/Spread10.astro"
 import Spread11 from "~/spreads/Spread11.astro"
-import Spread12 from "~/spreads/Spread12.astro"
-import NotebookPage from "~/components/NotebookPage.astro"
 import NotebookChrome from "~/components/NotebookChrome.astro"
 import { TITLES } from "~/spreads/titles"
 import "~/styles/stage.css"
@@ -19,9 +19,7 @@ import "~/styles/spread.css"
 import "~/styles/paper.css"
 
 /*
- * The notebook: a hybrid. Printed spreads carry the collective's story; the
- * ruled pages between them (NotebookPage) belong to whoever is reading and
- * persist in their browser. Fourteen spreads, three of them theirs.
+ * The notebook.
  *
  * NOTHING MAY COME AFTER THE TRACK — no footer, no colophon section. A section
  * below it keeps scrolling once the read is done and takes the pinned stage
@@ -43,16 +41,14 @@ const SPREADS = TITLES.length
                 <Spread01 />
                 <Spread02 />
                 <Spread03 />
-                <NotebookPage n={4} key="first" prompt="What did you notice this week? Write it down before it stops being interesting." />
+                <Spread04 />
                 <Spread05 />
                 <Spread06 />
                 <Spread07 />
                 <Spread08 />
-                <NotebookPage n={9} key="broke" prompt="What broke, and what would you keep from it?" />
+                <Spread09 />
                 <Spread10 />
                 <Spread11 />
-                <Spread12 />
-                <NotebookPage n={13} key="next" prompt="Next Wednesday — yours. What are you making?" />
             </div>
         </div>
     </div>
@@ -65,7 +61,6 @@ const SPREADS = TITLES.length
 <script>
     import { initScrollRig } from "~/lib/scroll-rig"
     import { initReveal } from "~/lib/reveal"
-    import { initNotebook } from "~/lib/notebook"
     import {
         initProgressRail,
         initPageCounter,
@@ -84,7 +79,6 @@ const SPREADS = TITLES.length
      */
     initScrollRig()
     initReveal()
-    initNotebook()
 
     const rail = byId("tc-rail")
     if (rail) initProgressRail({ root: rail, sectors: spreads })

@@ -3,46 +3,61 @@ import Clipping from "~/components/Clipping.astro"
 import Note from "~/components/Note.astro"
 import Sticker from "~/components/Sticker.astro"
 
-/*
- * Spread 05 — the argument. The red note is size="lg": display-size red is
- * the only red that carries words (Q8).
- */
+/* Spread 05 — materials. The stock is turning to newsprint here. */
 ---
 
-<section class="tc-sector is-ruled" id="tc-sector-05" aria-label="Page 5: What are we actually making?">
+<section class="tc-sector" id="tc-sector-05" aria-label="Page 5: Paper, ink, blade">
     <p class="spread-head t-eyebrow">
         <span>p. 05</span>
         <span class="rule" aria-hidden="true"></span>
-        <span>wednesday no. 5</span>
+        <span>wednesday no. 6</span>
     </p>
 
-    <h2 class="spread-title t-display" data-reveal>What are we actually <em>making?</em></h2>
+    <h2 class="spread-title t-display" data-reveal>Paper, ink, <em>blade</em></h2>
 
     <p class="spread-note t-body">
-        The argument lasted most of an evening. A lamp. A chair. An app, briefly.
-        Then someone said: start with the lamp. It's the one nobody can
-        draw yet, which is how you know it's the one.
+        Samples from three shops and a skip. Paper is judged by folding it,
+        ink by how it sits on the fold, the lino by how it takes a blade.
     </p>
+
+    <Sticker x={1150} y={88} rotate={6} kind="tag">samples</Sticker>
 
     <Clipping
         id="05-0"
-        src="mug"
-        caption="the evening in question"
-        x={820}
-        y={340}
-        w={440}
-        h={290}
-        kind="photo"
-        tape
+        src="creased"
+        caption="120gsm — too thin"
+        x={80}
+        y={350}
+        w={300}
+        h={220}
+        kind="scrap"
+        rotate={-3}
     />
 
-    <Note x={130} y={380} w={380} rotate={-2} size="lg">
-        lamp ✓ &nbsp; chair ✗ &nbsp; app ✗✗
-    </Note>
+    <Clipping
+        id="05-1"
+        src="spools"
+        caption="riso blue, two passes"
+        x={430}
+        y={390}
+        w={320}
+        h={230}
+        kind="riso"
+        ink="blue"
+        rotate={2}
+    />
 
-    <Sticker x={330} y={470} rotate={-10} tone="blue">parked</Sticker>
+    <Clipping
+        id="05-2"
+        src="sheets"
+        caption="160 — just right"
+        x={800}
+        y={320}
+        w={440}
+        h={290}
+        kind="polaroid"
+        rotate={-1}
+    />
 
-    <Note x={470} y={580} w={260} rotate={-3} size="lg" tone="red" arrow="right">
-        a lamp. obviously.
-    </Note>
+    <Note x={90} y={620} rotate={-2} size="sm">grey lino, 3mm, from the skip</Note>
 </section>

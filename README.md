@@ -2,11 +2,12 @@
 
 **Quarta Collective** — a space to make and create with friends.
 
-A few of us meet one evening a week to build things. The site is a zine and
-a notebook at once: printed spreads carry our story — what we noticed, drew,
-argued about and built — and the ruled pages between them are yours to write
-and draw on, kept in your own browser. Vertical scroll turns a wide strip of
-fourteen spreads left→right beneath a pinned viewport, and the stock changes
+A few of us meet one evening a week to build things. This site is the story
+of that — twelve printed spreads on what we noticed, drew, argued about and
+built, set like a zine and annotated like a notebook. The thing we are
+making this season is a notebook by hand, half printed and half blank; the
+site tells its story and nothing more. Vertical scroll turns a wide strip of
+twelve spreads left→right beneath a pinned viewport, and the stock changes
 as you go — white, a warm white, newsprint, a yellow sheet, and back.
 Headlines are printed heavy and a little out of register; notes are written
 in the margins; photographs are taped in, or printed in one riso ink; block
@@ -32,8 +33,7 @@ terminal, synthesized static) does not.
 | Motion | The inherited scroll rig — native scroll + sticky stage + lerped pan, no library |
 | Paper | CSS only: SVG-noise grain, ruling, staples, tape, torn edges, stamps, block prints, halftone, duotones |
 | Type | Syne · Caveat · Courier Prime, via `@fontsource` |
-| Content | Hand-authored Astro markup, one file per spread (`src/spreads/`); three `NotebookPage`s for the visitor |
-| Your pages | contenteditable + canvas, `localStorage` only — no backend |
+| Content | Hand-authored Astro markup, one file per spread (`src/spreads/`) |
 | Imagery | Unsplash placeholders, optimised to AVIF at build (`src/content/clippings.ts`) |
 | Hosting | GitHub Pages |
 

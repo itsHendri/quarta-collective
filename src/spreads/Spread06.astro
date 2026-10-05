@@ -1,63 +1,60 @@
 ---
 import Clipping from "~/components/Clipping.astro"
 import Note from "~/components/Note.astro"
-import Sticker from "~/components/Sticker.astro"
 
-/* Spread 06 — materials for the lamp. The stock is turning to newsprint. */
+/* Spread 06 — the bench. Full newsprint. */
 ---
 
-<section class="tc-sector" id="tc-sector-06" aria-label="Page 6: Paper, wire, wood">
+<section class="tc-sector" id="tc-sector-06" aria-label="Page 6: The bench">
     <p class="spread-head t-eyebrow">
         <span>p. 06</span>
         <span class="rule" aria-hidden="true"></span>
-        <span>wednesday no. 6</span>
+        <span>wednesday no. 7</span>
     </p>
 
-    <h2 class="spread-title t-display" data-reveal>Paper, wire, <em>wood</em></h2>
+    <h2 class="spread-title t-display" data-reveal>The <em>bench</em></h2>
 
     <p class="spread-note t-body">
-        Samples from three shops and a skip. Wood is judged by knocking on
-        it, wire by bending it, paper by holding it up to the bulb.
+        Three lamps, one good one. The table has a dent from the night the
+        press slipped. Nobody fixes it; it's where the ruler lives now.
     </p>
 
-    <Sticker x={1150} y={88} rotate={6} kind="tag">samples</Sticker>
+    <div class="ring" style="left: 640px; top: 150px;" aria-hidden="true"></div>
+    <Note x={760} y={200} rotate={4} size="sm" arrow="left">wk 7</Note>
 
     <Clipping
         id="06-0"
-        src="creased"
-        caption="120gsm — too thin, too white"
-        x={80}
-        y={350}
-        w={300}
-        h={220}
-        kind="scrap"
-        rotate={-3}
+        src="tools"
+        caption="everything, once, in its place"
+        x={90}
+        y={340}
+        w={420}
+        h={280}
+        kind="photo"
     />
 
     <Clipping
         id="06-1"
-        src="copper"
-        caption="1.5mm, two coils, from the drawer"
-        x={430}
-        y={390}
+        src="benchtop"
+        caption="everything, by nine"
+        x={560}
+        y={410}
         w={320}
-        h={230}
+        h={220}
         kind="riso"
-        ink="blue"
-        rotate={2}
+        ink="red"
+        rotate={-3}
     />
 
     <Clipping
         id="06-2"
-        src="wood"
-        caption="ash offcut — the base, probably"
-        x={800}
+        src="papers"
+        caption="the good lamp"
+        x={940}
         y={320}
-        w={440}
-        h={290}
+        w={340}
+        h={250}
         kind="polaroid"
-        rotate={-1}
+        rotate={2}
     />
-
-    <Note x={90} y={620} rotate={-2} size="sm">the shade should be paper. obviously.</Note>
 </section>

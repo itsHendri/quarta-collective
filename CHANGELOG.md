@@ -5,14 +5,10 @@ All notable changes to this project are documented here. The format is
 
 ## [Unreleased]
 
-### Added
-- `NotebookPage` + `lib/notebook.ts`: the visitor's own ruled pages — write
-  and draw modes, persisted in `localStorage`, two-press clear (Q9).
-
 ### Changed
-- The site is the space (Q9): fourteen spreads, three of them the
-  visitor's; story retold around the collective's making with the lamp as
-  the thread; cover states what Quarta Collective is for.
+- The site is the storytelling piece only (Q10): twelve printed spreads,
+  the hand-made notebook as the story's thread, cover states what Quarta
+  Collective is for. The writable pages of Q9 are removed.
 - Zine direction from the Pinterest board (DECISIONS Q8): white-stock ramp,
   riso ink register, Syne 800 headlines with misregistration, `kind="riso"`
   duotone clippings with halftone, `BlockPrint` component, staples on the
