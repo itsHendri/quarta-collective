@@ -6,6 +6,15 @@ All notable changes to this project are documented here. The format is
 ## [Unreleased]
 
 ### Changed
+- Review pass (Q11): Bricolage Grotesque, wrapping headlines, tab fill
+  instead of the head line, page-edge dividers, `is-squared`, date-only
+  eyebrows, `PixelMark` motifs replacing `BlockPrint`.
+
+### Added
+- Lightbox on every clipping (`lib/lightbox.ts`).
+- Two visitor pages, write and draw, as separate spreads (`NotebookPage`).
+
+### Changed
 - The site is the storytelling piece only (Q10): twelve printed spreads,
   the hand-made notebook as the story's thread, cover states what Quarta
   Collective is for. The writable pages of Q9 are removed.

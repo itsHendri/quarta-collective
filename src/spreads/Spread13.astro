@@ -1,0 +1,47 @@
+---
+import Clipping from "~/components/Clipping.astro"
+import Note from "~/components/Note.astro"
+import PixelMark from "~/components/PixelMark.astro"
+
+/*
+ * Spread 13 — the next one. Mostly blank ruled page, on purpose. The "close
+ * the notebook" control (chrome) appears over it once the read completes.
+ * Back on white stock.
+ */
+---
+
+<section class="tc-sector is-ruled" id="tc-sector-13" aria-label="Page 13: Next Wednesday">
+    <p class="spread-head t-eyebrow">
+        <span>wednesday no. 13</span>
+    </p>
+
+    <h2 class="spread-title t-display" data-reveal>Next <em>Wednesday</em></h2>
+
+    <p class="spread-note t-body">
+        There's a list already. A lamp, still. The chair came back up. Someone
+        wants to make the pencil we keep losing. The notebook goes with
+        whoever takes it home.
+    </p>
+
+    <Note x={130} y={400} w={300} rotate={-2} size="lg" tone="red">
+        bring the pencil idea
+    </Note>
+
+    <Note x={150} y={470} rotate={-1} size="sm">— and the good lamp</Note>
+
+    <Clipping
+        id="13-0"
+        src="nextweek"
+        caption="7pm. kettle's on."
+        x={900}
+        y={330}
+        w={340}
+        h={240}
+        kind="scrap"
+        rotate={-2}
+    />
+
+    <Note x={560} y={620} rotate={-3} tone="blue" arrow="right">continue</Note>
+
+    <PixelMark motif="asterisk" x={700} y={400} w={64} rotate={20} ink="yellow" />
+</section>

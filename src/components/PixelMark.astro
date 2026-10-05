@@ -1,0 +1,118 @@
+---
+/*
+ * A pixel mark: a small motif drawn on a coarse grid and printed in one ink.
+ *
+ * From the board — the penguin grid, the blue dancers — and a deliberate
+ * bridge to memory-lane's dither: the one texture both pieces share. Each
+ * motif is a bitmap; every set cell is a square, so nothing is finer than the
+ * grid, the way a block or a riso screen cannot resolve a curve. `pass2`
+ * prints the same mark again a few px off in a second ink.
+ */
+
+interface Props {
+    motif: "pencil" | "scissors" | "asterisk" | "cup" | "staple"
+    x: number
+    y: number
+    /** Width in px; height follows the bitmap. */
+    w: number
+    rotate?: number
+    ink?: "blue" | "red" | "pink" | "green" | "yellow" | "ink"
+    pass2?: "blue" | "red" | "pink" | "green" | "yellow"
+}
+
+const { motif, x, y, w, rotate = 0, ink = "blue", pass2 } = Astro.props
+
+const BITMAPS: Record<Props["motif"], string[]> = {
+    pencil: [
+        "..........##",
+        ".........#.#",
+        "........#..#",
+        ".......#..#.",
+        "......#..#..",
+        ".....#..#...",
+        "....#..#....",
+        "...#..#.....",
+        "..#..#......",
+        ".##.#.......",
+        ".#.#........",
+        "##..........",
+    ],
+    scissors: [
+        "##.......##.",
+        "#.#.....#.#.",
+        "#.#.....#.#.",
+        ".##.....##..",
+        "..#.....#...",
+        "...#...#....",
+        "....#.#.....",
+        ".....#......",
+        "....#.#.....",
+        "...#...#....",
+        "..#.....#...",
+        ".#.......#..",
+    ],
+    asterisk: [
+        ".....#.....",
+        "#....#....#",
+        ".#...#...#.",
+        "..#..#..#..",
+        "...#.#.#...",
+        "....###....",
+        "...#.#.#...",
+        "..#..#..#..",
+        ".#...#...#.",
+        "#....#....#",
+        ".....#.....",
+    ],
+    cup: [
+        ".########...",
+        ".########.#.",
+        ".########..#",
+        ".########..#",
+        ".########.#.",
+        ".########...",
+        "..######....",
+        "...####.....",
+    ],
+    staple: [
+        "##########",
+        "#........#",
+        "#........#",
+        "#........#",
+    ],
+}
+
+const rows = BITMAPS[motif]
+const cols = rows[0].length
+const h = Math.round((w * rows.length) / cols)
+const cells: Array<[number, number]> = []
+rows.forEach((r, yy) => {
+    for (let xx = 0; xx < r.length; xx++) if (r[xx] === "#") cells.push([xx, yy])
+})
+const style = (dx: number, dy: number, extra = "") =>
+    `left:${x + dx}px; top:${y + dy}px; width:${w}px; height:${h}px;${
+        rotate ? ` transform: rotate(${rotate}deg);` : ""
+    }${extra}`
+---
+
+<span class="blockprint" data-ink={ink} aria-hidden="true" style={style(0, 0)}>
+    <svg viewBox={`0 0 ${cols} ${rows.length}`} shape-rendering="crispEdges">
+        {cells.map(([cx, cy]) => <rect x={cx} y={cy} width="1" height="1" fill="currentColor" />)}
+    </svg>
+</span>
+{
+    pass2 && (
+        <span
+            class="blockprint"
+            data-ink={pass2}
+            aria-hidden="true"
+            style={style(4, 3, " mix-blend-mode: multiply;")}
+        >
+            <svg viewBox={`0 0 ${cols} ${rows.length}`} shape-rendering="crispEdges">
+                {cells.map(([cx, cy]) => (
+                    <rect x={cx} y={cy} width="1" height="1" fill="currentColor" />
+                ))}
+            </svg>
+        </span>
+    )
+}

@@ -59,6 +59,34 @@
     background-position: 10px 10px;
 }
 
+/* A 24px squared grid — graph paper. */
+.tc-sector.is-squared {
+    background-image:
+        linear-gradient(to right, var(--ruled-line) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--ruled-line) 1px, transparent 1px);
+    background-size: 24px 24px;
+    background-position: 12px 12px;
+}
+
+/*
+ * The page edge. Every spread is a leaf; where two meet there is a crease —
+ * a hairline with the faintest shadow on the leaf behind it. Without it,
+ * ruling running straight into a dot grid read as one odd sheet rather than
+ * two pages (Hendri). Never two of the same ruling side by side, either:
+ * see the spread order in pages/index.astro.
+ */
+.tc-sector::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 1px;
+    background: color-mix(in srgb, var(--tc-fg) 22%, transparent);
+    box-shadow: -10px 0 14px -10px rgba(40, 30, 10, 0.35);
+    pointer-events: none;
+}
+
 /* ── Fold and staples (spread 00 only) ─────────────────────────────────── */
 
 /* The zine is one sheet folded and stapled twice. The crease is a soft
@@ -314,6 +342,7 @@
     }
     .binding,
     .blockprint,
+    .tc-sector::after,
     .tc-sector.is-ruled::before {
         display: none;
     }

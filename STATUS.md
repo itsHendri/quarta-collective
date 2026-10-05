@@ -1,6 +1,6 @@
 # Status — 2026-10-05
 
-**Fourth pass: the storytelling piece, and nothing else.** Quarta Collective
+**Fifth pass: Hendri's first review applied (Q11).** Quarta Collective
 is a space to make and create with friends; the website is a visual
 representation of that — twelve printed spreads telling the story of how a
 thing gets made there. The thing, this season, is a notebook made by hand:
@@ -38,6 +38,13 @@ Pages. What remains is Hendri's eye and real photographs.
 - Story: the collective's weekly making, with the hand-made notebook as the
   thread — materials, the bench, prototype one, printing, again, the thing
   itself. Cover states what the space is for. (Q10)
+- Review pass (Q11): Bricolage Grotesque headlines that wrap instead of
+  bleeding; tab progress as a fill inside the current tab; page-edge
+  dividers and no two adjacent rulings alike (`is-squared` added); date-only
+  eyebrows; lightbox on every clipping (1600px variant, keyboard-reachable);
+  two visitor pages — write (ruled) and draw (dot grid) — restored as
+  separate pages; `PixelMark` motifs replace the block prints. Fourteen
+  spreads.
 - GitHub Pages: repo public, Pages set to workflow builds, remote-image cache
   restored between runs.
 
@@ -52,7 +59,7 @@ Pages. What remains is Hendri's eye and real photographs.
 | `__tcPan(1)` | strip at −15776px (16800 − 1024), close control shown, page "p. 11", tab 11 current |
 | Reveal coverage | 55/55 `[data-reveal]` elements observed; heading now intersects (was ratio 0 under clip-path) |
 | Mobile 375×812 | `scrollWidth === innerWidth`, no element past the right edge, tabs hidden, close + page counter present |
-| Fonts loaded | Syne Variable, Caveat Variable, Courier Prime 400/700 |
+| Fonts loaded | Bricolage Grotesque Variable, Caveat Variable, Courier Prime 400/700 |
 
 ## Not verified
 

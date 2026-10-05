@@ -9,6 +9,9 @@
  * touch the ruling.
  */
 
+/* The eyebrow is only the date now — "wednesday no. 3". The page number
+ * moved to the corner (chrome) and off the page itself (Hendri). The rule
+ * survives on the cover only. */
 .spread-head {
     display: flex;
     gap: 14px;
@@ -94,6 +97,14 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+/* A thing that lifts on hover opens on click. */
+.clipping {
+    cursor: zoom-in;
+}
+.clipping:focus-visible {
+    outline: 2px solid var(--riso-blue-deep);
+    outline-offset: 4px;
 }
 
 /* photo — a print with a hairline white border. */
@@ -300,5 +311,160 @@
     }
     .ring {
         display: none;
+    }
+}
+
+/* ── Notebook pages (the visitor's) ───────────────────────────────────── */
+
+/*
+ * Two kinds. WRITE sits on the ruling: the text block's line-height is the
+ * ruling's pitch (28px) and its top is on a rule, so handwriting lands on
+ * the lines. DRAW sits on the dot grid: the canvas takes the pointer
+ * outright — no mode to pick.
+ */
+.notebook-prompt {
+    margin-top: 16px;
+    max-width: 640px;
+    color: var(--tc-fg-dim);
+}
+.notebook {
+    position: absolute;
+    left: 72px;
+    right: 72px;
+    top: 232px; /* 92 + 5 × 28: on a rule */
+    bottom: 104px;
+    --nb-ink: var(--riso-blue-deep);
+}
+.notebook-text {
+    position: absolute;
+    inset: 0;
+    padding: 0 8px 0 0;
+    overflow: auto;
+    outline: none;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    font-size: 24px;
+    line-height: 28px;
+    color: var(--nb-ink);
+    caret-color: var(--nb-ink);
+}
+.notebook-text:empty::before {
+    content: attr(data-placeholder);
+    color: var(--tc-fg-dim);
+    pointer-events: none;
+}
+.notebook-text:focus-visible {
+    box-shadow: -8px 0 0 -6px var(--nb-ink);
+}
+.notebook-ink {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    touch-action: none;
+    cursor: crosshair;
+}
+.notebook-tools {
+    position: absolute;
+    left: 72px;
+    bottom: 48px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.notebook-tools button {
+    padding: 6px 10px;
+    border: 1.5px solid var(--tc-fg);
+    border-radius: 2px;
+    color: var(--tc-fg);
+    background: transparent;
+    transition: background-color 140ms linear;
+}
+.notebook-tools button:hover {
+    background: color-mix(in srgb, var(--tc-fg) 10%, transparent);
+}
+.notebook-hint {
+    margin-left: 10px;
+}
+
+/* ── Lightbox ──────────────────────────────────────────────────────────── */
+
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 9; /* under the grain (10), over the chrome (6) */
+    display: grid;
+    place-items: center;
+    padding: 48px;
+    background: color-mix(in srgb, var(--tc-field) 94%, transparent);
+    cursor: zoom-out;
+}
+.lightbox[hidden] {
+    display: none;
+}
+.lightbox-figure {
+    margin: 0;
+    padding: 10px 10px 14px;
+    background: var(--white);
+    box-shadow:
+        0 1px 1px rgba(40, 30, 10, 0.12),
+        0 24px 48px -24px rgba(40, 30, 10, 0.5);
+    transform: rotate(-1deg);
+    cursor: default;
+}
+.lightbox-figure img {
+    display: block;
+    max-width: min(86vw, 1400px);
+    max-height: 76vh;
+    width: auto;
+    height: auto;
+}
+.lightbox-figure figcaption {
+    margin-top: 8px;
+    color: var(--tc-fg);
+}
+.lightbox-close {
+    position: absolute;
+    top: 56px;
+    right: 36px;
+    padding: 8px 12px;
+    border: 1.5px solid var(--tc-fg);
+    border-radius: 2px;
+    background: var(--tc-field);
+    color: var(--tc-fg);
+    cursor: pointer;
+}
+
+@media (max-width: 810px) {
+    .notebook-spread {
+        justify-content: flex-start;
+    }
+    .notebook {
+        position: relative;
+        left: auto;
+        right: auto;
+        top: auto;
+        bottom: auto;
+        height: 52svh;
+        margin-top: 20px;
+    }
+    .notebook-text {
+        font-size: 22px;
+    }
+    .notebook-tools {
+        position: static;
+        margin-top: 16px;
+        flex-wrap: wrap;
+    }
+    .notebook-tools button {
+        padding: 12px 14px;
+    }
+    .lightbox {
+        padding: 16px;
+    }
+    .lightbox-close {
+        top: 16px;
+        right: 16px;
+        padding: 12px 14px;
     }
 }

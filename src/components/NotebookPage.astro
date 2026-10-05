@@ -1,0 +1,55 @@
+---
+/*
+ * A page that is the visitor's: one kind to WRITE on (ruled), one kind to
+ * DRAW on (dot grid). No mode switch — the page is one or the other, so
+ * nobody has to choose before they start. Both keep what was put on them in
+ * this browser's localStorage (`lib/notebook.ts`), and say so.
+ */
+
+interface Props {
+    n: number
+    kind: "write" | "draw"
+    prompt: string
+    /** Stable storage key — survives renumbering. */
+    key: string
+}
+
+const { n, kind, prompt, key } = Astro.props
+const nn = String(n).padStart(2, "0")
+---
+
+<section
+    class={`tc-sector notebook-spread ${kind === "write" ? "is-ruled is-write" : "is-grid is-draw"}`}
+    id={`tc-sector-${nn}`}
+    aria-label={`Page ${n}: your page, ${kind}`}
+>
+    <p class="spread-head t-eyebrow">
+        <span>your page · {kind}</span>
+    </p>
+
+    <p class="notebook-prompt t-hand is-lg">{prompt}</p>
+
+    <div class="notebook" data-notebook={key} data-nb-kind={kind}>
+        {
+            kind === "write" ? (
+                <div
+                    class="notebook-text t-hand"
+                    data-nb-text
+                    contenteditable="plaintext-only"
+                    role="textbox"
+                    aria-multiline="true"
+                    aria-label="Your notes"
+                    data-placeholder="write here…"
+                    spellcheck="false"
+                />
+            ) : (
+                <canvas class="notebook-ink" data-nb-ink aria-label="Your sketch" />
+            )
+        }
+    </div>
+
+    <div class="notebook-tools" data-nb-tools>
+        <button type="button" class="t-label" data-nb-clear>clear</button>
+        <span class="notebook-hint t-eyebrow">saved in this browser only</span>
+    </div>
+</section>

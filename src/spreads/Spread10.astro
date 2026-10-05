@@ -1,52 +1,49 @@
 ---
 import Clipping from "~/components/Clipping.astro"
 import Note from "~/components/Note.astro"
-import Sticker from "~/components/Sticker.astro"
-import BlockPrint from "~/components/BlockPrint.astro"
+import PixelMark from "~/components/PixelMark.astro"
 
-/* Spread 10 — the made thing. The yellow sheet turning back to white. */
+/* Spread 10 — printing. The block and its two passes, printed on the page. */
 ---
 
-<section class="tc-sector" id="tc-sector-10" aria-label="Page 10: The thing itself">
+<section class="tc-sector is-ruled" id="tc-sector-10" aria-label="Page 10: Printing">
     <p class="spread-head t-eyebrow">
-        <span>p. 10</span>
-        <span class="rule" aria-hidden="true"></span>
-        <span>wednesday no. 12</span>
+        <span>wednesday no. 9</span>
     </p>
 
-    <h2 class="spread-title t-display" data-reveal>The thing <em>itself</em></h2>
+    <h2 class="spread-title t-display" data-reveal><em>Printing</em></h2>
 
     <p class="spread-note t-body">
-        Sixteen pages, 160gsm, folded and stapled, two inks. Eight printed,
-        eight ruled and empty. Opens flat. The first blank page is blank on
-        purpose.
+        Lino, because a block should look like hands cut it. Pressure is the
+        whole thing: too light and the ink sits in flecks, too hard and the
+        paper goes shiny and the edges fill in.
     </p>
-
-    <Sticker x={1080} y={110} rotate={-7} tone="blue">no. 3 · 2026</Sticker>
-    <BlockPrint motif="bird" x={1140} y={620} w={120} rotate={6} ink="blue" pass2="pink" />
 
     <Clipping
         id="10-0"
-        src="blank"
-        caption="p. 1 — leave it"
-        x={100}
-        y={340}
-        w={540}
-        h={350}
+        src="papers"
+        caption="test pulls, in order"
+        x={90}
+        y={350}
+        w={450}
+        h={290}
         kind="photo"
     />
 
+    {/* The block itself, printed twice: the second pass lands 4px off. */}
+    <PixelMark motif="scissors" x={610} y={390} w={130} rotate={-6} ink="blue" pass2="red" />
+    <PixelMark motif="staple" x={800} y={450} w={110} rotate={8} ink="green" />
+    <Note x={600} y={590} rotate={-2} size="sm" tone="blue">second pass, 4mm out — keep</Note>
+
     <Clipping
         id="10-1"
-        src="openpage"
-        caption="p. 2 — yours"
-        x={760}
-        y={370}
-        w={420}
-        h={270}
+        src="thread"
+        caption="brayer, ink, two sheets of scrap"
+        x={960}
+        y={310}
+        w={320}
+        h={320}
         kind="polaroid"
-        rotate={2}
+        rotate={3}
     />
-
-    <Note x={680} y={300} rotate={-4} size="sm" arrow="down">here</Note>
 </section>

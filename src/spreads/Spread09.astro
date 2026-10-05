@@ -1,49 +1,54 @@
 ---
 import Clipping from "~/components/Clipping.astro"
 import Note from "~/components/Note.astro"
+import Sticker from "~/components/Sticker.astro"
 
-/* Spread 09 — the second and third. The yellow sheet. */
+/* Spread 09 — the first one. Newsprint turning to the yellow sheet. */
 ---
 
-<section class="tc-sector" id="tc-sector-09" aria-label="Page 9: Again, but slower">
+<section class="tc-sector is-grid" id="tc-sector-09" aria-label="Page 9: Prototype one">
     <p class="spread-head t-eyebrow">
-        <span>p. 09</span>
-        <span class="rule" aria-hidden="true"></span>
-        <span>wednesdays no. 10 – 11</span>
+        <span>wednesday no. 8</span>
     </p>
 
-    <h2 class="spread-title t-display" data-reveal>Again, but <em>slower</em></h2>
+    <h2 class="spread-title t-display" data-reveal>Prototype <em>one</em></h2>
 
     <p class="spread-note t-body">
-        Second one: grain the right way, staples measured twice. Third one:
-        we stopped talking while printing. That was the difference.
+        Eight pages from one sheet, folded, stapled twice, printed in forty
+        minutes. The fold was fine. The staples went through the wrong page.
     </p>
 
     <Clipping
         id="09-0"
-        src="ribbon"
-        caption="no. 2 — opens flat ✓"
-        x={120}
-        y={330}
-        w={270}
-        h={370}
-        kind="polaroid"
-        rotate={-3}
+        src="pages"
+        caption="folded, then stapled wrong"
+        x={760}
+        y={340}
+        w={460}
+        h={300}
+        kind="photo"
+        tape
     />
 
     <Clipping
         id="09-1"
-        src="stack"
-        caption="one, two, three"
-        x={500}
-        y={400}
-        w={400}
-        h={260}
-        kind="riso"
-        ink="blue"
+        src="spine"
+        caption="no. 1"
+        x={160}
+        y={420}
+        w={300}
+        h={210}
+        kind="scrap"
+        rotate={4}
     />
 
-    <Note x={960} y={420} w={260} rotate={-3} size="lg" tone="blue" arrow="left">
-        no. 3 — the quiet one
+    <Note x={500} y={330} w={220} rotate={-6} size="lg" tone="red" arrow="right">
+        grain direction!! (wrong way)
     </Note>
+
+    <Note x={170} y={340} rotate={-2} size="sm">
+        cut <s>148 × 210</s> 140 × 205
+    </Note>
+
+    <Sticker x={1020} y={680} rotate={-8} tone="blue">failed — keep</Sticker>
 </section>

@@ -310,3 +310,52 @@ one of those.
 Q8's visual language is untouched. Q9's code is one `git show 24deb04` away
 if the collective ever wants a digital twin of the notebook — but that would
 be a different project.
+
+---
+
+### Q11. Hendri's first review: type that fits, pages that read as pages, pictures that open
+
+**2026-10-05.** Hendri's review of the live piece, taken in order, and what
+each became:
+
+- **The gliding head line across the tabs read as a stray rule.** Deleted.
+  The continuous progress it carried now lives INSIDE the current tab, which
+  fills left to right as the reader moves through that spread
+  (`--tab-fill`, written by the rail). Same information, no line.
+- **Headlines cut off and the face was disliked.** Both go back to one
+  decision: memory-lane's bleeding headline (#27) is retired. Headlines now
+  wrap to two balanced lines inside the spread at 40 / 68 / 92px. For the
+  face, three riso studios' sites were looked at — Risotto (Moderat), Hato
+  Press (Basel Grotesk), Can Can Press (NB Akademie) — and all three set
+  their web type in quiet neo-grotesques and let the printed work be loud.
+  Syne was doing the opposite. **Bricolage Grotesque 700**, the closest
+  open face with the optical-size axis for display, replaces it; the
+  misregistration fringe stays and does the "printed" work.
+- **Ruling running into a dot grid read as one odd sheet.** Each spread now
+  has a page edge — a hairline and a faint shadow at its right — and no two
+  adjacent spreads share a ruling: plain, ruled, dot, ruled, plain, dot,
+  ruled, plain, squared, dot, ruled, plain, squared, ruled. `is-squared`
+  (graph paper) is new.
+- **"p. 03" on the page was a second page number.** Gone from the eyebrow;
+  the eyebrow is just the date. The corner counter is the page number.
+- **Pictures lift on hover, so they should open.** They do: a lightbox,
+  under the grain, with a 1600px variant built by astro:assets
+  (`data-full`) and the handwritten caption. Clippings are focusable and
+  open on Enter / Space; Escape, the close control or the backdrop close;
+  focus returns to the clipping.
+- **The visitor's pages, as two pages, not a mode switch.** Q10 removed the
+  writable pages on a misreading; Hendri's review asks for them back as TWO
+  separate pages — one to draw on, one to write on — "so the user doesn't
+  have to click and choose." Restored from `24deb04` and split: WRITE on
+  the ruling (p. 03), DRAW on the dot grid (p. 05). The runtime is the same
+  minus the modes. (This also settles Q9/Q10: the site does carry two
+  interactive pages. The physical notebook remains a separate object.)
+- **The block prints were disliked** (the star, the moon, "a weird bird").
+  Replaced by `PixelMark`: five motifs on a coarse bitmap grid — pencil,
+  scissors, asterisk, cup, staple — printed in one ink with an optional
+  offset second pass. They come from the board's pixel pins and are the one
+  texture this piece shares with memory-lane's dither.
+
+Sources for the type decision: the three studio sites above, read live, and
+the DESIGN.md "Risograph Zine Aesthetic" note, which recommends a plain
+grotesque (Work Sans) for display with 1–3px misregistration.

@@ -1,7 +1,7 @@
 ---
 import Clipping from "~/components/Clipping.astro"
 import Note from "~/components/Note.astro"
-import BlockPrint from "~/components/BlockPrint.astro"
+import PixelMark from "~/components/PixelMark.astro"
 import { CREDITS } from "~/content/clippings"
 
 /*
@@ -47,14 +47,14 @@ import { CREDITS } from "~/content/clippings"
 
     <Note x={760} y={470} rotate={-5} size="lg" arrow="right">open me</Note>
 
-    <BlockPrint motif="bird" x={560} y={360} w={140} rotate={-8} ink="blue" pass2="red" />
+    <PixelMark motif="pencil" x={580} y={380} w={120} rotate={-8} ink="blue" pass2="red" />
 
     <div class="colophon t-eyebrow">
         <p>
             Quarta Collective is a space to make and create with friends —
             Hendri and a few others, once a week. This site tells the story;
             the notebook itself is made by hand. Placeholder photographs from Unsplash
-            by {CREDITS.map((c) => `@${c}`).join(", ")}. Type: Syne ·
+            by {CREDITS.map((c) => `@${c}`).join(", ")}. Type: Bricolage Grotesque ·
             Caveat · Courier Prime. hendri.design · 2026.
         </p>
     </div>

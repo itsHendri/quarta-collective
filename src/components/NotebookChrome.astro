@@ -46,7 +46,6 @@ const { sectors = 12, titles } = Astro.props
                 ))
             }
         </div>
-        <i class="tabs-head" data-rail-head aria-hidden="true"></i>
     </div>
 </nav>
 
@@ -108,10 +107,10 @@ const { sectors = 12, titles } = Astro.props
     }
 
     /*
-     * A tab hangs off the top edge of the page like an index tab: a small
-     * paper tongue with the page number on it. Three states, drawn as a
-     * notebook would show them — unread tabs are the edge of a page not yet
-     * turned, the current one is pulled down, read ones are pushed up.
+     * A tab hangs off the top edge of the page like an index tab. Three
+     * states: unread is an empty tongue; the current one is outlined and
+     * FILLS left to right as the reader moves through its spread (the
+     * `--tab-fill` the rail writes); read tabs are inked solid.
      */
     .tab {
         position: relative;
@@ -125,24 +124,35 @@ const { sectors = 12, titles } = Astro.props
         border-radius: 0 0 4px 4px;
         background: color-mix(in srgb, var(--tc-field) 85%, var(--tc-fg) 0%);
         color: var(--tc-fg-dim);
+        overflow: hidden;
         transition:
             transform 220ms cubic-bezier(0.2, 0.7, 0.2, 1),
             background-color 220ms linear,
             color 220ms linear;
     }
     .tab-n {
+        position: relative;
+        z-index: 1;
         color: inherit;
     }
     .tab[data-state="read"] {
-        transform: translateY(-10px);
-        background: color-mix(in srgb, var(--tc-fg) 8%, var(--tc-field));
+        transform: translateY(-8px);
+        background: var(--tc-fg);
+        border-color: var(--tc-fg);
+        color: var(--tc-field);
     }
     .tab[data-state="reading"] {
-        transform: translateY(0);
         height: 30px;
-        background: var(--tc-fg);
-        color: var(--tc-field);
         border-color: var(--tc-fg);
+        color: var(--tc-fg);
+    }
+    .tab[data-state="reading"]::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: color-mix(in srgb, var(--riso-blue) 28%, transparent);
+        transform-origin: left;
+        transform: scaleX(var(--tab-fill, 0));
     }
     .tab:hover,
     .tab:focus-visible {
@@ -165,20 +175,6 @@ const { sectors = 12, titles } = Astro.props
     .tab:hover .tab-title,
     .tab:focus-visible .tab-title {
         opacity: 1;
-    }
-
-    /* A thin pencil mark gliding along the top edge: continuous progress
-     * between tab boundaries (memory-lane #30). */
-    .tabs-head {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 2px;
-        height: 36px;
-        margin-left: -1px;
-        background: var(--tc-fg);
-        opacity: 0.55;
-        pointer-events: none;
     }
 
     /* ── Page number ────────────────────────────────────────────────── */

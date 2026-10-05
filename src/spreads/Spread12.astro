@@ -1,0 +1,50 @@
+---
+import Clipping from "~/components/Clipping.astro"
+import Note from "~/components/Note.astro"
+import Sticker from "~/components/Sticker.astro"
+import PixelMark from "~/components/PixelMark.astro"
+
+/* Spread 12 — the made thing. The yellow sheet turning back to white. */
+---
+
+<section class="tc-sector is-squared" id="tc-sector-12" aria-label="Page 12: The thing itself">
+    <p class="spread-head t-eyebrow">
+        <span>wednesday no. 12</span>
+    </p>
+
+    <h2 class="spread-title t-display" data-reveal>The thing <em>itself</em></h2>
+
+    <p class="spread-note t-body">
+        Sixteen pages, 160gsm, folded and stapled, two inks. Eight printed,
+        eight ruled and empty. Opens flat. The first blank page is blank on
+        purpose.
+    </p>
+
+    <Sticker x={1080} y={110} rotate={-7} tone="blue">no. 3 · 2026</Sticker>
+    <PixelMark motif="pencil" x={1140} y={620} w={110} rotate={6} ink="blue" pass2="pink" />
+
+    <Clipping
+        id="12-0"
+        src="blank"
+        caption="p. 1 — leave it"
+        x={100}
+        y={340}
+        w={540}
+        h={350}
+        kind="photo"
+    />
+
+    <Clipping
+        id="12-1"
+        src="openpage"
+        caption="p. 2 — yours"
+        x={760}
+        y={370}
+        w={420}
+        h={270}
+        kind="polaroid"
+        rotate={2}
+    />
+
+    <Note x={680} y={300} rotate={-4} size="sm" arrow="down">here</Note>
+</section>

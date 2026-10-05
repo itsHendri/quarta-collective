@@ -32,7 +32,7 @@ terminal, synthesized static) does not.
 | Styling | Vanilla CSS + custom properties (`src/styles/`) |
 | Motion | The inherited scroll rig — native scroll + sticky stage + lerped pan, no library |
 | Paper | CSS only: SVG-noise grain, ruling, staples, tape, torn edges, stamps, block prints, halftone, duotones |
-| Type | Syne · Caveat · Courier Prime, via `@fontsource` |
+| Type | Bricolage Grotesque · Caveat · Courier Prime, via `@fontsource` |
 | Content | Hand-authored Astro markup, one file per spread (`src/spreads/`) |
 | Imagery | Unsplash placeholders, optimised to AVIF at build (`src/content/clippings.ts`) |
 | Hosting | GitHub Pages |
@@ -62,5 +62,5 @@ node scripts/sweep-contrast.ts
 ## Credits
 
 Placeholder photographs: Unsplash, credited by handle in the colophon and in
-`src/content/clippings.ts`. Type: Syne, Caveat, Courier Prime (all OFL).
+`src/content/clippings.ts`. Type: Bricolage Grotesque, Caveat, Courier Prime (all OFL).
 Direction: Hendri's "Zine" Pinterest board. A piece by hendri.design · 2026.

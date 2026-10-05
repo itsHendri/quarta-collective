@@ -1,5 +1,5 @@
 ---
-import { Image } from "astro:assets"
+import { Image, getImage } from "astro:assets"
 import { SOURCES, clippingUrl, type ClippingKey } from "~/content/clippings"
 
 /*
@@ -64,6 +64,16 @@ const {
 } = Astro.props
 
 const remote = typeof src === "string"
+// A 1600px variant for the lightbox, built at the same time as the plates.
+const full = remote
+    ? await getImage({
+          src: clippingUrl(src),
+          width: 1600,
+          height: Math.round((1600 * h) / w),
+          fit: "cover",
+          format: "avif",
+      })
+    : await getImage({ src, width: 1600, format: "avif" })
 const altText = alt ?? (remote ? SOURCES[src].alt : caption)
 const classes = [
     "clipping",
@@ -86,6 +96,11 @@ const INKS = {
     data-kind={kind}
     data-tape={tape ? "" : undefined}
     data-reveal
+    data-full={full.src}
+    tabindex="0"
+    role="button"
+    aria-haspopup="dialog"
+    aria-label={`${caption} — enlarge`}
     data-tc-label={caption}
     data-tc-file={remote ? src : undefined}
     style={`left:${x}px; top:${y}px; width:${w}px; height:${h}px;${

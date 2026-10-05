@@ -3,15 +3,16 @@ import Base from "~/layouts/Base.astro"
 import Spread00 from "~/spreads/Spread00.astro"
 import Spread01 from "~/spreads/Spread01.astro"
 import Spread02 from "~/spreads/Spread02.astro"
-import Spread03 from "~/spreads/Spread03.astro"
 import Spread04 from "~/spreads/Spread04.astro"
-import Spread05 from "~/spreads/Spread05.astro"
 import Spread06 from "~/spreads/Spread06.astro"
 import Spread07 from "~/spreads/Spread07.astro"
 import Spread08 from "~/spreads/Spread08.astro"
 import Spread09 from "~/spreads/Spread09.astro"
 import Spread10 from "~/spreads/Spread10.astro"
 import Spread11 from "~/spreads/Spread11.astro"
+import Spread12 from "~/spreads/Spread12.astro"
+import Spread13 from "~/spreads/Spread13.astro"
+import NotebookPage from "~/components/NotebookPage.astro"
 import NotebookChrome from "~/components/NotebookChrome.astro"
 import { TITLES } from "~/spreads/titles"
 import "~/styles/stage.css"
@@ -19,7 +20,8 @@ import "~/styles/spread.css"
 import "~/styles/paper.css"
 
 /*
- * The notebook.
+ * The notebook: twelve printed spreads telling the story, and two pages —
+ * one to write on, one to draw on — that are the visitor's.
  *
  * NOTHING MAY COME AFTER THE TRACK — no footer, no colophon section. A section
  * below it keeps scrolling once the read is done and takes the pinned stage
@@ -40,20 +42,38 @@ const SPREADS = TITLES.length
                 <Spread00 />
                 <Spread01 />
                 <Spread02 />
-                <Spread03 />
+                <NotebookPage n={3} kind="write" key="write-1" prompt="What did you notice this week? Write it down before it stops being interesting." />
                 <Spread04 />
-                <Spread05 />
+                <NotebookPage n={5} kind="draw" key="draw-1" prompt="Twenty bad drawings. Start with one." />
                 <Spread06 />
                 <Spread07 />
                 <Spread08 />
                 <Spread09 />
                 <Spread10 />
                 <Spread11 />
+                <Spread12 />
+                <Spread13 />
             </div>
         </div>
     </div>
 
     <NotebookChrome sectors={SPREADS} titles={TITLES} />
+
+    {/* A clipping held up to the light. Under the grain, over everything else. */}
+    <div
+        class="lightbox"
+        id="tc-lightbox"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Clipping, enlarged"
+        hidden
+    >
+        <button type="button" class="lightbox-close t-label" data-lb-close>close ✕</button>
+        <figure class="lightbox-figure">
+            <img alt="" />
+            <figcaption class="t-hand"></figcaption>
+        </figure>
+    </div>
     {/* The sheet everything is printed on: above the chrome, under nothing. */}
     <div class="grain" aria-hidden="true"></div>
 </Base>
@@ -61,6 +81,8 @@ const SPREADS = TITLES.length
 <script>
     import { initScrollRig } from "~/lib/scroll-rig"
     import { initReveal } from "~/lib/reveal"
+    import { initNotebook } from "~/lib/notebook"
+    import { initLightbox } from "~/lib/lightbox"
     import {
         initProgressRail,
         initPageCounter,
@@ -79,6 +101,10 @@ const SPREADS = TITLES.length
      */
     initScrollRig()
     initReveal()
+    initNotebook()
+
+    const lightbox = byId("tc-lightbox")
+    if (lightbox) initLightbox({ root: lightbox })
 
     const rail = byId("tc-rail")
     if (rail) initProgressRail({ root: rail, sectors: spreads })

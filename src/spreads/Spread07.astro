@@ -3,54 +3,59 @@ import Clipping from "~/components/Clipping.astro"
 import Note from "~/components/Note.astro"
 import Sticker from "~/components/Sticker.astro"
 
-/* Spread 07 — the first one. Newsprint turning to the yellow sheet. */
+/* Spread 07 — materials. The stock is turning to newsprint here. */
 ---
 
-<section class="tc-sector is-grid" id="tc-sector-07" aria-label="Page 7: Prototype one">
+<section class="tc-sector" id="tc-sector-07" aria-label="Page 7: Paper, ink, blade">
     <p class="spread-head t-eyebrow">
-        <span>p. 07</span>
-        <span class="rule" aria-hidden="true"></span>
-        <span>wednesday no. 8</span>
+        <span>wednesday no. 6</span>
     </p>
 
-    <h2 class="spread-title t-display" data-reveal>Prototype <em>one</em></h2>
+    <h2 class="spread-title t-display" data-reveal>Paper, ink, <em>blade</em></h2>
 
     <p class="spread-note t-body">
-        Eight pages from one sheet, folded, stapled twice, printed in forty
-        minutes. The fold was fine. The staples went through the wrong page.
+        Samples from three shops and a skip. Paper is judged by folding it,
+        ink by how it sits on the fold, the lino by how it takes a blade.
     </p>
+
+    <Sticker x={1150} y={88} rotate={6} kind="tag">samples</Sticker>
 
     <Clipping
         id="07-0"
-        src="pages"
-        caption="folded, then stapled wrong"
-        x={760}
-        y={340}
-        w={460}
-        h={300}
-        kind="photo"
-        tape
+        src="creased"
+        caption="120gsm — too thin"
+        x={80}
+        y={350}
+        w={300}
+        h={220}
+        kind="scrap"
+        rotate={-3}
     />
 
     <Clipping
         id="07-1"
-        src="spine"
-        caption="no. 1"
-        x={160}
-        y={420}
-        w={300}
-        h={210}
-        kind="scrap"
-        rotate={4}
+        src="spools"
+        caption="riso blue, two passes"
+        x={430}
+        y={390}
+        w={320}
+        h={230}
+        kind="riso"
+        ink="blue"
+        rotate={2}
     />
 
-    <Note x={500} y={330} w={220} rotate={-6} size="lg" tone="red" arrow="right">
-        grain direction!! (wrong way)
-    </Note>
+    <Clipping
+        id="07-2"
+        src="sheets"
+        caption="160 — just right"
+        x={800}
+        y={320}
+        w={440}
+        h={290}
+        kind="polaroid"
+        rotate={-1}
+    />
 
-    <Note x={170} y={340} rotate={-2} size="sm">
-        cut <s>148 × 210</s> 140 × 205
-    </Note>
-
-    <Sticker x={1020} y={680} rotate={-8} tone="blue">failed — keep</Sticker>
+    <Note x={90} y={620} rotate={-2} size="sm">grey lino, 3mm, from the skip</Note>
 </section>

@@ -49,10 +49,15 @@ those files. Our own `DECISIONS.md` records only what is NEW here, as
   (upstream #2, #20). Never add `scroll-behavior: smooth` to `html`.
 - The index tabs are real `<button>`s: the piece's only keyboard navigation
   (upstream #16).
-- **No interactivity beyond the rig.** The site tells a story; it is not an
-  app, a notebook, or a tool. Q9 built writable pages by mistake and Q10
-  removed them. Before building any "feature", check whether Hendri is
-  describing the site or the object the site is about.
+- **Exactly two interactive pages — write (p. 03) and draw (p. 05) — plus
+  the lightbox.** Hendri asked for these in review (Q11) after Q10 had
+  removed a first attempt; the physical notebook is still a separate object.
+  Before adding any other "feature", check whether Hendri is describing the
+  site or the thing the site is about.
+- **Notebook pages persist under stable keys** (`qc:notebook:write-1`,
+  `draw-1`), never the page number.
+- **Never two adjacent spreads with the same ruling**, and every spread has
+  a page edge (`.tc-sector::after`). Headlines wrap; they no longer bleed.
 
 ## How to work here
 
@@ -78,5 +83,6 @@ node scripts/sweep-contrast.ts
 - Only 24 of the board's 59 pins were visible signed out. Tracing-paper
   overlays, bulldog clips and pixel motifs are unbuilt (FUTURE.md).
 - The copy is a first draft of the real notebook project; Hendri owns it.
+- The two prompts on the visitor's pages are first drafts.
 - "Quarta = Wednesday" is a reading of the name, not a brief. Easy to change
   in `NotebookChrome.astro` (wordmark) and the spread eyebrows.

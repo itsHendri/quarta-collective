@@ -3,10 +3,13 @@
  *
  * Three faces, and the split is the zine:
  *
- *   Syne               what gets PRINTED — the headline on each spread, set
- *                      heavy, large, slightly misregistered, bleeding past
- *                      the spread's edge. One word per headline in the
- *                      second ink.
+ *   Bricolage Grotesque  what gets PRINTED — the headline on each spread,
+ *                      bold, large, slightly misregistered, wrapping to two
+ *                      lines rather than running off the page. One word per
+ *                      headline in the second ink. (The riso studios whose
+ *                      sites were looked at — Risotto, Hato Press, Can Can
+ *                      Press — all set their web type in quiet grotesques and
+ *                      let the printed work be loud. Q11.)
  *   Caveat             what gets WRITTEN — margin notes, captions, arrows,
  *                      the page number in the corner.
  *   Courier Prime      what gets TYPED — eyebrows, the body note, stamps,
@@ -18,7 +21,7 @@
  */
 
 :root {
-    --font-display: "Syne Variable", "Archivo Black", Impact, sans-serif;
+    --font-display: "Bricolage Grotesque Variable", "Archivo Black", Impact, sans-serif;
     --font-hand: "Caveat Variable", "Bradley Hand", "Segoe Print", cursive;
     --font-type: "Courier Prime", "Courier New", Courier, monospace;
 }
@@ -26,28 +29,27 @@
 /* ── Presets ────────────────────────────────────────────────────────────── */
 
 /*
- * Display. Heavy, tight, mixed case, and sized to BLEED — a contained
- * headline reads as a slide, a cut one reads as a page larger than the
- * window, which is the premise of a strip that pans. `width: auto`, never a
- * fixed-width box (memory-lane #27).
+ * Display. Bold, tight, mixed case, and sized to FIT: two lines at most,
+ * balanced, inside the spread. memory-lane's bleeding headline (#27) is
+ * retired here on Hendri's call — a cut headline read as too big, not as a
+ * surface larger than the window.
  *
- * The `em` is not italic: Syne has none, and a zine's emphasis is the second
- * ink. Red at display size clears 3.5:1 on every stock, which is the
- * large-text threshold with headroom; it is never used below 44px.
+ * The `em` is the second ink: red at display size clears 3.5:1 on every
+ * stock, the large-text threshold with headroom; never used below 40px.
  *
- * The text-shadow is the misregistration — the red pass landing 3px off the
- * black one, the way a two-colour riso print does. The shadow sits BEHIND
- * the glyphs, so it shows only as a fringe on one side, which is exactly how
- * a real one reads.
+ * The text-shadow is the misregistration — the red pass landing a few px
+ * off the black one. It sits BEHIND the glyphs, so it shows as a fringe on
+ * one side, which is how a real two-pass print reads.
  */
 .t-display {
     font-family: var(--font-display);
-    font-weight: 800;
-    font-size: 44px;
-    line-height: 0.9;
-    letter-spacing: -0.03em;
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 0.96;
+    letter-spacing: -0.025em;
     color: var(--tc-fg);
-    text-wrap: nowrap;
+    text-wrap: balance;
+    max-width: 1180px;
     text-shadow: 3px 2px 0 var(--misregister);
 }
 .t-display em {
@@ -66,12 +68,12 @@
 }
 @media (min-width: 810px) {
     .t-display {
-        font-size: 84px;
+        font-size: 68px;
     }
 }
 @media (min-width: 1200px) {
     .t-display {
-        font-size: 132px;
+        font-size: 92px;
     }
 }
 
