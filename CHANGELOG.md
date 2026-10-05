@@ -5,6 +5,13 @@ All notable changes to this project are documented here. The format is
 
 ## [Unreleased]
 
+### Changed
+- Zine direction from the Pinterest board (DECISIONS Q8): white-stock ramp,
+  riso ink register, Syne 800 headlines with misregistration, `kind="riso"`
+  duotone clippings with halftone, `BlockPrint` component, staples on the
+  cover; spreads 05–10 retold for a folded, stapled, lino-printed zine.
+  Instrument Serif removed.
+
 ## [0.1.0] — 2026-10-05
 
 ### Added

@@ -64,7 +64,7 @@
 .spread-title.is-revealed::after {
     width: min(36%, 300px);
 }
-/* The underline is black ink in the SVG. On every stop of the paper ramp the
+/* The underline is black ink in the SVG. On every stop of the stock ramp the
  * derived ink IS black, so this holds; if the ramp ever goes dark, the stroke
  * colour must be driven from --tc-fg instead (a mask + background would do). */
 
@@ -116,8 +116,29 @@
 /* scrap — torn out of a magazine or an old print; no matte, no shadow line. */
 .clipping[data-kind="scrap"] {
     padding: 0;
-    background: var(--paper-aged);
+    background: var(--paper-warm);
     box-shadow: 0 6px 18px -12px rgba(40, 30, 10, 0.5);
+}
+
+/*
+ * riso — the photograph printed in one ink. The picture goes to greyscale
+ * and is SCREENED over a field of the ink, so its blacks become the ink and
+ * its whites stay paper; a halftone screen sits over the top. No matte, no
+ * shadow: it is printed on the page, not stuck to it. `isolation` keeps the
+ * blend inside the figure. The ink is set per clipping via --riso-ink.
+ */
+.clipping[data-kind="riso"] {
+    padding: 0;
+    background: var(--riso-ink, var(--riso-blue));
+    box-shadow: none;
+    isolation: isolate;
+}
+.clipping[data-kind="riso"] img {
+    filter: grayscale(1) contrast(1.15) brightness(1.04);
+    mix-blend-mode: screen;
+}
+.clipping[data-kind="riso"] .clipping-caption {
+    top: 100%;
 }
 
 /* The caption is WRITTEN under the picture, not typed. */
@@ -153,7 +174,10 @@
     scale: 1;
 }
 .note[data-tone="red"] {
-    color: var(--pencil-red);
+    color: var(--riso-red);
+}
+.note[data-tone="blue"] {
+    color: var(--riso-blue-deep);
 }
 .note s {
     text-decoration-thickness: 2px;

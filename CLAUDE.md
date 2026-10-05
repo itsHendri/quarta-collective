@@ -2,9 +2,11 @@
 
 **Quarta Collective** — a notebook of making. Hendri and a few friends meet
 once a week (quarta-feira: Wednesday) to build things; this is the notebook
-they keep while doing it, and for a stretch of the story, the notebook they
-were making. Vertical scroll turns a wide strip of twelve spreads left→right
-under a pinned viewport. Handwritten notes, tape, torn scraps, paper grain.
+they keep while doing it, and for a stretch of the story, the zine they were
+making. Vertical scroll turns a wide strip of twelve spreads left→right
+under a pinned viewport. The look is a PRINTED zine, from Hendri's Pinterest
+board: white stock, riso inks, misregistered headlines, block prints,
+duotone photographs, staples, handwritten notes, tape, torn scraps.
 
 This is a **fork of `~/Development/memory-lane`** (SECTOR READ). The scroll
 rig, stage layout, derived-colour tokens and the type-system shape are lifted
@@ -29,8 +31,10 @@ those files. Our own `DECISIONS.md` records only what is NEW here, as
   `--ink` or a static grey. The dim tone is measured per paper shade
   (upstream #33, memory-lane A3). Verify with `node scripts/sweep-contrast.ts`.
 - **`RAMP_HEX` in `contrast.ts` and `--ramp-0…5` in `tokens.css` must match.**
-- **Red pencil (`tone="red"`) only on paper spreads** — it measures 2.8:1 on
-  kraft. See tokens.css.
+- **Only `--riso-blue-deep` carries small text.** Red is display-size only
+  (the `em` in a headline, `size="lg"` notes); pink, green, yellow and
+  fluorescent red are decoration (block prints, duotones, tape). See
+  tokens.css and Q8.
 - **The headline wipe is a mask, never a clip-path** — Chrome's
   IntersectionObserver honours clip-path and the heading would never reveal
   itself (Q6).
@@ -63,7 +67,9 @@ node scripts/sweep-contrast.ts
 - **Imagery is placeholder.** Unsplash, listed with credits in
   `src/content/clippings.ts`; the colophon is generated from it. Swap for the
   collective's own photographs when they exist.
-- Hendri's Pinterest board for the physical notebook has not been seen yet
-  (the link opened Pinterest's logged-out home). Worth a pass once it is.
+- Only 24 of the board's 59 pins were visible signed out. Tracing-paper
+  overlays, bulldog clips and pixel motifs are unbuilt (FUTURE.md).
+- The copy says both "notebook" (the piece) and "zine" (the thing made).
+  Hendri's call.
 - "Quarta = Wednesday" is a reading of the name, not a brief. Easy to change
   in `NotebookChrome.astro` (wordmark) and the spread eyebrows.

@@ -4,8 +4,8 @@
  *
  * `kind="stamp"` is an inked outline that takes the page's grain; `kind="tag"`
  * is ink-filled with its text in the page colour — contrast-proof by
- * construction on every shade (memory-lane #35). `tone="red"` is the red
- * pencil and belongs on paper spreads only.
+ * construction on every stock (memory-lane #35). `tone="blue"` is the second
+ * riso ink; `tone="red"` is decoration, not a label anyone must read.
  */
 
 interface Props {
@@ -13,7 +13,7 @@ interface Props {
     y: number
     rotate?: number
     kind?: "stamp" | "tag"
-    tone?: "ink" | "red"
+    tone?: "ink" | "red" | "blue"
 }
 
 const { x, y, rotate = -6, kind = "stamp", tone = "ink" } = Astro.props

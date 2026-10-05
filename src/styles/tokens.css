@@ -8,60 +8,67 @@
  *   2. DERIVED tokens (--tc-*) — rewritten every frame by the scroll rig from
  *      the live page luminance. These are what type binds to.
  *
- * The page is paper and it AGES as you turn through it: fresh cream, then a
- * yellowed stretch, a kraft divider, a grey card, and back to fresh. Every
- * stop is far above the ink flip (L 0.179), so the derived foreground is
- * black throughout — but type still binds to --tc-fg / --tc-fg-dim, never to
- * --ink, because the dim tone is MEASURED against the live paper shade
- * (memory-lane #33) and a fixed grey would fail on kraft.
+ * The page is a ZINE: white stock printed in one or two inks. The ramp moves
+ * between paper stocks — white, a warm white, newsprint grey, a yellow sheet —
+ * and every stop sits far above the ink flip (L 0.179), so the derived
+ * foreground is black throughout. Type still binds to --tc-fg / --tc-fg-dim,
+ * because the dim tone is MEASURED against the live stock (memory-lane #33).
  *
- * Semantic names alias primitives, so a value appears exactly once.
+ * The riso inks are a second register. Only --riso-blue-deep is a TEXT ink
+ * (5.8:1 on the darkest stock); the rest are for block prints, duotone
+ * pictures, misregistration and tape — things that carry no words, or words
+ * at display size. (DECISIONS Q8.)
  */
 
 :root {
-    /* ── Primitives ─────────────────────────────────────────────────────── */
-    --paper: #f4efe4; /* fresh cream stock; the ramp's rest state */
-    --paper-aged: #ead9b8; /* yellowed pages */
-    --kraft: #c9a97a; /* the divider card */
-    --card: #d9d6cf; /* grey board */
-    --white: #fffdf8; /* a photo's matte border — material, not page */
+    /* ── Paper stocks ───────────────────────────────────────────────────── */
+    --paper: #f6f4ee; /* white stock; the ramp's rest state */
+    --paper-warm: #f3eedd; /* a warmer white */
+    --newsprint: #e9e7df; /* grey newsprint */
+    --paper-yellow: #f3e9a8; /* the yellow sheet */
+    --white: #fffdf8; /* a photo's matte — material, not page */
     --ink: #1b1917; /* authored ink, for things that never travel (favicon) */
-    --graphite: #6b655c; /* pencil grey; dim derived overrides it on the page */
-    --pencil-red: #b0321f; /* the red pencil. 5.4:1 on --paper, FAILS on kraft —
-                              stamps on the kraft spreads use ink instead */
-    --tape: rgba(233, 217, 138, 0.55); /* masking tape, translucent */
-    --highlighter: #f3e76a;
-    --ruled-blue: #7a9cc6; /* feint ruling; decorative, never carries type */
+    --graphite: #6b655c; /* pencil grey; the derived dim overrides it on the page */
+
+    /* ── Riso inks ──────────────────────────────────────────────────────── */
+    --riso-blue: #0078bf; /* decorative: prints, duotones. 4.3:1 — not for small text */
+    --riso-blue-deep: #1a52b5; /* the second TEXT ink: 6.5:1 white, 5.8:1 newsprint */
+    --riso-red: #e03a2a; /* display-size only (3.5:1+). Never body text */
+    --riso-red-fluo: #ff665e; /* decorative only */
+    --riso-pink: #ff48b0; /* decorative only */
+    --riso-green: #00a95c; /* decorative only */
+    --riso-yellow: #ffe800; /* decorative only */
+    --tape: rgba(255, 232, 0, 0.42); /* masking tape, translucent */
 
     /* ── Semantic aliases ───────────────────────────────────────────────── */
     --rule: color-mix(in srgb, var(--graphite) 30%, transparent);
-    --ruled-line: color-mix(in srgb, var(--ruled-blue) 38%, transparent);
-    --margin-line: color-mix(in srgb, var(--pencil-red) 45%, transparent);
+    --ruled-line: color-mix(in srgb, var(--riso-blue) 30%, transparent);
+    --margin-line: color-mix(in srgb, var(--riso-red) 45%, transparent);
     --dot: color-mix(in srgb, var(--graphite) 40%, transparent);
+    --misregister: color-mix(in srgb, var(--riso-red) 85%, transparent);
 
     /*
-     * The paper ramp. Consumed by the rig in JS (RAMP_HEX in contrast.ts —
+     * The stock ramp. Consumed by the rig in JS (RAMP_HEX in contrast.ts —
      * the two MUST match); declared here so it is authored in one place and
      * readable by a human. Six stops, sampled at p 0 / .2 / .4 / .6 / .8 / 1.
      */
     --ramp-0: var(--paper);
-    --ramp-1: var(--paper-aged);
+    --ramp-1: var(--paper-warm);
     --ramp-2: var(--paper);
-    --ramp-3: var(--kraft);
-    --ramp-4: var(--card);
+    --ramp-3: var(--newsprint);
+    --ramp-4: var(--paper-yellow);
     --ramp-5: var(--paper);
 
     /* ── Derived, written per-frame by the rig ──────────────────────────── */
     /*
      * Fallbacks equal the ramp at progress 0, so the page is correct and
      * legible before the rig's first frame and stays correct with JS off.
-     * --tc-fg-dim is pickDim() against --paper: rgb(98,96,91), 5.48:1.
      */
     --tc-p: 0;
     --tc-pan: 0px;
     --tc-bg: var(--paper);
     --tc-fg: #000000;
-    --tc-fg-dim: rgb(98, 96, 91);
+    --tc-fg-dim: rgb(98, 97, 94);
     --tc-field: var(--paper);
 
     /* ── Geometry ───────────────────────────────────────────────────────── */

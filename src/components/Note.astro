@@ -3,9 +3,9 @@
  * A handwritten note in the margin. Positioned like a clipping, rotated by
  * hand, optionally pointing at something with a drawn arrow.
  *
- * `tone="red"` is the red pencil and is allowed ONLY on paper spreads: it
- * measures 2.8:1 on kraft (tokens.css). Default ink is the derived
- * foreground, which is correct on every shade.
+ * `tone="blue"` is the second riso ink and clears 5.8:1 on every stock.
+ * `tone="red"` is display-size only (3.5:1): use it at size="lg" or not at
+ * all. Default ink is the derived foreground, correct on every stock.
  */
 
 interface Props {
@@ -15,7 +15,7 @@ interface Props {
     w?: number
     rotate?: number
     size?: "sm" | "md" | "lg"
-    tone?: "ink" | "red"
+    tone?: "ink" | "red" | "blue"
     arrow?: "up" | "down" | "left" | "right"
 }
 

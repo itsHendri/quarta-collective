@@ -185,3 +185,56 @@ Kept, and worth saying why: `scripts/sweep-contrast.ts` and the whole of
 `contrast.ts`. On a page that is cream everywhere it looks like dead weight.
 It is what proved Q2's dim tone on kraft, and it is what will catch the next
 person who adds a brown spread and a red note together.
+
+---
+
+### Q8. The board is a zine, so the page is printed, not aged
+
+**2026-10-05, after seeing Hendri's Pinterest board ("Zine", 59 pins).** The
+first pass was built from the brief alone and landed on an aged journal:
+cream and kraft stock, a serif headline, a stitched gutter, coptic binding in
+the story. The board is something else — block prints cut from lino and
+cardboard, riso-style one- and two-ink prints on white paper, pixel and
+halftone textures, folded and stapled booklets, tracing-paper overlays,
+bulldog clips, photographs collaged with stitched patterns. Flat, graphic,
+bright inks, a lot of white.
+
+What changed, and what did not:
+
+- **Stock, not age.** The ramp now moves between paper STOCKS — white, warm
+  white, newsprint grey, a yellow sheet — instead of ageing toward kraft.
+  Sweep: min 16.88:1 ink, 4.60:1 dim, zero flips.
+- **A second register of inks.** Riso blue, fluorescent red, pink, green,
+  yellow. Only `--riso-blue-deep` (#1A52B5) is a TEXT ink: 6.5:1 on white,
+  5.8:1 on newsprint. Red (#E03A2A) carries words only at display size
+  (3.5:1+ is the large-text threshold with headroom) — the one `em` per
+  headline and `size="lg"` notes. Everything else is decoration: block
+  prints, duotones, tape, the misregistration fringe.
+- **Syne 800 replaces Instrument Serif** for the headline. The board's type
+  is heavy grotesque and typewriter, not serif. Syne has no italic, so the
+  emphasised word is set in the second ink instead — which is what a zine
+  does anyway.
+- **Misregistration** is a `text-shadow` in red offset 3–5px behind the
+  black glyphs; the `em` carries the inverse offset in black. Cheap, no extra
+  markup, and because the shadow sits BEHIND the glyph it shows only as a
+  fringe on one side, which is how a real two-pass print reads.
+- **`kind="riso"` clippings**: the photograph goes greyscale and is
+  `mix-blend-mode: screen`ed over a field of one ink inside an isolated
+  figure, with a 4px halftone screen multiplied over the top. Blacks become
+  ink, whites stay paper. No matte, no shadow — printed on the page, not
+  stuck to it.
+- **`BlockPrint`**: four motifs (bird, leaf, star, moon) as single
+  `evenodd` paths — nothing finer than a gouge — through the stamp's noise
+  mask, with an optional second pass 4px off in another ink.
+- **Staples, not stitches**, on the cover; the story's binding beats (05, 07,
+  08, 09, 10) retold for one sheet folded and stapled, lino and a brayer.
+  `Stitching` became `Printing`.
+
+Kept: Caveat for the hand (the board's lettering is marker, but a cursive
+holds up at caption size where a marker face does not), Courier Prime, the
+ruled and dot-grid pages, tape, torn scraps, the coffee ring, the whole rig.
+
+Not done, because only 24 of the 59 pins are visible signed out: the tracing-
+paper overlay, the bulldog clip, the pixel/dither motifs (which would echo
+memory-lane's dither — a bridge worth building deliberately), and the
+stitched-over photograph. Listed in FUTURE.md.

@@ -8,18 +8,21 @@ work is Hendri's direction, not more build.
 
 ## Waiting on Hendri
 
-1. **The Pinterest board.** The link given opened Pinterest's logged-out home
-   page, so the notebook direction (grain, ruling, tape, torn scraps, stamps,
-   Caveat for the hand) was built from the brief alone. A direct board URL
-   or a few saved pins would let the textures and the physical-notebook
-   spreads (05, 07, 08, 10) be aimed properly.
+1. **The rest of the board.** 24 of 59 pins were visible signed out and set
+   the zine direction (Q8). Unbuilt from what was seen: a tracing-paper
+   overlay clipping (`kind="trace"`: a translucent sheet over a picture), a
+   bulldog clip holding a scrap, pixel/dither block motifs (the penguin grid,
+   the blue dancers — a deliberate bridge to memory-lane's dither), and a
+   photograph collaged with a stitched pattern. Hendri's own screenshots of
+   the remaining pins would finish the list.
 2. **Real photographs.** One key at a time in `src/content/clippings.ts`;
    local files work in the same `Clipping` (import them, pass the import as
    `src`). The colophon regenerates itself.
 3. **Copy.** The twelve spreads are a first draft of the story — the rule,
    noticing, bad drawings, the argument, materials, the bench, prototype one,
-   stitching, again, the thing itself, next Wednesday. Beats and wednesday
-   numbers are placeholders for real ones.
+   printing, again, the thing itself, next Wednesday. Beats and wednesday
+   numbers are placeholders for real ones, and the piece says both "notebook"
+   and "zine" — one should win.
 4. **"wednesdays"** in the wordmark and eyebrows: a reading of "Quarta"
    (quarta-feira), not a brief.
 
@@ -37,6 +40,8 @@ work is Hendri's direction, not more build.
   horizontal trackpad swipes to page scroll already; a snap to the next
   spread on a flick is the notebook version.
 - **Hand-drawn SVG variety.** One arrow path and one underline path are
-  reused everywhere. Three of each, chosen by index, would stop the repeat
-  being noticeable.
+  reused everywhere, and four block-print motifs. Three of each, chosen by
+  index, would stop the repeat being noticeable.
+- **A page-fold shadow** down the centre of each spread, since the zine is
+  one sheet folded; subtle, and only if it survives the pan.
 - Reduced motion could step spread-to-spread rather than mapping continuously.

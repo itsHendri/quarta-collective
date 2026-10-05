@@ -4,10 +4,12 @@
 
 A few of us meet one evening a week to build things. This is the notebook we
 keep while we do: vertical scroll turns a wide strip of twelve spreads
-left→right beneath a pinned viewport, and the page ages as you go — cream,
-yellowed, a kraft divider, grey card, and back. Headlines are printed; notes
-are written in the margins; photographs are taped and pasted in. One of the
-things we were making, for a stretch of it, was the notebook itself.
+left→right beneath a pinned viewport, and the stock changes as you go —
+white, a warm white, newsprint, a yellow sheet, and back. Headlines are
+printed heavy and a little out of register; notes are written in the
+margins; photographs are taped in, or printed in one riso ink; block prints
+land where there was room. One of the things we were making, for a stretch
+of it, was a zine.
 
 Live: https://itshendri.github.io/quarta-collective/
 
@@ -27,8 +29,8 @@ terminal, synthesized static) does not.
 | Framework | Astro 5, static output, TypeScript strict |
 | Styling | Vanilla CSS + custom properties (`src/styles/`) |
 | Motion | The inherited scroll rig — native scroll + sticky stage + lerped pan, no library |
-| Paper | CSS only: SVG-noise grain, ruling, tape, torn edges, stamps |
-| Type | Instrument Serif · Caveat · Courier Prime, via `@fontsource` |
+| Paper | CSS only: SVG-noise grain, ruling, staples, tape, torn edges, stamps, block prints, halftone, duotones |
+| Type | Syne · Caveat · Courier Prime, via `@fontsource` |
 | Content | Hand-authored Astro markup, one file per spread (`src/spreads/`) |
 | Imagery | Unsplash placeholders, optimised to AVIF at build (`src/content/clippings.ts`) |
 | Hosting | GitHub Pages |
@@ -58,5 +60,5 @@ node scripts/sweep-contrast.ts
 ## Credits
 
 Placeholder photographs: Unsplash, credited by handle in the colophon and in
-`src/content/clippings.ts`. Type: Instrument Serif, Caveat, Courier Prime (all
-OFL). A piece by hendri.design · 2026.
+`src/content/clippings.ts`. Type: Syne, Caveat, Courier Prime (all OFL).
+Direction: Hendri's "Zine" Pinterest board. A piece by hendri.design · 2026.

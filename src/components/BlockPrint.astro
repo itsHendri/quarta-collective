@@ -1,0 +1,79 @@
+---
+/*
+ * A block print: a motif cut from lino or cardboard, printed in one ink.
+ *
+ * Four motifs, drawn as single filled shapes the way a carved block prints —
+ * no strokes, no detail smaller than a gouge. `pass2` prints a second copy of
+ * the same block a few px off in a second ink: the misregistration that says
+ * this was printed by hand.
+ */
+
+interface Props {
+    motif: "bird" | "leaf" | "star" | "moon"
+    x: number
+    y: number
+    /** Width in px; the motif keeps its own proportion. */
+    w: number
+    rotate?: number
+    ink?: "blue" | "red" | "pink" | "green" | "yellow" | "ink"
+    /** Second pass in this ink, offset. */
+    pass2?: "blue" | "red" | "pink" | "green" | "yellow"
+}
+
+const { motif, x, y, w, rotate = 0, ink = "blue", pass2 } = Astro.props
+
+const SHAPES: Record<Props["motif"], { viewBox: string; d: string; ratio: number }> = {
+    bird: {
+        viewBox: "0 0 100 80",
+        d: "M8 46 C 16 22, 50 14, 68 30 L 94 24 L 76 40 C 80 56, 62 72, 42 70 L 30 80 L 34 66 C 18 62, 6 56, 8 46 Z M60 34 a3 3 0 1 0 0.1 0 Z",
+        ratio: 0.8,
+    },
+    leaf: {
+        viewBox: "0 0 100 120",
+        d: "M50 4 C 90 30, 96 80, 50 116 C 4 80, 10 30, 50 4 Z M48 20 L 52 20 L 53 100 L 47 100 Z",
+        ratio: 1.2,
+    },
+    star: {
+        viewBox: "0 0 100 100",
+        d: "M50 2 L 58 38 L 96 30 L 64 52 L 82 92 L 50 66 L 18 92 L 36 52 L 4 30 L 42 38 Z",
+        ratio: 1,
+    },
+    moon: {
+        viewBox: "0 0 100 100",
+        d: "M62 4 A 46 46 0 1 0 96 70 A 36 36 0 1 1 62 4 Z",
+        ratio: 1,
+    },
+}
+
+const shape = SHAPES[motif]
+const h = Math.round(w * shape.ratio)
+---
+
+<span
+    class="blockprint"
+    data-ink={ink}
+    aria-hidden="true"
+    style={`left:${x}px; top:${y}px; width:${w}px; height:${h}px;${
+        rotate ? ` transform: rotate(${rotate}deg);` : ""
+    }`}
+>
+    <svg viewBox={shape.viewBox} preserveAspectRatio="xMidYMid meet">
+        <path d={shape.d} fill="currentColor" fill-rule="evenodd"></path>
+    </svg>
+</span>
+{
+    pass2 && (
+        <span
+            class="blockprint"
+            data-ink={pass2}
+            aria-hidden="true"
+            style={`left:${x + 4}px; top:${y + 3}px; width:${w}px; height:${h}px; mix-blend-mode: multiply;${
+                rotate ? ` transform: rotate(${rotate}deg);` : ""
+            }`}
+        >
+            <svg viewBox={shape.viewBox} preserveAspectRatio="xMidYMid meet">
+                <path d={shape.d} fill="currentColor" fill-rule="evenodd" />
+            </svg>
+        </span>
+    )
+}

@@ -1,8 +1,9 @@
 ---
 import Clipping from "~/components/Clipping.astro"
 import Note from "~/components/Note.astro"
+import BlockPrint from "~/components/BlockPrint.astro"
 
-/* Spread 03 — sketches. The yellowed stretch of the notebook. */
+/* Spread 03 — sketches. The warm-white stretch of the stock. */
 ---
 
 <section class="tc-sector" id="tc-sector-03" aria-label="Page 3: Bad drawings first">
@@ -59,4 +60,6 @@ import Note from "~/components/Note.astro"
     </Note>
 
     <Note x={1000} y={660} rotate={-2}><s>final</s> first draft</Note>
+
+    <BlockPrint motif="moon" x={1170} y={110} w={110} rotate={-15} ink="pink" />
 </section>

@@ -1,10 +1,12 @@
 /*
  * QUARTA COLLECTIVE — type system
  *
- * Three faces, and the split is the notebook:
+ * Three faces, and the split is the zine:
  *
- *   Instrument Serif   what gets PRINTED — the headline on each spread, set
- *                      large and bleeding past the spread's edge.
+ *   Syne               what gets PRINTED — the headline on each spread, set
+ *                      heavy, large, slightly misregistered, bleeding past
+ *                      the spread's edge. One word per headline in the
+ *                      second ink.
  *   Caveat             what gets WRITTEN — margin notes, captions, arrows,
  *                      the page number in the corner.
  *   Courier Prime      what gets TYPED — eyebrows, the body note, stamps,
@@ -16,7 +18,7 @@
  */
 
 :root {
-    --font-display: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+    --font-display: "Syne Variable", "Archivo Black", Impact, sans-serif;
     --font-hand: "Caveat Variable", "Bradley Hand", "Segoe Print", cursive;
     --font-type: "Courier Prime", "Courier New", Courier, monospace;
 }
@@ -24,22 +26,34 @@
 /* ── Presets ────────────────────────────────────────────────────────────── */
 
 /*
- * Display. Mixed case, slightly tight, and sized to BLEED — a contained
+ * Display. Heavy, tight, mixed case, and sized to BLEED — a contained
  * headline reads as a slide, a cut one reads as a page larger than the
  * window, which is the premise of a strip that pans. `width: auto`, never a
- * fixed-width box (memory-lane #27). One italic word per spread, no more.
+ * fixed-width box (memory-lane #27).
+ *
+ * The `em` is not italic: Syne has none, and a zine's emphasis is the second
+ * ink. Red at display size clears 3.5:1 on every stock, which is the
+ * large-text threshold with headroom; it is never used below 44px.
+ *
+ * The text-shadow is the misregistration — the red pass landing 3px off the
+ * black one, the way a two-colour riso print does. The shadow sits BEHIND
+ * the glyphs, so it shows only as a fringe on one side, which is exactly how
+ * a real one reads.
  */
 .t-display {
     font-family: var(--font-display);
-    font-weight: 400;
-    font-size: 46px;
-    line-height: 0.92;
-    letter-spacing: -0.015em;
+    font-weight: 800;
+    font-size: 44px;
+    line-height: 0.9;
+    letter-spacing: -0.03em;
     color: var(--tc-fg);
     text-wrap: nowrap;
+    text-shadow: 3px 2px 0 var(--misregister);
 }
 .t-display em {
-    font-style: italic;
+    font-style: normal;
+    color: var(--riso-red);
+    text-shadow: -3px -2px 0 color-mix(in srgb, var(--tc-fg) 70%, transparent);
 }
 
 /* Below the breakpoint nothing pans, so there is nothing to bleed onto and

@@ -3,21 +3,21 @@ import Clipping from "~/components/Clipping.astro"
 import Note from "~/components/Note.astro"
 import Sticker from "~/components/Sticker.astro"
 
-/* Spread 05 — materials. The ramp is turning to kraft here; ink only. */
+/* Spread 05 — materials. The stock is turning to newsprint here. */
 ---
 
-<section class="tc-sector" id="tc-sector-05" aria-label="Page 5: Paper, thread, board">
+<section class="tc-sector" id="tc-sector-05" aria-label="Page 5: Paper, ink, blade">
     <p class="spread-head t-eyebrow">
         <span>p. 05</span>
         <span class="rule" aria-hidden="true"></span>
         <span>wednesday no. 6</span>
     </p>
 
-    <h2 class="spread-title t-display" data-reveal>Paper, thread, <em>board</em></h2>
+    <h2 class="spread-title t-display" data-reveal>Paper, ink, <em>blade</em></h2>
 
     <p class="spread-note t-body">
         Samples from three shops and a skip. Paper is judged by folding it,
-        thread by pulling it, board by how it sounds when you knock on it.
+        ink by how it sits on the fold, the lino by how it takes a blade.
     </p>
 
     <Sticker x={1150} y={88} rotate={6} kind="tag">samples</Sticker>
@@ -37,13 +37,13 @@ import Sticker from "~/components/Sticker.astro"
     <Clipping
         id="05-1"
         src="spools"
-        caption="linen, waxed"
+        caption="riso blue, two passes"
         x={430}
         y={390}
         w={320}
         h={230}
-        kind="photo"
-        tape
+        kind="riso"
+        ink="blue"
         rotate={2}
     />
 
@@ -59,5 +59,5 @@ import Sticker from "~/components/Sticker.astro"
         rotate={-1}
     />
 
-    <Note x={90} y={620} rotate={-2} size="sm">greyboard, 2mm, from the skip</Note>
+    <Note x={90} y={620} rotate={-2} size="sm">grey lino, 3mm, from the skip</Note>
 </section>

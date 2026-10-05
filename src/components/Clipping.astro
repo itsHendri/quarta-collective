@@ -34,8 +34,10 @@ interface Props {
     h: number
     /** Hand-authored tilt, in degrees. */
     rotate?: number
-    /** How it was stuck in. */
-    kind?: "photo" | "polaroid" | "scrap"
+    /** How it got onto the page: stuck in, or printed. */
+    kind?: "photo" | "polaroid" | "scrap" | "riso"
+    /** For `riso`: the one ink the picture is printed in. */
+    ink?: "blue" | "red" | "pink" | "green"
     /** A strip of masking tape across the top. */
     tape?: boolean
     /**
@@ -56,15 +58,26 @@ const {
     h,
     rotate,
     kind = "photo",
+    ink = "blue",
     tape = false,
     eager = false,
 } = Astro.props
 
 const remote = typeof src === "string"
 const altText = alt ?? (remote ? SOURCES[src].alt : caption)
-const classes = ["clipping", kind === "scrap" ? "torn" : null]
+const classes = [
+    "clipping",
+    kind === "scrap" ? "torn" : null,
+    kind === "riso" ? "halftone" : null,
+]
     .filter(Boolean)
     .join(" ")
+const INKS = {
+    blue: "var(--riso-blue)",
+    red: "var(--riso-red-fluo)",
+    pink: "var(--riso-pink)",
+    green: "var(--riso-green)",
+}
 ---
 
 <figure
@@ -77,7 +90,7 @@ const classes = ["clipping", kind === "scrap" ? "torn" : null]
     data-tc-file={remote ? src : undefined}
     style={`left:${x}px; top:${y}px; width:${w}px; height:${h}px;${
         rotate ? ` transform: rotate(${rotate}deg);` : ""
-    }`}
+    }${kind === "riso" ? ` --riso-ink:${INKS[ink]};` : ""}`}
 >
     {
         remote ? (

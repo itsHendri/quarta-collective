@@ -2,8 +2,9 @@
 import Clipping from "~/components/Clipping.astro"
 import Note from "~/components/Note.astro"
 import Sticker from "~/components/Sticker.astro"
+import BlockPrint from "~/components/BlockPrint.astro"
 
-/* Spread 10 — the made thing. Card turning back to paper. */
+/* Spread 10 — the made thing. The yellow sheet turning back to white. */
 ---
 
 <section class="tc-sector" id="tc-sector-10" aria-label="Page 10: The thing itself">
@@ -16,11 +17,12 @@ import Sticker from "~/components/Sticker.astro"
     <h2 class="spread-title t-display" data-reveal>The thing <em>itself</em></h2>
 
     <p class="spread-note t-body">
-        Forty-eight pages, 160gsm, greyboard covers wrapped in kraft. Opens
+        Sixteen pages, 160gsm, one sheet folded and stapled, two inks. Opens
         flat. The first page is blank on purpose.
     </p>
 
-    <Sticker x={1080} y={110} rotate={-7}>no. 3 · 2026</Sticker>
+    <Sticker x={1080} y={110} rotate={-7} tone="blue">no. 3 · 2026</Sticker>
+    <BlockPrint motif="bird" x={1140} y={620} w={120} rotate={6} ink="blue" pass2="pink" />
 
     <Clipping
         id="10-0"

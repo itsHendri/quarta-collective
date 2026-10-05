@@ -3,7 +3,7 @@ import Clipping from "~/components/Clipping.astro"
 import Note from "~/components/Note.astro"
 import Sticker from "~/components/Sticker.astro"
 
-/* Spread 07 — the first one. Kraft turning to card: ink only. */
+/* Spread 07 — the first one. Newsprint turning to the yellow sheet. */
 ---
 
 <section class="tc-sector is-grid" id="tc-sector-07" aria-label="Page 7: Prototype one">
@@ -16,14 +16,14 @@ import Sticker from "~/components/Sticker.astro"
     <h2 class="spread-title t-display" data-reveal>Prototype <em>one</em></h2>
 
     <p class="spread-note t-body">
-        Signatures folded, holes punched, sewn in forty minutes. The spine
-        held. The first page tore the moment we opened it flat.
+        Eight pages from one sheet, folded, stapled twice, printed in forty
+        minutes. The fold was fine. The staples went through the wrong page.
     </p>
 
     <Clipping
         id="07-0"
         src="pages"
-        caption="held, then didn't"
+        caption="folded, then stapled wrong"
         x={760}
         y={340}
         w={460}
@@ -44,7 +44,7 @@ import Sticker from "~/components/Sticker.astro"
         rotate={4}
     />
 
-    <Note x={500} y={330} w={220} rotate={-6} size="lg" arrow="right">
+    <Note x={500} y={330} w={220} rotate={-6} size="lg" tone="red" arrow="right">
         grain direction!! (wrong way)
     </Note>
 
@@ -52,5 +52,5 @@ import Sticker from "~/components/Sticker.astro"
         cut <s>148 × 210</s> 140 × 205
     </Note>
 
-    <Sticker x={1020} y={680} rotate={-8}>failed — keep</Sticker>
+    <Sticker x={1020} y={680} rotate={-8} tone="blue">failed — keep</Sticker>
 </section>

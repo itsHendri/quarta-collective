@@ -4,8 +4,8 @@ import Note from "~/components/Note.astro"
 import Sticker from "~/components/Sticker.astro"
 
 /*
- * Spread 04 — the argument. Red pencil is allowed here: the page is back on
- * cream (ramp p ≈ 0.37), where the red clears 5:1.
+ * Spread 04 — the argument. The red note is size="lg": display-size red is
+ * the only red that carries words (Q8).
  */
 ---
 
@@ -20,8 +20,8 @@ import Sticker from "~/components/Sticker.astro"
 
     <p class="spread-note t-body">
         The argument lasted most of an evening. A lamp. A chair. An app, briefly.
-        Then someone said: the thing we keep reaching for, every week, is the
-        notebook itself.
+        Then someone said: the thing we keep reaching for, every week, is
+        this notebook. Print it. Fold it. Staple it.
     </p>
 
     <Clipping
@@ -40,9 +40,9 @@ import Sticker from "~/components/Sticker.astro"
         lamp ✗ &nbsp; chair ✗ &nbsp; app ✗✗
     </Note>
 
-    <Sticker x={330} y={470} rotate={-10} tone="red">parked</Sticker>
+    <Sticker x={330} y={470} rotate={-10} tone="blue">parked</Sticker>
 
     <Note x={470} y={580} w={260} rotate={-3} size="lg" tone="red" arrow="right">
-        a notebook. obviously.
+        a zine. obviously.
     </Note>
 </section>

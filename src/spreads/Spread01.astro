@@ -2,6 +2,7 @@
 import Clipping from "~/components/Clipping.astro"
 import Note from "~/components/Note.astro"
 import Sticker from "~/components/Sticker.astro"
+import BlockPrint from "~/components/BlockPrint.astro"
 
 /* Spread 01 — the rule. */
 ---
@@ -21,7 +22,8 @@ import Sticker from "~/components/Sticker.astro"
         has to bring anything finished — just something started.
     </p>
 
-    <Sticker x={1060} y={104} rotate={-8}>est. autumn 2026</Sticker>
+    <Sticker x={1060} y={104} rotate={-8} tone="blue">est. autumn 2026</Sticker>
+    <BlockPrint motif="star" x={1180} y={560} w={90} rotate={12} ink="red" />
 
     <Clipping
         id="01-0"

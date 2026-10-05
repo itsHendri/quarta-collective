@@ -1,11 +1,12 @@
 ---
 import Clipping from "~/components/Clipping.astro"
 import Note from "~/components/Note.astro"
+import BlockPrint from "~/components/BlockPrint.astro"
 
 /*
  * Spread 11 — the next one. Mostly blank ruled page, on purpose. The "close
  * the notebook" control (chrome) appears over it once the read completes.
- * Back on cream: red pencil allowed.
+ * Back on white stock.
  */
 ---
 
@@ -41,5 +42,7 @@ import Note from "~/components/Note.astro"
         rotate={-2}
     />
 
-    <Note x={560} y={620} rotate={-3} arrow="right">continue</Note>
+    <Note x={560} y={620} rotate={-3} tone="blue" arrow="right">continue</Note>
+
+    <BlockPrint motif="star" x={700} y={400} w={70} rotate={20} ink="yellow" />
 </section>

@@ -1,29 +1,30 @@
 ---
 import Clipping from "~/components/Clipping.astro"
 import Note from "~/components/Note.astro"
+import BlockPrint from "~/components/BlockPrint.astro"
 
-/* Spread 08 — stitching. Includes one drawn diagram, inline. */
+/* Spread 08 — printing. The block and its two passes, printed on the page. */
 ---
 
-<section class="tc-sector is-ruled" id="tc-sector-08" aria-label="Page 8: Stitching">
+<section class="tc-sector is-ruled" id="tc-sector-08" aria-label="Page 8: Printing">
     <p class="spread-head t-eyebrow">
         <span>p. 08</span>
         <span class="rule" aria-hidden="true"></span>
         <span>wednesday no. 9</span>
     </p>
 
-    <h2 class="spread-title t-display" data-reveal><em>Stitching</em></h2>
+    <h2 class="spread-title t-display" data-reveal><em>Printing</em></h2>
 
     <p class="spread-note t-body">
-        Coptic stitch, because the book should open flat and because it looks
-        like hands made it. Tension is the whole thing: too loose and the
-        spine sags, too tight and the thread cuts the paper.
+        Lino, because a block should look like hands cut it. Pressure is the
+        whole thing: too light and the ink sits in flecks, too hard and the
+        paper goes shiny and the edges fill in.
     </p>
 
     <Clipping
         id="08-0"
-        src="sewing"
-        caption="pull toward the spine, not up"
+        src="papers"
+        caption="test pulls, in order"
         x={90}
         y={350}
         w={450}
@@ -31,34 +32,15 @@ import Note from "~/components/Note.astro"
         kind="photo"
     />
 
-    {/* A sketch of the chain, drawn rather than pasted. */}
-    <svg
-        class="diagram"
-        viewBox="0 0 300 110"
-        width="300"
-        height="110"
-        style="position:absolute; left: 600px; top: 420px;"
-        role="img"
-        aria-label="A sketch of a coptic stitch chain across four signatures"
-        data-reveal
-    >
-        <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-            <path d="M10 20 H 290" opacity=".5" />
-            <path d="M10 45 H 290" opacity=".5" />
-            <path d="M10 70 H 290" opacity=".5" />
-            <path d="M10 95 H 290" opacity=".5" />
-            <path d="M40 20 c 10 12, 20 12, 30 0 c 10 12, 20 12, 30 0 c 10 12, 20 12, 30 0 c 10 12, 20 12, 30 0 c 10 12, 20 12, 30 0 c 10 12, 20 12, 30 0" />
-            <path d="M40 45 c 10 12, 20 12, 30 0 c 10 12, 20 12, 30 0 c 10 12, 20 12, 30 0 c 10 12, 20 12, 30 0 c 10 12, 20 12, 30 0 c 10 12, 20 12, 30 0" />
-            <path d="M40 70 c 10 12, 20 12, 30 0 c 10 12, 20 12, 30 0 c 10 12, 20 12, 30 0 c 10 12, 20 12, 30 0 c 10 12, 20 12, 30 0 c 10 12, 20 12, 30 0" />
-            <path d="M70 20 V 95 M130 20 V 95 M190 20 V 95 M250 20 V 95" stroke-dasharray="2 4" />
-        </g>
-    </svg>
-    <Note x={600} y={540} rotate={-2} size="sm">4 signatures · 6 holes · 2 needles</Note>
+    {/* The block itself, printed twice: the second pass lands 4px off. */}
+    <BlockPrint motif="leaf" x={610} y={380} w={150} rotate={-6} ink="blue" pass2="red" />
+    <BlockPrint motif="leaf" x={790} y={420} w={110} rotate={14} ink="green" />
+    <Note x={600} y={590} rotate={-2} size="sm" tone="blue">second pass, 4mm out — keep</Note>
 
     <Clipping
         id="08-1"
         src="thread"
-        caption="waxed, 1.2m per book"
+        caption="brayer, ink, two sheets of scrap"
         x={960}
         y={310}
         w={320}
@@ -67,23 +49,3 @@ import Note from "~/components/Note.astro"
         rotate={3}
     />
 </section>
-
-<style>
-    .diagram {
-        color: var(--tc-fg);
-        opacity: 0;
-        transition: opacity 600ms ease-out var(--reveal-delay, 0ms);
-    }
-    .diagram.is-revealed {
-        opacity: 0.85;
-    }
-    @media (max-width: 810px) {
-        .diagram {
-            position: static !important;
-            width: 100%;
-            height: auto;
-            margin-top: 24px;
-            opacity: 0.85;
-        }
-    }
-</style>

@@ -6,12 +6,11 @@
  * `?url`, so the href is whatever Vite emitted — no hand-built `/fonts/…`
  * path to 404 under the deploy base (memory-lane A23; DECISIONS Q3).
  */
-import "@fontsource/instrument-serif/latin-400.css"
-import "@fontsource/instrument-serif/latin-400-italic.css"
+import "@fontsource-variable/syne/index.css"
 import "@fontsource-variable/caveat/index.css"
 import "@fontsource/courier-prime/latin-400.css"
 import "@fontsource/courier-prime/latin-700.css"
-import serifUrl from "@fontsource/instrument-serif/files/instrument-serif-latin-400-normal.woff2?url"
+import displayUrl from "@fontsource-variable/syne/files/syne-latin-wght-normal.woff2?url"
 import handUrl from "@fontsource-variable/caveat/files/caveat-latin-wght-normal.woff2?url"
 import typeUrl from "@fontsource/courier-prime/files/courier-prime-latin-400-normal.woff2?url"
 
@@ -53,7 +52,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "")
         <meta property="og:url" content={canonical} />
         <meta name="twitter:card" content="summary_large_image" />
 
-        <meta name="theme-color" content="#f4efe4" />
+        <meta name="theme-color" content="#f6f4ee" />
 
         <link rel="icon" href={`${base}/favicon.svg`} type="image/svg+xml" />
 
@@ -63,7 +62,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "")
           `crossorigin` is required even same-origin for fonts, or the
           preload is fetched twice.
         */}
-        <link rel="preload" href={serifUrl} as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href={displayUrl} as="font" type="font/woff2" crossorigin />
         <link rel="preload" href={handUrl} as="font" type="font/woff2" crossorigin />
         <link rel="preload" href={typeUrl} as="font" type="font/woff2" crossorigin />
 

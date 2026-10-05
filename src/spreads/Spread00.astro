@@ -1,13 +1,14 @@
 ---
 import Clipping from "~/components/Clipping.astro"
 import Note from "~/components/Note.astro"
+import BlockPrint from "~/components/BlockPrint.astro"
 import { CREDITS } from "~/content/clippings"
 
 /*
  * Spread 00 — the cover.
  *
- * The only spread with a binding gutter and the only out-of-fiction surface
- * in the piece (the colophon). Both live here because nothing may come after
+ * The only spread with the fold and staples, and the only out-of-fiction
+ * surface in the piece (the colophon). Both live here because nothing may come after
  * the scroll track (memory-lane #36).
  *
  * "Quarta" — quarta-feira, Wednesday. The evening we meet.
@@ -20,15 +21,15 @@ import { CREDITS } from "~/content/clippings"
     <p class="spread-head t-eyebrow">
         <span>Quarta Collective</span>
         <span class="rule" aria-hidden="true"></span>
-        <span>notebook no. 3</span>
+        <span>zine no. 3</span>
     </p>
 
     <h1 class="spread-title t-display" data-reveal>The art of <em>making</em></h1>
 
     <p class="spread-note t-body">
         Four of us. One table. Wednesday evenings, since the autumn. This is
-        the notebook we keep while we make things — and, for a while, the
-        notebook we were making.
+        the notebook we keep while we make things — and, this season, the
+        zine we were making.
     </p>
 
     <Clipping
@@ -46,12 +47,14 @@ import { CREDITS } from "~/content/clippings"
 
     <Note x={760} y={470} rotate={-5} size="lg" arrow="right">open me</Note>
 
+    <BlockPrint motif="bird" x={560} y={360} w={140} rotate={-8} ink="blue" pass2="red" />
+
     <div class="colophon t-eyebrow">
         <p>
             A notebook kept by Quarta Collective — Hendri and friends who meet
             once a week to build things. Placeholder photographs from Unsplash
-            by {CREDITS.map((c) => `@${c}`).join(", ")}. Type: Instrument
-            Serif · Caveat · Courier Prime. hendri.design · 2026.
+            by {CREDITS.map((c) => `@${c}`).join(", ")}. Type: Syne ·
+            Caveat · Courier Prime. hendri.design · 2026.
         </p>
     </div>
 </section>
