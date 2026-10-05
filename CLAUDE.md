@@ -77,6 +77,10 @@ node scripts/sweep-contrast.ts
 - The agent harness resolves `.claude/launch.json` from its own working
   directory root; if `preview_start` cannot find it, a copy pointing
   `npm run dev --prefix` at this folder works.
+- **The agent tab has no document focus**, so `element.focus()` moves
+  `activeElement` but fires no focus events. To exercise `initFocusFollow`,
+  dispatch `new FocusEvent("focusin", { bubbles: true })` on the clipping.
+  Smooth `scrollTo` does work in that tab.
 
 ## Open
 
