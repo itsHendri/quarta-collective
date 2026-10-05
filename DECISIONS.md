@@ -238,3 +238,45 @@ Not done, because only 24 of the 59 pins are visible signed out: the tracing-
 paper overlay, the bulldog clip, the pixel/dither motifs (which would echo
 memory-lane's dither — a bridge worth building deliberately), and the
 stitched-over photograph. Listed in FUTURE.md.
+
+---
+
+### Q9. The site is the space; the zine and the notebook are its two kinds of page
+
+**2026-10-05, Hendri's correction.** Q8 read the board as the SUBJECT of the
+story — the collective making a zine. It is not. Quarta Collective is what
+the website is FOR: a space to make and create with friends. "Zine" and
+"notebook" are the visual concept, and the site is a hybrid of the two:
+printed pages of pre-set content (the collective's story) and ruled pages
+that belong to the visitor.
+
+So two things changed, and one did not:
+
+- **The story is about making again**, not about making a zine. The spreads
+  retell the process — noticing, bad drawings, the argument, materials, the
+  bench, prototype one, again, the thing — with one concrete thread (the
+  lamp from the argument on p. 05) so the captions can describe something.
+  Placeholder photographs follow it.
+- **Three of fourteen spreads are the visitor's** (`NotebookPage`, at 4, 9
+  and 13). Each is a ruled page with a printed prompt, a contenteditable
+  block in the hand face whose line-height is the ruling's pitch, and a
+  drawing canvas over it with the pen in the second ink. Write and draw are
+  modes, because a pointer cannot be a caret and a pen at once; in DRAW the
+  canvas takes the pointer and `touch-action: none` so a finger draws rather
+  than scrolls. Both persist in `localStorage` under a stable key per page
+  (not the page number, which has moved once already). The page says "saved
+  in this browser only": a notebook that quietly forgets is worse than one
+  that says it will. Clear is two presses, no dialog.
+- **The visual language from Q8 stays** — white stock, riso inks,
+  misregistered Syne, duotones, block prints, staples. It was right; only
+  what it was describing was wrong.
+
+The scroll rig needed nothing: its `pointermove` listener on the strip is
+passive and it never calls preventDefault on the vertical axis (upstream
+#2), so typing, selecting and drawing inside a spread do not fight it. The
+one gesture it intercepts is a horizontal wheel, which a pen never sends.
+
+Storage is per browser, per device, and the only "backend". That is a
+deliberate floor, not a ceiling: if the pages should ever travel with a
+person, that is an account and a sync, which is a different project
+(memory-lane A1 — static, no backend — still holds for this one).

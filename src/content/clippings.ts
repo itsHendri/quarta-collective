@@ -76,16 +76,6 @@ export const SOURCES = {
         alt: "A sheet of light brown paper with deep creases",
         by: "resourceboy",
     },
-    spools: {
-        id: "photo-1573680156791-0b85133632b4",
-        alt: "Spools of thread on a beige surface",
-        by: "benignohoyuela",
-    },
-    sheets: {
-        id: "photo-1787640866691-efc00610d341",
-        alt: "Overlapping sheets of brown and grey paper",
-        by: "anevans",
-    },
     tools: {
         id: "photo-1497218770144-3fea6dbc33fe",
         alt: "Hand tools laid out on a table",
@@ -101,45 +91,45 @@ export const SOURCES = {
         alt: "Sheets of white paper on a brown wooden table",
         by: "adampatterson",
     },
-    pages: {
-        id: "photo-1530951517437-1b43a7349b10",
-        alt: "A close-up of a book's pages, fanned",
-        by: "limpido",
-    },
-    spine: {
-        id: "photo-1709158997589-c547225f86f3",
-        alt: "A close-up of a hand-bound book on a table",
-        by: "jonathan_bottoms",
-    },
-    sewing: {
-        id: "photo-1568288796918-03e7d93306bd",
-        alt: "Hands sewing white fabric with a needle and thread",
-        by: "eliomendes",
-    },
-    thread: {
-        id: "photo-1627395831267-26f625eab7b0",
-        alt: "Yellow thread lying on white paper",
-        by: "tip_to",
-    },
-    ribbon: {
-        id: "photo-1595123550384-b81222e23cf9",
-        alt: "Hand-bound books stacked on a wooden shelf",
-        by: "prateekkatyal",
-    },
-    stack: {
-        id: "photo-1660593089590-655831b1dda3",
-        alt: "A stack of books",
-        by: "ohlmanphotography",
-    },
     blank: {
         id: "photo-1752010069103-2dac0087b78c",
         alt: "An open book with blank pages",
         by: "ranurte",
     },
-    openpage: {
-        id: "photo-1573848855919-9abecc93e456",
-        alt: "An open notebook page",
-        by: "brandomakesbranding",
+    copper: {
+        id: "photo-1707409464255-e78eb873298a",
+        alt: "A coil of copper wire on a table",
+        by: "guilleb",
+    },
+    wood: {
+        id: "photo-1779031242509-af360178ebb3",
+        alt: "A carpenter's hands shaping a piece of wood on a table saw",
+        by: "meanduck",
+    },
+    offcuts: {
+        id: "photo-1695728130932-7b5967d59f52",
+        alt: "A wooden table covered in offcuts and odds and ends",
+        by: "alexkall",
+    },
+    wiring: {
+        id: "photo-1775519686045-cfd36ca0accc",
+        alt: "Hands wiring electronics, with tools and a laptop nearby",
+        by: "ericstoynov",
+    },
+    shade: {
+        id: "photo-1616248249569-0f31805d74dd",
+        alt: "A white paper lamp against a grey wall",
+        by: "jjik_da",
+    },
+    bulb: {
+        id: "photo-1604572689968-e608a2332849",
+        alt: "A bare bulb lit in a dark room",
+        by: "teapowered",
+    },
+    lamp: {
+        id: "photo-1715405537391-9081e0f86be6",
+        alt: "A lamp on a table beside a wall",
+        by: "hoanganh_dreamplanie",
     },
     nextweek: {
         id: "photo-1743385779581-670d35cbecbf",

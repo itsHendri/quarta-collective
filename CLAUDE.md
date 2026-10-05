@@ -1,12 +1,14 @@
 # quarta-collective — project context (auto-loaded)
 
-**Quarta Collective** — a notebook of making. Hendri and a few friends meet
-once a week (quarta-feira: Wednesday) to build things; this is the notebook
-they keep while doing it, and for a stretch of the story, the zine they were
-making. Vertical scroll turns a wide strip of twelve spreads left→right
-under a pinned viewport. The look is a PRINTED zine, from Hendri's Pinterest
-board: white stock, riso inks, misregistered headlines, block prints,
-duotone photographs, staples, handwritten notes, tape, torn scraps.
+**Quarta Collective** — a space to make and create with friends. Hendri and
+a few others meet once a week (quarta-feira: Wednesday) to build things.
+The site is a HYBRID: printed zine spreads carry the collective's story, and
+ruled notebook pages between them belong to the visitor — written and
+drawn on, kept in their browser (Q9). Vertical scroll turns a wide strip of
+fourteen spreads left→right under a pinned viewport. The look comes from
+Hendri's "Zine" Pinterest board: white stock, riso inks, misregistered
+headlines, block prints, duotone photographs, staples, handwritten notes,
+tape, torn scraps.
 
 This is a **fork of `~/Development/memory-lane`** (SECTOR READ). The scroll
 rig, stage layout, derived-colour tokens and the type-system shape are lifted
@@ -45,6 +47,10 @@ those files. Our own `DECISIONS.md` records only what is NEW here, as
   (upstream #2, #20). Never add `scroll-behavior: smooth` to `html`.
 - The index tabs are real `<button>`s: the piece's only keyboard navigation
   (upstream #16).
+- **Notebook pages persist under stable keys** (`qc:notebook:first|broke|next`),
+  never under the page number — renumbering must not lose anyone's page.
+- **No backend.** The visitor's pages live in their localStorage and go
+  nowhere; the colophon says so. Accounts and sync are a different project.
 
 ## How to work here
 
@@ -69,7 +75,6 @@ node scripts/sweep-contrast.ts
   collective's own photographs when they exist.
 - Only 24 of the board's 59 pins were visible signed out. Tracing-paper
   overlays, bulldog clips and pixel motifs are unbuilt (FUTURE.md).
-- The copy says both "notebook" (the piece) and "zine" (the thing made).
-  Hendri's call.
+- The three prompts on the visitor's pages are first drafts.
 - "Quarta = Wednesday" is a reading of the name, not a brief. Easy to change
   in `NotebookChrome.astro` (wordmark) and the spread eyebrows.

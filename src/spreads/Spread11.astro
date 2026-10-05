@@ -1,48 +1,52 @@
 ---
 import Clipping from "~/components/Clipping.astro"
 import Note from "~/components/Note.astro"
+import Sticker from "~/components/Sticker.astro"
 import BlockPrint from "~/components/BlockPrint.astro"
 
-/*
- * Spread 11 — the next one. Mostly blank ruled page, on purpose. The "close
- * the notebook" control (chrome) appears over it once the read completes.
- * Back on white stock.
- */
+/* Spread 11 — the lamp, and the notebook. The yellow sheet turning back to white. */
 ---
 
-<section class="tc-sector is-ruled" id="tc-sector-11" aria-label="Page 11: Next Wednesday">
+<section class="tc-sector" id="tc-sector-11" aria-label="Page 11: The thing itself">
     <p class="spread-head t-eyebrow">
         <span>p. 11</span>
         <span class="rule" aria-hidden="true"></span>
-        <span>wednesday no. 13</span>
+        <span>wednesday no. 12</span>
     </p>
 
-    <h2 class="spread-title t-display" data-reveal>Next <em>Wednesday</em></h2>
+    <h2 class="spread-title t-display" data-reveal>The thing <em>itself</em></h2>
 
     <p class="spread-note t-body">
-        There's a list already. A lamp, still. The chair came back up. Someone
-        wants to make the pencil we keep losing.
+        Ash base, copper stem, paper shade, one warm bulb. Stands. The switch
+        is on the cord on purpose. Then we opened the notebook and left the
+        first page blank, also on purpose.
     </p>
 
-    <Note x={130} y={400} w={300} rotate={-2} size="lg" tone="red">
-        bring the pencil idea
-    </Note>
-
-    <Note x={150} y={470} rotate={-1} size="sm">— and the good lamp</Note>
+    <Sticker x={1080} y={110} rotate={-7} tone="blue">lamp no. 3</Sticker>
+    <BlockPrint motif="bird" x={1140} y={620} w={120} rotate={6} ink="blue" pass2="pink" />
 
     <Clipping
         id="11-0"
-        src="nextweek"
-        caption="7pm. kettle's on."
-        x={900}
-        y={330}
-        w={340}
-        h={240}
-        kind="scrap"
-        rotate={-2}
+        src="lamp"
+        caption="lit, first time"
+        x={100}
+        y={340}
+        w={540}
+        h={350}
+        kind="photo"
     />
 
-    <Note x={560} y={620} rotate={-3} tone="blue" arrow="right">continue</Note>
+    <Clipping
+        id="11-1"
+        src="blank"
+        caption="p. 1 — leave it"
+        x={760}
+        y={370}
+        w={420}
+        h={270}
+        kind="polaroid"
+        rotate={2}
+    />
 
-    <BlockPrint motif="star" x={700} y={400} w={70} rotate={20} ink="yellow" />
+    <Note x={680} y={300} rotate={-4} size="sm" arrow="down">here</Note>
 </section>

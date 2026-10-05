@@ -1,15 +1,16 @@
 # quarta-collective
 
-**Quarta Collective** — a notebook of making.
+**Quarta Collective** — a space to make and create with friends.
 
-A few of us meet one evening a week to build things. This is the notebook we
-keep while we do: vertical scroll turns a wide strip of twelve spreads
-left→right beneath a pinned viewport, and the stock changes as you go —
-white, a warm white, newsprint, a yellow sheet, and back. Headlines are
-printed heavy and a little out of register; notes are written in the
-margins; photographs are taped in, or printed in one riso ink; block prints
-land where there was room. One of the things we were making, for a stretch
-of it, was a zine.
+A few of us meet one evening a week to build things. The site is a zine and
+a notebook at once: printed spreads carry our story — what we noticed, drew,
+argued about and built — and the ruled pages between them are yours to write
+and draw on, kept in your own browser. Vertical scroll turns a wide strip of
+fourteen spreads left→right beneath a pinned viewport, and the stock changes
+as you go — white, a warm white, newsprint, a yellow sheet, and back.
+Headlines are printed heavy and a little out of register; notes are written
+in the margins; photographs are taped in, or printed in one riso ink; block
+prints land where there was room.
 
 Live: https://itshendri.github.io/quarta-collective/
 
@@ -31,7 +32,8 @@ terminal, synthesized static) does not.
 | Motion | The inherited scroll rig — native scroll + sticky stage + lerped pan, no library |
 | Paper | CSS only: SVG-noise grain, ruling, staples, tape, torn edges, stamps, block prints, halftone, duotones |
 | Type | Syne · Caveat · Courier Prime, via `@fontsource` |
-| Content | Hand-authored Astro markup, one file per spread (`src/spreads/`) |
+| Content | Hand-authored Astro markup, one file per spread (`src/spreads/`); three `NotebookPage`s for the visitor |
+| Your pages | contenteditable + canvas, `localStorage` only — no backend |
 | Imagery | Unsplash placeholders, optimised to AVIF at build (`src/content/clippings.ts`) |
 | Hosting | GitHub Pages |
 
