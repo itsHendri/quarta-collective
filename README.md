@@ -1,26 +1,24 @@
-# memory-lane
+# quarta-collective
 
-**SECTOR READ** — a scroll-to-pan narrative piece, rebuilt from Framer as owned
-code.
+**Quarta Collective** — a notebook of making.
 
-A recovery machine reads a memory card that never arrived. Vertical scroll
-drives a wide story strip left→right beneath a pinned viewport: the centre of
-the screen is the read head where the card decodes, and toward the edges the
-imagery bends through a spherical lens and breaks down into dither — sectors not
-yet read. Twelve sectors, 24 plates, on public-domain NASA photographs.
+A few of us meet one evening a week to build things. This is the notebook we
+keep while we do: vertical scroll turns a wide strip of twelve spreads
+left→right beneath a pinned viewport, and the page ages as you go — cream,
+yellowed, a kraft divider, grey card, and back. Headlines are printed; notes
+are written in the margins; photographs are taped and pasted in. One of the
+things we were making, for a stretch of it, was the notebook itself.
 
-Live: https://itshendri.github.io/memory-lane/ — this port, on GitHub Pages
-Live (Framer original): https://memory-lane.framer.website/
+Live: https://itshendri.github.io/quarta-collective/
 
-## Why this repo exists
+## Where it comes from
 
-The piece was designed and built in Framer (`~/Framer/timeline-carousel`, which
-remains the source of truth for behaviour and copy). This is a port to owned
-code — static, self-hosted, and free of the ~295KB gz of framework runtime the
-Framer build ships for work that is mostly vanilla DOM and canvas.
-
-It is also the first of roughly ten pieces in this vein, so the scroll rig, the
-token layering and the type system are built to be lifted into the next one.
+A fork of [memory-lane](https://github.com/itsHendri/memory-lane) (SECTOR
+READ), which was built so its scroll rig, token layering and type system could
+be lifted into the next piece. This is the next piece. The rig, the sticky
+stage, the derived colour tokens and the measured-contrast discipline come
+across unchanged; the recovery-machine fiction (WebGL lens, CRT tube, boot
+terminal, synthesized static) does not.
 
 ## Stack
 
@@ -28,19 +26,21 @@ token layering and the type system are built to be lifted into the next one.
 |---|---|
 | Framework | Astro 5, static output, TypeScript strict |
 | Styling | Vanilla CSS + custom properties (`src/styles/`) |
-| Motion | Ported in-house scroll rig — native scroll + sticky stage + lerped pan, no library |
-| Effects | Raw WebGL 1 (no Three.js) + 2D canvas |
-| Audio | Synthesized WebAudio, zero asset bytes |
-| Content | Hand-authored Astro markup, one file per sector |
-| Hosting | GitHub Pages (live, preview) · Cloudflare Pages (planned, final) |
+| Motion | The inherited scroll rig — native scroll + sticky stage + lerped pan, no library |
+| Paper | CSS only: SVG-noise grain, ruling, tape, torn edges, stamps |
+| Type | Instrument Serif · Caveat · Courier Prime, via `@fontsource` |
+| Content | Hand-authored Astro markup, one file per spread (`src/spreads/`) |
+| Imagery | Unsplash placeholders, optimised to AVIF at build (`src/content/clippings.ts`) |
+| Hosting | GitHub Pages |
 
 ## Running it
 
 ```bash
 npm install
-npm run dev         # localhost:5250
+npm run dev         # localhost:5251/quarta-collective/
 npm run typecheck
 npm run build
+node scripts/sweep-contrast.ts
 ```
 
 `/specimen` is a permanent dev surface for the type system.
@@ -51,15 +51,12 @@ npm run build
 |---|---|
 | `CLAUDE.md` | Auto-loaded context; the invariants that must not break |
 | `STATUS.md` | Current state, dated |
-| `DECISIONS.md` | Rationale, append-only (`A1…`), citing upstream `#N` |
+| `DECISIONS.md` | Rationale, append-only (`Q1…`), citing memory-lane `A#N` and upstream `#N` |
 | `FUTURE.md` | Next-session entry point + backlog |
 | `CHANGELOG.md` | Keep-a-Changelog log |
 
-**Upstream `~/Framer/timeline-carousel/DECISIONS.md` (#1–#52) is still law.**
-Most of its entries record an expensive bug; check it before changing anything
-that looks arbitrary.
-
 ## Credits
 
-Imagery: NASA Image and Video Library, public domain. Type: Archivo · JetBrains
-Mono (both OFL). A piece by hendri.design · 2026.
+Placeholder photographs: Unsplash, credited by handle in the colophon and in
+`src/content/clippings.ts`. Type: Instrument Serif, Caveat, Courier Prime (all
+OFL). A piece by hendri.design · 2026.

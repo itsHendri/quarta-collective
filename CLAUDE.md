@@ -1,78 +1,69 @@
-# memory-lane — project context (auto-loaded)
+# quarta-collective — project context (auto-loaded)
 
-**SECTOR READ**, rebuilt as owned code. A recovery machine reads a memory card
-that never arrived: vertical scroll drives a wide story strip left→right under a
-pinned viewport, the centre of the screen is the read head where the card
-decodes, and the edges bend through a spherical lens and break into dither.
+**Quarta Collective** — a notebook of making. Hendri and a few friends meet
+once a week (quarta-feira: Wednesday) to build things; this is the notebook
+they keep while doing it, and for a stretch of the story, the notebook they
+were making. Vertical scroll turns a wide strip of twelve spreads left→right
+under a pinned viewport. Handwritten notes, tape, torn scraps, paper grain.
 
-This is a **port of a finished Framer piece**, not a new build. The original is
-at `~/Framer/timeline-carousel` (live: https://memory-lane.framer.website/) and
-is the source of truth for behaviour, copy and craft.
+This is a **fork of `~/Development/memory-lane`** (SECTOR READ). The scroll
+rig, stage layout, derived-colour tokens and the type-system shape are lifted
+from it; everything that made that piece a recovery machine is deleted.
 
 **Read `STATUS.md` first, then `DECISIONS.md`.**
 
 ## The one rule
 
-**`~/Framer/timeline-carousel/DECISIONS.md` is upstream law.** It holds 52
-numbered decisions, most with measurements attached, and nearly every one
-records a bug that was expensive to find. Before changing anything that looks
-arbitrary in a ported component, grep that file — it probably is not arbitrary.
-Our own `DECISIONS.md` records only what is NEW or CHANGED in the rebuild, and
-cites upstream numbers as `(upstream #N)`.
+**`~/Development/memory-lane/DECISIONS.md` (A1–A23) and its upstream
+(`~/Framer/timeline-carousel/DECISIONS.md`, #1–#52) are still law for the
+rig.** Nearly every entry records an expensive bug. Before changing anything
+in `scroll-rig.ts`, `stage.css`, `contrast.ts` or the hover behaviour, grep
+those files. Our own `DECISIONS.md` records only what is NEW here, as
+`Q1, Q2…`, citing the others as `(memory-lane A#N)` / `(upstream #N)`.
 
-## What the rebuild changes on purpose
+## What must not break
 
-- **Content lives in Astro markup, one file per sector.** Upstream's "content is
-  never in code" rule existed because Framer's canvas gave free-form hand
-  editing; there is no canvas now, so real HTML per sector is the closest
-  equivalent. Do not introduce a `Sector` component that takes a data object —
-  that is the indirection upstream explicitly rejected.
-- **Tokens are semantic names**, not Framer's `--token-<uuid>`.
-- **Images are repo assets** through `astro:assets` (AVIF/WebP + srcset), not
-  Framer's CDN, and are same-origin — which deletes upstream's duplicate
-  `crossOrigin` fetch per picture (upstream #13).
-- **Inter is gone.** Framer loaded it as an unused fallback.
-
-## What must not break (ported invariants)
-
-Full list with rationale in `DECISIONS.md` §Imported. The short version:
-
-- `vUv = aQuad` — textures upload flip-Y off, so inverting v renders every
-  picture upside down and symmetric test art hides it (upstream #25).
-- The dither grid is **content-anchored** (`gpx = spx + pan`) — measured 0.00
-  drift vs 2.38 screen-anchored (upstream #4).
-- Plane geometry comes from the **offset chain**, never `getBoundingClientRect`
-  (upstream #6).
-- The canvas is **transparent except where a picture is**, premultiplied
-  (upstream #7).
-- Derived foreground is **pure black/white, flipping at L = 0.179**; the dim
-  tone is **measured, never an alpha** (upstream #33).
-- Every hue transit in the ramp **routes through the dark anchor** (upstream
-  #32, #41).
 - **Nothing after the scroll track** — a section below it scrolls the pinned
-  stage off the top (upstream #36).
-- Hover needs all three guards: velocity gate, larger exit hit area, longer exit
-  delay (upstream #17), and the cue is the **dither fade**, not movement
-  (upstream #46).
-- The chrome may only say **what the read head could know** (upstream #15).
+  stage off the top. The colophon lives on the cover (upstream #36).
+- **Type binds only to `--tc-fg` / `--tc-fg-dim` / `--tc-field`**, never to
+  `--ink` or a static grey. The dim tone is measured per paper shade
+  (upstream #33, memory-lane A3). Verify with `node scripts/sweep-contrast.ts`.
+- **`RAMP_HEX` in `contrast.ts` and `--ramp-0…5` in `tokens.css` must match.**
+- **Red pencil (`tone="red"`) only on paper spreads** — it measures 2.8:1 on
+  kraft. See tokens.css.
+- **The headline wipe is a mask, never a clip-path** — Chrome's
+  IntersectionObserver honours clip-path and the heading would never reveal
+  itself (Q6).
+- **Clipping ids stay `tc-item-NN-N`** — the rig resolves hover against them.
+- **Every Unsplash id is HEAD-checked before it goes in** — a dead id fails
+  the whole build, not one picture (Q4).
+- Native scroll + sticky stage; only the horizontal wheel axis is intercepted
+  (upstream #2, #20). Never add `scroll-behavior: smooth` to `html`.
+- The index tabs are real `<button>`s: the piece's only keyboard navigation
+  (upstream #16).
 
 ## How to work here
 
 ```bash
-npm run dev         # localhost:5250
+npm run dev         # localhost:5251/quarta-collective/
 npm run typecheck   # astro check
-npm run build
+npm run build       # fetches the remote clippings; cache in .astro-cache/
+node scripts/sweep-contrast.ts
 ```
 
-- **Verify numerically, not from screenshots.** The agent browser tab throttles
-  rAF and returns blank or stale captures for scrolled content — the same trap
-  documented upstream. Use DOM queries and canvas pixel reads; motion feel and
-  colour are Hendri's ⌘P check.
-- Contrast is **measured, never eyeballed**. Both real failures upstream were
-  found by measuring (upstream #22, #33).
+- `/specimen` shows every type preset on every ramp stop.
+- **Verify numerically, not from screenshots** where it matters: drive
+  `window.__tcPan(p)` and read the DOM. Motion feel is Hendri's ⌘P check.
+- The agent harness resolves `.claude/launch.json` from its own working
+  directory root; if `preview_start` cannot find it, a copy pointing
+  `npm run dev --prefix` at this folder works.
 
 ## Open
 
-- **Title undecided**: *SECTOR READ* vs *Return to Sender*. Building with SECTOR
-  READ; it lives in `Base.astro` and the wordmark only, so a swap is two files.
-- `story/beats.md` v2 upstream has never been signed off by Hendri.
+- **Imagery is placeholder.** Unsplash, listed with credits in
+  `src/content/clippings.ts`; the colophon is generated from it. Swap for the
+  collective's own photographs when they exist.
+- Hendri's Pinterest board for the physical notebook has not been seen yet
+  (the link opened Pinterest's logged-out home). Worth a pass once it is.
+- "Quarta = Wednesday" is a reading of the name, not a brief. Easy to change
+  in `NotebookChrome.astro` (wordmark) and the spread eyebrows.
