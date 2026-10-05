@@ -1,0 +1,56 @@
+---
+import Clipping from "~/components/Clipping.astro"
+import Note from "~/components/Note.astro"
+import Sticker from "~/components/Sticker.astro"
+
+/* Spread 07 — the first one. Kraft turning to card: ink only. */
+---
+
+<section class="tc-sector is-grid" id="tc-sector-07" aria-label="Page 7: Prototype one">
+    <p class="spread-head t-eyebrow">
+        <span>p. 07</span>
+        <span class="rule" aria-hidden="true"></span>
+        <span>wednesday no. 8</span>
+    </p>
+
+    <h2 class="spread-title t-display" data-reveal>Prototype <em>one</em></h2>
+
+    <p class="spread-note t-body">
+        Signatures folded, holes punched, sewn in forty minutes. The spine
+        held. The first page tore the moment we opened it flat.
+    </p>
+
+    <Clipping
+        id="07-0"
+        src="pages"
+        caption="held, then didn't"
+        x={760}
+        y={340}
+        w={460}
+        h={300}
+        kind="photo"
+        tape
+    />
+
+    <Clipping
+        id="07-1"
+        src="spine"
+        caption="no. 1"
+        x={160}
+        y={420}
+        w={300}
+        h={210}
+        kind="scrap"
+        rotate={4}
+    />
+
+    <Note x={500} y={330} w={220} rotate={-6} size="lg" arrow="right">
+        grain direction!! (wrong way)
+    </Note>
+
+    <Note x={170} y={340} rotate={-2} size="sm">
+        cut <s>148 × 210</s> 140 × 205
+    </Note>
+
+    <Sticker x={1020} y={680} rotate={-8}>failed — keep</Sticker>
+</section>

@@ -1,4 +1,20 @@
 ---
+/*
+ * Fonts first: the three faces ship as @fontsource packages, so their
+ * @font-face rules bundle into the single stylesheet and Vite hashes and
+ * base-prefixes the files. The preloads below import the SAME files with
+ * `?url`, so the href is whatever Vite emitted — no hand-built `/fonts/…`
+ * path to 404 under the deploy base (memory-lane A23; DECISIONS Q3).
+ */
+import "@fontsource/instrument-serif/latin-400.css"
+import "@fontsource/instrument-serif/latin-400-italic.css"
+import "@fontsource-variable/caveat/index.css"
+import "@fontsource/courier-prime/latin-400.css"
+import "@fontsource/courier-prime/latin-700.css"
+import serifUrl from "@fontsource/instrument-serif/files/instrument-serif-latin-400-normal.woff2?url"
+import handUrl from "@fontsource-variable/caveat/files/caveat-latin-wght-normal.woff2?url"
+import typeUrl from "@fontsource/courier-prime/files/courier-prime-latin-400-normal.woff2?url"
+
 import "~/styles/tokens.css"
 import "~/styles/type.css"
 import "~/styles/base.css"
@@ -8,26 +24,16 @@ interface Props {
     description?: string
 }
 
-/*
- * Real metadata. The Framer build shipped `<title>My Framer Site</title>` and
- * `description="Made with Framer"` — it was never set, so this is free ground
- * against the original on every audit that looks at the document head.
- *
- * The title is still open (SECTOR READ vs Return to Sender, story/beats.md).
- * It lives here and in the wordmark component only, so a swap is two files.
- */
 const {
-    title = "SECTOR READ",
-    description = "A recovery machine reads a memory card that never arrived.",
+    title = "Quarta Collective",
+    description = "A notebook of making. A few of us, one evening a week.",
 } = Astro.props
 
 const canonical = new URL(Astro.url.pathname, Astro.site)
 
 /*
- * Files in public/ are served verbatim under the deploy base, and nothing
- * rewrites them for us — astro:assets only rebases what it processes. On a
- * GitHub Pages project site the base is /memory-lane, so a bare "/fonts/..."
- * would 404 and the page would silently fall back to system faces.
+ * public/ files are served verbatim under the deploy base and nothing
+ * rewrites them. The favicon is now the ONLY hand-built public path.
  */
 const base = import.meta.env.BASE_URL.replace(/\/$/, "")
 ---
@@ -47,30 +53,19 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "")
         <meta property="og:url" content={canonical} />
         <meta name="twitter:card" content="summary_large_image" />
 
-        <meta name="theme-color" content="#05060f" />
+        <meta name="theme-color" content="#f4efe4" />
 
-        {/* Without this the browser requests /favicon.ico and logs a 404. */}
         <link rel="icon" href={`${base}/favicon.svg`} type="image/svg+xml" />
 
         {/*
-          Both faces are used above the fold — the headline and every chrome
-          readout — so both preload. `crossorigin` is required even same-origin
-          for fonts, or the preload is fetched twice.
+          All three faces paint above the fold — the headline, the caption
+          under the first clipping, the eyebrow — so all three preload.
+          `crossorigin` is required even same-origin for fonts, or the
+          preload is fetched twice.
         */}
-        <link
-            rel="preload"
-            href={`${base}/fonts/archivo-700-latin.woff2`}
-            as="font"
-            type="font/woff2"
-            crossorigin
-        />
-        <link
-            rel="preload"
-            href={`${base}/fonts/jetbrains-mono-var-latin.woff2`}
-            as="font"
-            type="font/woff2"
-            crossorigin
-        />
+        <link rel="preload" href={serifUrl} as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href={handUrl} as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href={typeUrl} as="font" type="font/woff2" crossorigin />
 
         <slot name="head" />
     </head>

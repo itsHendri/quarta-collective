@@ -1,238 +1,91 @@
 ---
 import Base from "~/layouts/Base.astro"
-import Sector00 from "~/sectors/Sector00.astro"
-import Sector01 from "~/sectors/Sector01.astro"
-import Sector02 from "~/sectors/Sector02.astro"
-import Sector03 from "~/sectors/Sector03.astro"
-import Sector04 from "~/sectors/Sector04.astro"
-import Sector05 from "~/sectors/Sector05.astro"
-import Sector06 from "~/sectors/Sector06.astro"
-import Sector07 from "~/sectors/Sector07.astro"
-import Sector08 from "~/sectors/Sector08.astro"
-import Sector09 from "~/sectors/Sector09.astro"
-import Sector10 from "~/sectors/Sector10.astro"
-import Sector11 from "~/sectors/Sector11.astro"
-import MachineChrome from "~/components/MachineChrome.astro"
-import BootSequence from "~/components/BootSequence.astro"
-import ScreenFX from "~/components/ScreenFX.astro"
+import Spread00 from "~/spreads/Spread00.astro"
+import Spread01 from "~/spreads/Spread01.astro"
+import Spread02 from "~/spreads/Spread02.astro"
+import Spread03 from "~/spreads/Spread03.astro"
+import Spread04 from "~/spreads/Spread04.astro"
+import Spread05 from "~/spreads/Spread05.astro"
+import Spread06 from "~/spreads/Spread06.astro"
+import Spread07 from "~/spreads/Spread07.astro"
+import Spread08 from "~/spreads/Spread08.astro"
+import Spread09 from "~/spreads/Spread09.astro"
+import Spread10 from "~/spreads/Spread10.astro"
+import Spread11 from "~/spreads/Spread11.astro"
+import NotebookChrome from "~/components/NotebookChrome.astro"
+import { TITLES } from "~/spreads/titles"
 import "~/styles/stage.css"
-import "~/styles/sector.css"
+import "~/styles/spread.css"
+import "~/styles/paper.css"
 
 /*
- * The piece.
+ * The notebook.
  *
- * NOTHING MAY COME AFTER THE TRACK — no footer, no colophon section, nothing.
- * A section below it keeps scrolling once the read is done and takes the pinned
- * stage, memory card included, off the top of the screen. The colophon lives on
- * sector 00 for exactly this reason. (Upstream #36.)
+ * NOTHING MAY COME AFTER THE TRACK — no footer, no colophon section. A section
+ * below it keeps scrolling once the read is done and takes the pinned stage
+ * off the top of the screen. The colophon lives on the cover for exactly
+ * this reason. (memory-lane #36.)
  *
- * `--tc-sectors` drives the track's height (sectors × 100vh), so it must match
- * the number of sectors below. Twelve sectors, 24 plates, 17 distinct pictures.
+ * `--tc-sectors` drives the track's height (spreads × 100vh), so it must
+ * match the number of spreads below — and `TITLES` in spreads/titles.ts.
  */
 
-const SECTORS = 12
+const SPREADS = TITLES.length
 ---
 
 <Base>
-    <div class="tc-track" id="tc-track" style={`--tc-sectors:${SECTORS}`}>
+    <div class="tc-track" id="tc-track" style={`--tc-sectors:${SPREADS}`}>
         <div class="tc-stage" id="tc-stage">
             <div class="tc-strip" id="tc-strip">
-                <Sector00 />
-                <Sector01 />
-                <Sector02 />
-                <Sector03 />
-                <Sector04 />
-                <Sector05 />
-                <Sector06 />
-                <Sector07 />
-                <Sector08 />
-                <Sector09 />
-                <Sector10 />
-                <Sector11 />
+                <Spread00 />
+                <Spread01 />
+                <Spread02 />
+                <Spread03 />
+                <Spread04 />
+                <Spread05 />
+                <Spread06 />
+                <Spread07 />
+                <Spread08 />
+                <Spread09 />
+                <Spread10 />
+                <Spread11 />
             </div>
-
-            {/*
-              The read head. Sits over the strip but under the machine chrome,
-              and never takes pointer events — hover is resolved by the rig
-              against the DOM plates underneath.
-            */}
-            <canvas
-                class="tc-effect"
-                id="tc-effect"
-                aria-hidden="true"></canvas>
         </div>
     </div>
 
-    {/* Chrome first, then the tube over it: the readout, rail, log and card are
-        all inside the machine and take its vignette and scanlines. */}
-    <MachineChrome sectors={SECTORS} />
-    {/* The boot sits under the tube and above all other chrome. */}
-    <BootSequence />
-    <ScreenFX />
+    <NotebookChrome sectors={SPREADS} titles={TITLES} />
+    {/* The sheet everything is printed on: above the chrome, under nothing. */}
+    <div class="grain" aria-hidden="true"></div>
 </Base>
 
 <script>
     import { initScrollRig } from "~/lib/scroll-rig"
-    import { initEffectLayer } from "~/lib/effect-layer"
-    import { initAsciiMark } from "~/lib/ascii-mark"
-    import { initScramble } from "~/lib/scramble"
-    import { initScreenFX } from "~/lib/screen-fx"
+    import { initReveal } from "~/lib/reveal"
     import {
         initProgressRail,
-        initSectorReadout,
-        initRecoveryLog,
-        initMemoryCard,
+        initPageCounter,
+        initCloseButton,
     } from "~/lib/chrome"
-    import { initBoot } from "~/lib/boot"
-    import { initRigAudio } from "~/lib/audio"
-    import { initVerticalRead } from "~/lib/vertical-read"
 
-    const SECTORS_N = 12
-    /* Matches --bp-phone and the rig's own `mobileMax`. Below it the strip
-     * does not pan and the WebGL layer is off. */
-    const MOBILE_MAX = 810
     const byId = (id: string) => document.getElementById(id)
+    const spreads = Number(
+        getComputedStyle(byId("tc-track")!).getPropertyValue("--tc-sectors")
+    ) || 12
 
     /*
-     * Two tiers, and the split is a real performance decision.
-     *
-     * CRITICAL: the rig (scroll must work from the first frame), the audio
-     * (it has to be listening for `tc:begin` before the boot fires it — the
-     * graph itself is not built until then, so this is cheap), and the boot.
-     *
-     * DEFERRED: everything the boot is covering up. Compiling two WebGL
-     * programs, uploading textures, baking the faceplate and building the
-     * card are all pointless work to do on the critical path while a
-     * full-screen terminal is typing over the top of them. `requestIdleCallback`
-     * runs them in the gaps during the boot, so they are ready by handoff
-     * without ever blocking first paint.
-     *
-     * Measured cost of doing it the other way: one 734ms long task under
-     * Lighthouse's 4× CPU throttle, and a Total Blocking Time of 759ms.
+     * Everything here is cheap — there is no WebGL, no boot, no audio — so
+     * there is no critical/deferred split any more (memory-lane A20). The
+     * rig first, so scroll works from the first frame.
      */
     initScrollRig()
+    initReveal()
 
-    const audioBtn = byId("tc-audio")
-    if (audioBtn) initRigAudio({ button: audioBtn, sectors: SECTORS_N })
+    const rail = byId("tc-rail")
+    if (rail) initProgressRail({ root: rail, sectors: spreads })
 
-    const bootHost = byId("tc-boot")
-    const bootList = byId("tc-boot-list")
-    const bootCaret = byId("tc-boot-caret")
-    if (bootHost && bootList && bootCaret)
-        initBoot({ host: bootHost, list: bootList, caret: bootCaret })
+    const page = byId("tc-page")
+    if (page) initPageCounter({ root: page, sectors: spreads })
 
-    const idle =
-        window.requestIdleCallback ??
-        ((fn: IdleRequestCallback) => window.setTimeout(() => fn({} as IdleDeadline), 1))
-
-    idle(
-        () => {
-            const canvas = byId("tc-effect") as HTMLCanvasElement | null
-            if (canvas) {
-                /*
-                 * The layer hides each plate's <img> so its plane can stand in
-                 * for it (`setTwinHidden`). The canvas is `display: none`
-                 * below the breakpoint — see the style block — so initialising
-                 * it there left every photograph at `opacity: 0` with nothing
-                 * drawing in its place: the vertical read showed captions
-                 * around empty boxes. Bind the layer's life to the same
-                 * breakpoint the CSS uses. Teardown restores the originals,
-                 * which is what makes crossing the breakpoint safe.
-                 */
-                const wide = window.matchMedia(
-                    `(min-width: ${MOBILE_MAX + 1}px)`
-                )
-                let teardown: (() => void) | null = null
-                const sync = () => {
-                    if (wide.matches && !teardown) {
-                        const root = getComputedStyle(
-                            document.documentElement
-                        )
-                        teardown = initEffectLayer({
-                            canvas,
-                            ink:
-                                root.getPropertyValue("--tc-fg").trim() ||
-                                "#FFFFFF",
-                            paper:
-                                root.getPropertyValue("--tc-bg").trim() ||
-                                "#05060F",
-                        })
-                    } else if (!wide.matches && teardown) {
-                        teardown()
-                        teardown = null
-                    }
-                }
-                sync()
-                wide.addEventListener("change", sync)
-            }
-
-            /*
-             * The vertical read's own read head — the mobile counterpart of
-             * the layer above, and bound to the same breakpoint from the same
-             * place so the two can never both be running.
-             */
-            let dropVertical: (() => void) | null = null
-            const narrow = window.matchMedia(`(max-width: ${MOBILE_MAX}px)`)
-            const syncVertical = () => {
-                if (narrow.matches && !dropVertical)
-                    dropVertical = initVerticalRead()
-                else if (!narrow.matches && dropVertical) {
-                    dropVertical()
-                    dropVertical = null
-                }
-            }
-            syncVertical()
-            narrow.addEventListener("change", syncVertical)
-
-            const host = byId("tc-asciimark")
-            const markCanvas = byId(
-                "tc-asciimark-canvas"
-            ) as HTMLCanvasElement | null
-            if (host && markCanvas)
-                initAsciiMark({ host, canvas: markCanvas, text: "SECTOR READ" })
-
-            initScramble()
-
-            const rail = byId("tc-rail")
-            if (rail) initProgressRail({ root: rail, sectors: SECTORS_N })
-
-            const readout = byId("tc-readout")
-            if (readout) initSectorReadout(readout)
-
-            const log = byId("tc-log")
-            if (log) initRecoveryLog(log)
-
-            const bay = byId("tc-card")
-            if (bay) initMemoryCard({ host: bay })
-
-            initScreenFX({
-                trail: byId("tc-fx-trail") as HTMLCanvasElement,
-                noise: byId("tc-fx-static") as HTMLCanvasElement,
-                edge: byId("tc-fx-edge") as HTMLCanvasElement,
-            })
-        },
-        { timeout: 1200 }
-    )
+    const close = byId("tc-close")
+    if (close) initCloseButton({ button: close })
 </script>
-
-<style>
-    .tc-effect {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        display: block;
-        pointer-events: none;
-        z-index: 2;
-    }
-
-    /* No WebGL treatment on the vertical read: a 390px viewport leaves no
-     * meaningful clean band between two treated edges, and a multi-thousand
-     * pixel strip of textures is the main performance risk on a phone GPU.
-     * (Upstream #9.) */
-    @media (max-width: 810px) {
-        .tc-effect {
-            display: none;
-        }
-    }
-</style>

@@ -1,0 +1,49 @@
+---
+import Clipping from "~/components/Clipping.astro"
+import Note from "~/components/Note.astro"
+import Sticker from "~/components/Sticker.astro"
+
+/* Spread 10 — the made thing. Card turning back to paper. */
+---
+
+<section class="tc-sector" id="tc-sector-10" aria-label="Page 10: The thing itself">
+    <p class="spread-head t-eyebrow">
+        <span>p. 10</span>
+        <span class="rule" aria-hidden="true"></span>
+        <span>wednesday no. 12</span>
+    </p>
+
+    <h2 class="spread-title t-display" data-reveal>The thing <em>itself</em></h2>
+
+    <p class="spread-note t-body">
+        Forty-eight pages, 160gsm, greyboard covers wrapped in kraft. Opens
+        flat. The first page is blank on purpose.
+    </p>
+
+    <Sticker x={1080} y={110} rotate={-7}>no. 3 · 2026</Sticker>
+
+    <Clipping
+        id="10-0"
+        src="blank"
+        caption="p. 1 — leave it"
+        x={100}
+        y={340}
+        w={540}
+        h={350}
+        kind="photo"
+    />
+
+    <Clipping
+        id="10-1"
+        src="openpage"
+        caption="p. 2 — don't"
+        x={760}
+        y={370}
+        w={420}
+        h={270}
+        kind="polaroid"
+        rotate={2}
+    />
+
+    <Note x={680} y={300} rotate={-4} size="sm" arrow="down">here</Note>
+</section>

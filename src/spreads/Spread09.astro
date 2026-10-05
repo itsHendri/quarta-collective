@@ -1,0 +1,49 @@
+---
+import Clipping from "~/components/Clipping.astro"
+import Note from "~/components/Note.astro"
+
+/* Spread 09 — the second and third. Grey card. */
+---
+
+<section class="tc-sector" id="tc-sector-09" aria-label="Page 9: Again, but slower">
+    <p class="spread-head t-eyebrow">
+        <span>p. 09</span>
+        <span class="rule" aria-hidden="true"></span>
+        <span>wednesdays no. 10 – 11</span>
+    </p>
+
+    <h2 class="spread-title t-display" data-reveal>Again, but <em>slower</em></h2>
+
+    <p class="spread-note t-body">
+        Second one: grain the right way, holes measured twice. Third one: we
+        stopped talking while sewing. That was the difference.
+    </p>
+
+    <Clipping
+        id="09-0"
+        src="ribbon"
+        caption="no. 2 — opens flat ✓"
+        x={120}
+        y={330}
+        w={270}
+        h={370}
+        kind="polaroid"
+        rotate={-3}
+    />
+
+    <Clipping
+        id="09-1"
+        src="stack"
+        caption="one, two, three"
+        x={500}
+        y={400}
+        w={400}
+        h={260}
+        kind="photo"
+        tape
+    />
+
+    <Note x={960} y={420} w={260} rotate={-3} size="lg" arrow="left">
+        no. 3 — the quiet one
+    </Note>
+</section>

@@ -1,0 +1,62 @@
+---
+import Clipping from "~/components/Clipping.astro"
+import Note from "~/components/Note.astro"
+
+/* Spread 03 — sketches. The yellowed stretch of the notebook. */
+---
+
+<section class="tc-sector" id="tc-sector-03" aria-label="Page 3: Bad drawings first">
+    <p class="spread-head t-eyebrow">
+        <span>p. 03</span>
+        <span class="rule" aria-hidden="true"></span>
+        <span>wednesday no. 3</span>
+    </p>
+
+    <h2 class="spread-title t-display" data-reveal>Bad drawings <em>first</em></h2>
+
+    <p class="spread-note t-body">
+        The first twenty sketches are for getting the bad ones out. Nobody is
+        allowed to erase. The point is the pile, not the page.
+    </p>
+
+    <Clipping
+        id="03-0"
+        src="pillows"
+        caption="twenty of these. then one more."
+        x={90}
+        y={360}
+        w={430}
+        h={290}
+        kind="photo"
+    />
+
+    <Clipping
+        id="03-1"
+        src="portrait"
+        caption="no. 14"
+        x={580}
+        y={400}
+        w={210}
+        h={270}
+        kind="scrap"
+        rotate={3}
+    />
+
+    <Clipping
+        id="03-2"
+        src="desk"
+        caption="J., not erasing"
+        x={880}
+        y={330}
+        w={380}
+        h={250}
+        kind="polaroid"
+        rotate={-2}
+    />
+
+    <Note x={560} y={300} w={200} rotate={-4} arrow="down">
+        the only good one
+    </Note>
+
+    <Note x={1000} y={660} rotate={-2}><s>final</s> first draft</Note>
+</section>

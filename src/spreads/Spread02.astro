@@ -1,0 +1,52 @@
+---
+import Clipping from "~/components/Clipping.astro"
+import Note from "~/components/Note.astro"
+
+/* Spread 02 — where ideas come from. */
+---
+
+<section class="tc-sector is-grid" id="tc-sector-02" aria-label="Page 2: Noticing">
+    <p class="spread-head t-eyebrow">
+        <span>p. 02</span>
+        <span class="rule" aria-hidden="true"></span>
+        <span>wednesday no. 2</span>
+    </p>
+
+    <h2 class="spread-title t-display" data-reveal><em>Noticing</em></h2>
+
+    <p class="spread-note t-body">
+        Ideas don't arrive. They get noticed. A hinge on a café door. The way
+        a receipt folds itself in a pocket and stays folded. We write them
+        down before they stop being interesting.
+    </p>
+
+    <Clipping
+        id="02-0"
+        src="spiral"
+        caption="the pocket one. always the pocket one."
+        x={700}
+        y={340}
+        w={360}
+        h={240}
+        kind="photo"
+        tape
+    />
+
+    <Clipping
+        id="02-1"
+        src="pencil"
+        caption="HB, 4 wks"
+        x={1110}
+        y={300}
+        w={190}
+        h={300}
+        kind="polaroid"
+        rotate={4}
+    />
+
+    <Note x={150} y={420} w={240} rotate={-3}>
+        receipt, folded 3× — keeps its shape? why?
+    </Note>
+
+    <Note x={430} y={560} rotate={2} size="sm" arrow="right">see p. 5</Note>
+</section>

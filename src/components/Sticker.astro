@@ -1,0 +1,29 @@
+---
+/*
+ * A rubber stamp or a tag. Replaces memory-lane's inverted `sector-tag`.
+ *
+ * `kind="stamp"` is an inked outline that takes the page's grain; `kind="tag"`
+ * is ink-filled with its text in the page colour — contrast-proof by
+ * construction on every shade (memory-lane #35). `tone="red"` is the red
+ * pencil and belongs on paper spreads only.
+ */
+
+interface Props {
+    x: number
+    y: number
+    rotate?: number
+    kind?: "stamp" | "tag"
+    tone?: "ink" | "red"
+}
+
+const { x, y, rotate = -6, kind = "stamp", tone = "ink" } = Astro.props
+---
+
+<span
+    class="sticker"
+    data-kind={kind}
+    data-tone={tone}
+    style={`left:${x}px; top:${y}px; transform: rotate(${rotate}deg);`}
+>
+    <slot />
+</span>

@@ -1,0 +1,63 @@
+---
+import Clipping from "~/components/Clipping.astro"
+import Note from "~/components/Note.astro"
+import Sticker from "~/components/Sticker.astro"
+
+/* Spread 05 — materials. The ramp is turning to kraft here; ink only. */
+---
+
+<section class="tc-sector" id="tc-sector-05" aria-label="Page 5: Paper, thread, board">
+    <p class="spread-head t-eyebrow">
+        <span>p. 05</span>
+        <span class="rule" aria-hidden="true"></span>
+        <span>wednesday no. 6</span>
+    </p>
+
+    <h2 class="spread-title t-display" data-reveal>Paper, thread, <em>board</em></h2>
+
+    <p class="spread-note t-body">
+        Samples from three shops and a skip. Paper is judged by folding it,
+        thread by pulling it, board by how it sounds when you knock on it.
+    </p>
+
+    <Sticker x={1150} y={88} rotate={6} kind="tag">samples</Sticker>
+
+    <Clipping
+        id="05-0"
+        src="creased"
+        caption="120gsm — too thin"
+        x={80}
+        y={350}
+        w={300}
+        h={220}
+        kind="scrap"
+        rotate={-3}
+    />
+
+    <Clipping
+        id="05-1"
+        src="spools"
+        caption="linen, waxed"
+        x={430}
+        y={390}
+        w={320}
+        h={230}
+        kind="photo"
+        tape
+        rotate={2}
+    />
+
+    <Clipping
+        id="05-2"
+        src="sheets"
+        caption="160 — just right"
+        x={800}
+        y={320}
+        w={440}
+        h={290}
+        kind="polaroid"
+        rotate={-1}
+    />
+
+    <Note x={90} y={620} rotate={-2} size="sm">greyboard, 2mm, from the skip</Note>
+</section>

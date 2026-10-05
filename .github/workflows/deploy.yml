@@ -1,7 +1,7 @@
-# GitHub Pages deploy — see DECISIONS #A23.
+# GitHub Pages deploy — inherited from memory-lane (A23 there).
 #
 # This is the preview host, not the final one. `astro.config.mjs` carries
-# `base: "/memory-lane"` because a project site is served from a subpath; if
+# `base: "/quarta-collective"` because a project site is served from a subpath; if
 # the piece ever moves to a custom domain, drop the base there and this
 # workflow keeps working unchanged.
 name: deploy
@@ -37,6 +37,19 @@ jobs:
       # `npm ci` builds from the lockfile. sharp compiles the 51 image variants
       # astro:assets emits, so this step is the slow one.
       - run: npm ci
+
+      # Remote placeholder clippings are fetched and converted by sharp at
+      # build, and any non-2xx from Unsplash fails the build outright. The
+      # cache lives outside node_modules (astro.config `cacheDir`) so `npm ci`
+      # does not wipe it; restored here, a warm build makes no image requests
+      # at all. (DECISIONS Q4.)
+      - uses: actions/cache@v4
+        with:
+          path: .astro-cache
+          key: astro-cache-${{ hashFiles('package-lock.json', 'src/content/**', 'src/spreads/**', 'src/components/Clipping.astro') }}
+          restore-keys: |
+            astro-cache-
+
       - run: npm run build
 
       - uses: actions/configure-pages@v5

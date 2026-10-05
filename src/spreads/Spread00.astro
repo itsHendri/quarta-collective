@@ -1,0 +1,57 @@
+---
+import Clipping from "~/components/Clipping.astro"
+import Note from "~/components/Note.astro"
+import { CREDITS } from "~/content/clippings"
+
+/*
+ * Spread 00 — the cover.
+ *
+ * The only spread with a binding gutter and the only out-of-fiction surface
+ * in the piece (the colophon). Both live here because nothing may come after
+ * the scroll track (memory-lane #36).
+ *
+ * "Quarta" — quarta-feira, Wednesday. The evening we meet.
+ */
+---
+
+<section class="tc-sector" id="tc-sector-00" aria-label="Cover: Quarta Collective">
+    <div class="binding" aria-hidden="true"></div>
+
+    <p class="spread-head t-eyebrow">
+        <span>Quarta Collective</span>
+        <span class="rule" aria-hidden="true"></span>
+        <span>notebook no. 3</span>
+    </p>
+
+    <h1 class="spread-title t-display" data-reveal>The art of <em>making</em></h1>
+
+    <p class="spread-note t-body">
+        Four of us. One table. Wednesday evenings, since the autumn. This is
+        the notebook we keep while we make things — and, for a while, the
+        notebook we were making.
+    </p>
+
+    <Clipping
+        id="00-0"
+        src="cover"
+        caption="the one we're making"
+        x={960}
+        y={110}
+        w={280}
+        h={380}
+        kind="polaroid"
+        rotate={3}
+        eager
+    />
+
+    <Note x={760} y={470} rotate={-5} size="lg" arrow="right">open me</Note>
+
+    <div class="colophon t-eyebrow">
+        <p>
+            A notebook kept by Quarta Collective — Hendri and friends who meet
+            once a week to build things. Placeholder photographs from Unsplash
+            by {CREDITS.map((c) => `@${c}`).join(", ")}. Type: Instrument
+            Serif · Caveat · Courier Prime. hendri.design · 2026.
+        </p>
+    </div>
+</section>

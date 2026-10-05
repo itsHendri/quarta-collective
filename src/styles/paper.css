@@ -1,0 +1,249 @@
+/*
+ * QUARTA COLLECTIVE — paper: grain, ruling, tape, torn edges, stamps.
+ *
+ * Everything here is MATERIAL, not type. It replaces memory-lane's tube
+ * (scanlines, static, vignette) with the things that make a page read as a
+ * page. All of it is CSS and survives JS off; none of it carries text, so
+ * none of it is bound by the contrast rule — except the stamp, which is.
+ */
+
+/* ── Grain ─────────────────────────────────────────────────────────────── */
+
+/*
+ * One fixed overlay for the whole viewport, multiplied over the page at low
+ * opacity. Fixed rather than per-spread so it never swims as the strip pans —
+ * the grain belongs to the sheet the reader is looking through, not to the
+ * content (the same reasoning as memory-lane's content-anchored dither, #4,
+ * arrived at from the other side). z-index 10: above the chrome, like the tube
+ * was, so the index tabs and page number are printed on the same paper.
+ */
+.grain {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    pointer-events: none;
+    opacity: 0.075;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    background-size: 260px 260px;
+}
+
+/* ── Page furniture (per spread) ───────────────────────────────────────── */
+
+/* Feint ruling at 28px, starting below the running head, and a red margin. */
+.tc-sector.is-ruled {
+    background-image: repeating-linear-gradient(
+        to bottom,
+        transparent 0 27px,
+        var(--ruled-line) 27px 28px
+    );
+    background-position: 0 92px;
+}
+.tc-sector.is-ruled::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 60px;
+    width: 1px;
+    background: var(--margin-line);
+    pointer-events: none;
+}
+
+/* A 20px dot grid. */
+.tc-sector.is-grid {
+    background-image: radial-gradient(var(--dot) 0.9px, transparent 1.1px);
+    background-size: 20px 20px;
+    background-position: 10px 10px;
+}
+
+/* ── Binding (spread 00 only) ──────────────────────────────────────────── */
+
+/* The stitched gutter: a dashed thread line and the holes it runs through. */
+.binding {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 28px;
+    width: 1px;
+    border-left: 1px dashed color-mix(in srgb, var(--tc-fg) 40%, transparent);
+    pointer-events: none;
+}
+.binding::before {
+    content: "";
+    position: absolute;
+    top: 120px;
+    bottom: 120px;
+    left: -8px;
+    width: 16px;
+    background-image: radial-gradient(
+        circle,
+        color-mix(in srgb, var(--tc-fg) 55%, transparent) 0 3.5px,
+        transparent 4px
+    );
+    background-size: 16px 120px;
+    background-repeat: repeat-y;
+}
+
+/* ── Tape ──────────────────────────────────────────────────────────────── */
+
+/* A strip of masking tape across the top edge of a pasted-in thing. */
+[data-tape]::before {
+    content: "";
+    position: absolute;
+    top: -11px;
+    left: 50%;
+    width: 92px;
+    height: 24px;
+    margin-left: -46px;
+    background: var(--tape);
+    mix-blend-mode: multiply;
+    transform: rotate(-3deg);
+    pointer-events: none;
+    z-index: 2;
+    /* Slightly rough ends. */
+    clip-path: polygon(
+        2% 0,
+        98% 2%,
+        100% 30%,
+        97% 55%,
+        100% 80%,
+        98% 100%,
+        2% 98%,
+        0 70%,
+        3% 45%,
+        0 20%
+    );
+}
+
+/* ── Torn edge ─────────────────────────────────────────────────────────── */
+
+/* A scrap torn out of something else. The polygon is the tear; a mask-image
+ * would do the same with a softer fibre edge, but clip-path needs no asset
+ * and composes with the hover tilt. */
+.torn {
+    clip-path: polygon(
+        0 3%,
+        4% 0,
+        9% 2%,
+        15% 0.5%,
+        21% 2.5%,
+        27% 0,
+        33% 1.8%,
+        40% 0.4%,
+        46% 2.2%,
+        52% 0.2%,
+        58% 2%,
+        64% 0.6%,
+        70% 2.4%,
+        76% 0.3%,
+        82% 1.9%,
+        88% 0.5%,
+        94% 2.3%,
+        100% 0.8%,
+        100% 97.5%,
+        95% 100%,
+        89% 98%,
+        83% 99.6%,
+        77% 97.6%,
+        71% 99.8%,
+        65% 98.1%,
+        59% 99.5%,
+        53% 97.7%,
+        47% 99.7%,
+        41% 98%,
+        35% 99.6%,
+        29% 97.5%,
+        23% 99.9%,
+        17% 98.2%,
+        11% 99.5%,
+        5% 97.8%,
+        0 99.2%
+    );
+}
+
+/* ── Stamp / sticker ───────────────────────────────────────────────────── */
+
+/*
+ * A rubber stamp. The only material element that carries text, so it binds
+ * to the derived ink by default; `data-tone="red"` is allowed ONLY on paper
+ * spreads — the red pencil measures 2.8:1 on kraft (tokens.css).
+ */
+.sticker {
+    position: absolute;
+    display: inline-block;
+    padding: 4px 9px 3px;
+    border: 2px solid currentColor;
+    border-radius: 3px;
+    font-family: var(--font-type);
+    font-weight: 700;
+    font-size: 13px;
+    line-height: 1.3;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--tc-fg);
+    opacity: 0.86;
+    pointer-events: none;
+    /* Uneven ink: the same noise as the grain, used as a mask. */
+    mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/><feComponentTransfer><feFuncA type='table' tableValues='0.55 1 1 1'/></feComponentTransfer></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    mask-size: 120px 120px;
+}
+.sticker[data-tone="red"] {
+    color: var(--pencil-red);
+}
+/* A tag: ink-filled, text in the page colour. Contrast-proof by construction. */
+.sticker[data-kind="tag"] {
+    border: none;
+    border-radius: 2px;
+    padding: 5px 10px 4px;
+    background: var(--tc-fg);
+    color: var(--tc-field);
+    mask-image: none;
+    opacity: 1;
+}
+
+/* ── Coffee ring ───────────────────────────────────────────────────────── */
+
+.ring {
+    position: absolute;
+    width: 118px;
+    height: 118px;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0.5;
+    mix-blend-mode: multiply;
+    background: radial-gradient(
+        circle,
+        transparent 0 46%,
+        #8a5a2b 47% 50%,
+        transparent 51% 53%,
+        #8a5a2b 54% 55.5%,
+        transparent 56%
+    );
+    /* An incomplete ring — the cup was lifted before it dried. */
+    mask-image: conic-gradient(
+        from 200deg,
+        #000 0 70%,
+        transparent 76% 84%,
+        #000 90% 100%
+    );
+}
+
+/* ── Hover: lifting a photo off the page ───────────────────────────────── */
+
+/* The rig tips a hovered clipping and sets a shadow; the page just needs the
+ * perspective, which the rig puts on the spread on first hover. Nothing here. */
+
+@media (max-width: 810px) {
+    .grain {
+        opacity: 0.06;
+    }
+    .binding,
+    .tc-sector.is-ruled::before {
+        display: none;
+    }
+    .tc-sector.is-ruled {
+        background-position: 0 60px;
+    }
+}

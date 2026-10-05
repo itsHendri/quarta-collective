@@ -1,5 +1,5 @@
 /*
- * SECTOR READ — base / reset
+ * QUARTA COLLECTIVE — base / reset
  *
  * Deliberately small. The piece is one page of art-directed layout, so a
  * heavyweight reset would mostly be undone again.
@@ -26,7 +26,7 @@ html {
 body {
     margin: 0;
     background: transparent;
-    font-family: var(--font-mono);
+    font-family: var(--font-type);
 }
 
 /*

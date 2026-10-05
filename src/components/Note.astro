@@ -1,0 +1,69 @@
+---
+/*
+ * A handwritten note in the margin. Positioned like a clipping, rotated by
+ * hand, optionally pointing at something with a drawn arrow.
+ *
+ * `tone="red"` is the red pencil and is allowed ONLY on paper spreads: it
+ * measures 2.8:1 on kraft (tokens.css). Default ink is the derived
+ * foreground, which is correct on every shade.
+ */
+
+interface Props {
+    x: number
+    y: number
+    /** Wrapping width, px. Omit for a one-liner. */
+    w?: number
+    rotate?: number
+    size?: "sm" | "md" | "lg"
+    tone?: "ink" | "red"
+    arrow?: "up" | "down" | "left" | "right"
+}
+
+const {
+    x,
+    y,
+    w,
+    rotate = 0,
+    size = "md",
+    tone = "ink",
+    arrow,
+} = Astro.props
+
+const sizeClass = size === "sm" ? "is-sm" : size === "lg" ? "is-lg" : ""
+---
+
+<p
+    class={`note t-hand ${sizeClass}`}
+    data-tone={tone}
+    data-reveal
+    style={`left:${x}px; top:${y}px;${w ? ` width:${w}px;` : ""}${
+        rotate ? ` transform: rotate(${rotate}deg);` : ""
+    }`}
+>
+    <slot />
+    {
+        arrow && (
+            <svg
+                class={`note-arrow is-${arrow}`}
+                viewBox="0 0 46 34"
+                aria-hidden="true"
+            >
+                <path
+                    d="M3 24 C 12 8, 26 6, 41 15"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                />
+                <path
+                    d="M33 9 L 41 15 L 32 19"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                />
+            </svg>
+        )
+    }
+</p>

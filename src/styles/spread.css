@@ -1,0 +1,280 @@
+/*
+ * QUARTA COLLECTIVE — spread interior: head, headline, typed note, clippings,
+ * handwritten notes.
+ *
+ * Two worlds, as in memory-lane (#15) but with the roles recast: the PAGE
+ * (ruling, grain, binding) is the notebook; the things on it (clippings,
+ * notes, stamps) were put there by a hand. Material belongs to the page and
+ * never tilts; rotation and shadow belong to what is pasted on and never
+ * touch the ruling.
+ */
+
+.spread-head {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    max-width: 560px;
+}
+
+/* A rule between the spread's number and its date. */
+.spread-head .rule {
+    flex: 1;
+    max-width: 160px;
+    height: 1px;
+    background: var(--tc-fg);
+    opacity: 0.3;
+}
+
+/*
+ * The headline BLEEDS: `width: auto` and `nowrap`, so it runs past the
+ * spread's edge and is cut by the viewport. A contained headline reads as a
+ * slide. (memory-lane #27.)
+ *
+ * Revealed by `reveal.ts`: a left→right wipe, then a pencil line draws under
+ * the first word. Under reduced motion both land instantly.
+ *
+ * The wipe is a MASK, not a clip-path. Chrome's IntersectionObserver honours
+ * clip-path, so a heading clipped to zero width reports an intersection ratio
+ * of 0 while sitting in full view — it can never trigger its own reveal.
+ * Measured: ratio 0 for a 1256×87 box at (72, 120) in a 1024×768 viewport. A
+ * mask is paint-only and the observer ignores it.
+ */
+.spread-title {
+    position: relative;
+    margin-top: 12px;
+    mask-image: linear-gradient(to right, #000 0 47%, transparent 53% 100%);
+    mask-size: 220% 100%;
+    mask-position: 100% 0;
+    transition: mask-position 1100ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.spread-title.is-revealed {
+    mask-position: 0 0;
+}
+.spread-title::after {
+    content: "";
+    display: block;
+    height: 12px;
+    width: 0;
+    margin-top: -2px;
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 12' preserveAspectRatio='none'><path d='M2 7 C 40 3, 80 10, 120 6 S 200 2, 240 8 S 290 5, 298 7' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round'/></svg>")
+        no-repeat 0 0 / 100% 100%;
+    opacity: 0.7;
+    transition: width 700ms 650ms cubic-bezier(0.3, 0, 0.2, 1);
+}
+.spread-title.is-revealed::after {
+    width: min(36%, 300px);
+}
+/* The underline is black ink in the SVG. On every stop of the paper ramp the
+ * derived ink IS black, so this holds; if the ramp ever goes dark, the stroke
+ * colour must be driven from --tc-fg instead (a mask + background would do). */
+
+.spread-note {
+    margin-top: 18px;
+    max-width: 420px;
+}
+
+/* ── Clippings ─────────────────────────────────────────────────────────── */
+
+/*
+ * A clipping is a photograph pasted onto the page. `w × h` is the PICTURE;
+ * the matte, if any, is added outside it (content-box), so moving or resizing
+ * a clipping is still one number in the spread file.
+ */
+.clipping {
+    position: absolute;
+    box-sizing: content-box;
+    margin: 0;
+    background: var(--white);
+    box-shadow:
+        0 1px 1px rgba(40, 30, 10, 0.12),
+        0 10px 24px -14px rgba(40, 30, 10, 0.45);
+}
+.clipping img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* photo — a print with a hairline white border. */
+.clipping[data-kind="photo"] {
+    padding: 4px;
+}
+
+/* polaroid — thick matte, wide at the bottom, caption written on it. */
+.clipping[data-kind="polaroid"] {
+    padding: 12px 12px 46px;
+}
+.clipping[data-kind="polaroid"] .clipping-caption {
+    position: absolute;
+    left: 14px;
+    bottom: 10px;
+    top: auto;
+    margin: 0;
+}
+
+/* scrap — torn out of a magazine or an old print; no matte, no shadow line. */
+.clipping[data-kind="scrap"] {
+    padding: 0;
+    background: var(--paper-aged);
+    box-shadow: 0 6px 18px -12px rgba(40, 30, 10, 0.5);
+}
+
+/* The caption is WRITTEN under the picture, not typed. */
+.clipping-caption {
+    position: absolute;
+    left: 2px;
+    top: 100%;
+    margin-top: 8px;
+    white-space: nowrap;
+    color: var(--tc-fg);
+    opacity: 0.9;
+}
+
+/* ── Handwritten notes ─────────────────────────────────────────────────── */
+
+.note {
+    position: absolute;
+    margin: 0;
+    max-width: 260px;
+    color: var(--tc-fg);
+    pointer-events: none;
+    /* Revealed as if just written: a short fade and settle. `scale` is its own
+     * property so it composes with the authored rotate in `transform`. */
+    opacity: 0;
+    scale: 0.985;
+    transition:
+        opacity 500ms ease-out,
+        scale 500ms ease-out;
+    transition-delay: var(--reveal-delay, 0ms);
+}
+.note.is-revealed {
+    opacity: 1;
+    scale: 1;
+}
+.note[data-tone="red"] {
+    color: var(--pencil-red);
+}
+.note s {
+    text-decoration-thickness: 2px;
+}
+.note .note-arrow {
+    position: absolute;
+    width: 46px;
+    height: 34px;
+    color: inherit;
+}
+.note .note-arrow.is-right {
+    left: 100%;
+    top: 50%;
+    margin: -17px 0 0 6px;
+}
+.note .note-arrow.is-left {
+    right: 100%;
+    top: 50%;
+    margin: -17px 6px 0 0;
+    transform: scaleX(-1);
+}
+.note .note-arrow.is-down {
+    left: 50%;
+    top: 100%;
+    margin: 2px 0 0 -17px;
+    transform: rotate(90deg);
+}
+.note .note-arrow.is-up {
+    left: 50%;
+    bottom: 100%;
+    margin: 0 0 2px -17px;
+    transform: rotate(-90deg);
+}
+
+/* Clippings also arrive rather than being there already — opacity only, so
+ * nothing fights the rig's hover tilt or the authored rotate. */
+.clipping[data-reveal] {
+    opacity: 0;
+    transition: opacity 600ms ease-out var(--reveal-delay, 0ms);
+}
+.clipping[data-reveal].is-revealed {
+    opacity: 1;
+}
+
+/* ── Colophon (spread 00 only) ─────────────────────────────────────────── */
+
+/* Lives on the cover, not after the strip: nothing may come after the track
+ * (memory-lane #36). */
+.colophon {
+    position: absolute;
+    left: 72px;
+    right: 72px;
+    bottom: 64px;
+    max-width: 520px;
+}
+.colophon p {
+    margin-top: 10px;
+}
+
+/* ── Spread padding ────────────────────────────────────────────────────── */
+
+.tc-sector {
+    padding: 92px 72px;
+}
+
+/* ── Vertical read ─────────────────────────────────────────────────────── */
+
+@media (max-width: 810px) {
+    .tc-sector {
+        padding: 72px 20px 48px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .spread-title {
+        mask-image: none;
+    }
+    .spread-title::after {
+        width: min(36%, 300px);
+    }
+    .colophon {
+        position: static;
+        margin-top: 32px;
+        max-width: none;
+    }
+    /* Clippings and notes stack in flow rather than being placed. Rotation
+     * is kept but small enough not to overflow the column. */
+    .clipping {
+        position: relative;
+        left: auto !important;
+        top: auto !important;
+        width: 100% !important;
+        height: auto !important;
+        box-sizing: border-box;
+        aspect-ratio: 3 / 2;
+        margin: 36px 0 44px;
+    }
+    .clipping[data-kind="polaroid"] {
+        aspect-ratio: auto;
+    }
+    .clipping[data-kind="polaroid"] img {
+        aspect-ratio: 4 / 3;
+    }
+    .note {
+        position: static;
+        max-width: none;
+        margin: 10px 0 0;
+        transform: none !important;
+        opacity: 1;
+        scale: 1;
+    }
+    .note .note-arrow {
+        display: none;
+    }
+    .sticker {
+        position: static;
+        display: inline-block;
+        margin: 16px 0 0;
+        transform: rotate(-3deg) !important;
+    }
+    .ring {
+        display: none;
+    }
+}

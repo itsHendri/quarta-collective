@@ -1,15 +1,18 @@
 {
-  "name": "memory-lane",
+  "name": "quarta-collective",
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "astro dev --port ${PORT:-4321}",
+    "dev": "astro dev --port ${PORT:-5251}",
     "build": "astro build",
-    "preview": "astro preview --port ${PORT:-4322}",
+    "preview": "astro preview --port ${PORT:-5252}",
     "typecheck": "astro check",
-    "deploy": "astro build && wrangler pages deploy dist --project-name=memory-lane"
+    "deploy": "astro build && wrangler pages deploy dist --project-name=quarta-collective"
   },
   "dependencies": {
+    "@fontsource-variable/caveat": "^5.3.0",
+    "@fontsource/courier-prime": "^5.3.0",
+    "@fontsource/instrument-serif": "^5.3.0",
     "astro": "^5.0.0"
   },
   "devDependencies": {

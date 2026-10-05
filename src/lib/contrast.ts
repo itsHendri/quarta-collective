@@ -8,7 +8,7 @@
  * fade, because both ends pass through mid-grey together. (Upstream #21.)
  *
  * Pure functions, no DOM. Kept separate from the rig so the whole system can be
- * swept and measured in Node — see `scripts/sweep-contrast.mjs`.
+ * swept and measured in Node — see `scripts/sweep-contrast.ts`.
  */
 
 export type RGB = [number, number, number]
@@ -154,12 +154,12 @@ export function tint(stops: RGB[], p: number): Tint {
  * Mirrors --ramp-0…5 in tokens.css. Keep the two in sync.
  */
 export const RAMP_HEX = [
-    "#05060F",
-    "#1500E1",
-    "#05060F",
-    "#43200A",
-    "#FF8A1E",
-    "#0A0710",
+    "#F4EFE4", // paper
+    "#EAD9B8", // paper, aged
+    "#F4EFE4", // paper
+    "#C9A97A", // kraft divider
+    "#D9D6CF", // grey card
+    "#F4EFE4", // paper
 ] as const
 
 export const RAMP: RGB[] = RAMP_HEX.map(hexToRgb)
