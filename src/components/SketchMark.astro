@@ -1,0 +1,51 @@
+---
+/*
+ * A sketched mark: an asterisk, an arrow, a ring, a box — drawn by hand with
+ * a wobble, in the red ribbon or in ink. Replaces the pixel marks for
+ * exploration 02. Stroke only; the paths use M/L/C so they survive any
+ * renderer.
+ */
+
+interface Props {
+    motif: "asterisk" | "arrow" | "ring" | "box"
+    x: number
+    y: number
+    w: number
+    rotate?: number
+    ink?: "red" | "ink"
+    /** Stroke width, px. */
+    weight?: number
+}
+
+const { motif, x, y, w, rotate = 0, ink = "red", weight = 2.5 } = Astro.props
+
+const PATHS: Record<Props["motif"], { d: string; vw: number; vh: number }> = {
+    asterisk: { d: "M 30 4 L 32 58 M 6 18 L 56 46 M 56 16 L 6 48 M 4 32 L 58 30 M 14 6 L 48 56 M 48 4 L 14 58", vw: 62, vh: 62 },
+    arrow: { d: "M 2 26 C 20 6 44 4 70 14 M 56 4 L 70 14 L 58 24", vw: 72, vh: 30 },
+    ring: { d: "M 40 4 C 66 2 92 14 90 36 C 88 58 56 66 30 60 C 8 56 2 36 10 20 C 16 8 30 4 44 6", vw: 94, vh: 68 },
+    box: { d: "M 3 4 L 46 2 L 44 30 L 2 31 L 3 4", vw: 48, vh: 33 },
+}
+const p = PATHS[motif]
+const h = Math.round((w * p.vh) / p.vw)
+---
+
+<span
+    class="sketch"
+    data-ink={ink}
+    aria-hidden="true"
+    style={`left:${x}px; top:${y}px; width:${w}px; height:${h}px;${
+        rotate ? ` transform: rotate(${rotate}deg);` : ""
+    }`}
+>
+    <svg viewBox={`0 0 ${p.vw} ${p.vh}`} preserveAspectRatio="none">
+        <path
+            d={p.d}
+            fill="none"
+            stroke="currentColor"
+            stroke-width={weight}
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            vector-effect="non-scaling-stroke"
+        ></path>
+    </svg>
+</span>

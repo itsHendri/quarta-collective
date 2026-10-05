@@ -8,7 +8,7 @@ work is Hendri's direction, not more build.
 
 ## Waiting on Hendri
 
-0. **Pick a direction from the Figma explorations.** Eight cover + page-one
+0. ~~Pick a direction from the Figma explorations.~~ Done: 02, in colour (Q12). Eight cover + page-one
    variations (display face, palette, image treatment, marks, tab position):
    https://www.figma.com/design/COEWX2JAX3PEiYMsANgtJH — 2026-10-05. Hendri's
    review of the live build said: headline face and treatment not liked,

@@ -359,3 +359,46 @@ each became:
 Sources for the type decision: the three studio sites above, read live, and
 the DESIGN.md "Risograph Zine Aesthetic" note, which recommends a plain
 grotesque (Work Sans) for display with 1–3px misregistration.
+
+---
+
+### Q12. Exploration 02 — the typewriter — with the photographs in colour
+
+**2026-10-05.** Eight style explorations were built in Figma from Hendri's
+second review (https://www.figma.com/design/COEWX2JAX3PEiYMsANgtJH): cover
+and page one each, varying face, palette, image treatment, marks and tab
+position. Hendri chose **02, Typewriter**, with one change: the pictures stay
+in colour rather than photocopied grey.
+
+What 02 is, as built here:
+
+- **Special Elite** for the headline — a typewriter's capitals, two lines
+  at most, 44 / 80 / 112px, no misregistration and no second ink in the
+  words. Under it a row of typed `=` in the red ribbon (`.spread-title::after`),
+  which types itself on reveal in 34 steps. Captions are typed too, small,
+  in the same face; margin notes stay in Caveat.
+- **Eyebrows in brackets** — `[ wednesday no. 1 ]` — via `::before/::after`
+  on the eyebrow's spans, so the spread files did not change.
+- **Warm stock** `#F3EEDD` at rest; the ramp moves to a whiter sheet,
+  newsprint and a yellowed sheet and back. Sepia ruling, red margin.
+- **One red.** `#B5371F`, chosen so it clears 4.5:1 on every stock (5.12 on
+  the warm stock, 4.69 on the yellowed one) — the exploration's `#C8402E`
+  measured 4.28 and the red carries small text here (the current tab, the
+  stamps). Blue is gone from the page: notes that were blue are ink, stamps
+  that were blue are red. The riso tokens stay declared for a later issue.
+- **Scans.** Every clipping is `kind="scan"`: an 8px white border, the
+  authored tilt, a shadow, kraft-coloured tape where there is tape. Colour.
+- **Sketched marks** (`SketchMark`: asterisk, arrow, ring, box) in the red
+  or in ink replace the pixel marks. `PixelMark` is deleted; it lives in
+  history with the Q11 commit if the dither direction ever returns.
+- **The index down the left.** A fixed 96px gutter carries the wordmark,
+  the page numbers in Courier (current one bold red with a caret) and a
+  hairline rule that fills red from the top with overall progress — vertical
+  and inside the gutter, so it is not the gliding line Hendri disliked. The
+  scroll track starts after the gutter (`margin-left: var(--gutter)`), so
+  the stage measures and clips the strip from there and no spread content
+  is ever under the tabs. Below 810px the gutter is 0 and the index hides.
+
+Not from 02, kept from before: the write and draw pages, the lightbox, the
+page-edge dividers and the alternating rulings, the corner page number (now
+typed rather than handwritten).

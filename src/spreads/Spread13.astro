@@ -1,7 +1,7 @@
 ---
 import Clipping from "~/components/Clipping.astro"
 import Note from "~/components/Note.astro"
-import PixelMark from "~/components/PixelMark.astro"
+import SketchMark from "~/components/SketchMark.astro"
 
 /*
  * Spread 13 — the next one. Mostly blank ruled page, on purpose. The "close
@@ -37,11 +37,11 @@ import PixelMark from "~/components/PixelMark.astro"
         y={330}
         w={340}
         h={240}
-        kind="scrap"
+        kind="scan"
         rotate={-2}
     />
 
-    <Note x={560} y={620} rotate={-3} tone="blue" arrow="right">continue</Note>
+    <Note x={560} y={620} rotate={-3} tone="ink" arrow="right">continue</Note>
 
-    <PixelMark motif="asterisk" x={700} y={400} w={64} rotate={20} ink="yellow" />
+    <SketchMark motif="asterisk" x={700} y={400} w={60} rotate={20} ink="red" weight={3} />
 </section>

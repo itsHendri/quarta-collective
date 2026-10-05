@@ -154,12 +154,12 @@ export function tint(stops: RGB[], p: number): Tint {
  * Mirrors --ramp-0…5 in tokens.css. Keep the two in sync.
  */
 export const RAMP_HEX = [
-    "#F6F4EE", // white stock
-    "#F3EEDD", // warm white
-    "#F6F4EE", // white stock
+    "#F3EEDD", // warm stock
+    "#F6F4EE", // a whiter sheet
+    "#F3EEDD", // warm stock
     "#E9E7DF", // newsprint
-    "#F3E9A8", // the yellow sheet
-    "#F6F4EE", // white stock
+    "#EFE4C2", // a yellowed sheet
+    "#F3EEDD", // warm stock
 ] as const
 
 export const RAMP: RGB[] = RAMP_HEX.map(hexToRgb)

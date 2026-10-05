@@ -6,11 +6,11 @@
  * `?url`, so the href is whatever Vite emitted — no hand-built `/fonts/…`
  * path to 404 under the deploy base (memory-lane A23; DECISIONS Q3).
  */
-import "@fontsource-variable/bricolage-grotesque/standard.css"
+import "@fontsource/special-elite/latin-400.css"
 import "@fontsource-variable/caveat/index.css"
 import "@fontsource/courier-prime/latin-400.css"
 import "@fontsource/courier-prime/latin-700.css"
-import displayUrl from "@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-standard-normal.woff2?url"
+import displayUrl from "@fontsource/special-elite/files/special-elite-latin-400-normal.woff2?url"
 import handUrl from "@fontsource-variable/caveat/files/caveat-latin-wght-normal.woff2?url"
 import typeUrl from "@fontsource/courier-prime/files/courier-prime-latin-400-normal.woff2?url"
 
@@ -52,7 +52,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "")
         <meta property="og:url" content={canonical} />
         <meta name="twitter:card" content="summary_large_image" />
 
-        <meta name="theme-color" content="#f6f4ee" />
+        <meta name="theme-color" content="#f3eedd" />
 
         <link rel="icon" href={`${base}/favicon.svg`} type="image/svg+xml" />
 

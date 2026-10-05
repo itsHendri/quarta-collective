@@ -25,6 +25,7 @@ export interface ProgressRailOptions {
 export function initProgressRail(options: ProgressRailOptions): () => void {
     const { root, sectors = 12 } = options
     const cellsEl = root.querySelector<HTMLElement>("[data-rail-cells]")
+    const fillEl = root.querySelector<HTMLElement>("[data-rail-fill]")
 
     let lastCell = -1
 
@@ -39,6 +40,9 @@ export function initProgressRail(options: ProgressRailOptions): () => void {
         const within = clamped * sectors - current
         const live = cellsEl?.children[current] as HTMLElement | undefined
         if (live) live.style.setProperty("--tab-fill", within.toFixed(3))
+        // The gutter's rule fills top to bottom with overall progress, so the
+        // reader can see how far through the whole notebook they are.
+        if (fillEl) fillEl.style.setProperty("--rail-fill", clamped.toFixed(4))
 
         if (current !== lastCell && cellsEl) {
             lastCell = current

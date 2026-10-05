@@ -9,8 +9,10 @@ hand, half printed like a zine, half blank; the site only tells its story
 (Q10). Vertical scroll turns a wide strip of twelve spreads left→right
 under a pinned viewport. The look comes from
 Hendri's "Zine" Pinterest board: white stock, riso inks, misregistered
-headlines, block prints, duotone photographs, staples, handwritten notes,
-tape, torn scraps.
+headlines were the first reading; the chosen direction is **exploration 02,
+the typewriter** (Q12): Special Elite capitals with a typed red rule, warm
+stock, one red, colour scans with tape, sketched marks, the index down the
+left gutter.
 
 This is a **fork of `~/Development/memory-lane`** (SECTOR READ). The scroll
 rig, stage layout, derived-colour tokens and the type-system shape are lifted
@@ -35,10 +37,11 @@ those files. Our own `DECISIONS.md` records only what is NEW here, as
   `--ink` or a static grey. The dim tone is measured per paper shade
   (upstream #33, memory-lane A3). Verify with `node scripts/sweep-contrast.ts`.
 - **`RAMP_HEX` in `contrast.ts` and `--ramp-0…5` in `tokens.css` must match.**
-- **Only `--riso-blue-deep` carries small text.** Red is display-size only
-  (the `em` in a headline, `size="lg"` notes); pink, green, yellow and
-  fluorescent red are decoration (block prints, duotones, tape). See
-  tokens.css and Q8.
+- **One red on the page, `#B5371F`, and it clears 4.5:1 on every stock** so
+  it may carry the tab numbers and stamps. No blue on the page in this
+  direction; the riso tokens stay declared for a later issue (Q12).
+- **The scroll track starts after the 96px gutter** (`--gutter`). Do not put
+  fixed chrome inside the gutter that is not the index.
 - **The headline wipe is a mask, never a clip-path** — Chrome's
   IntersectionObserver honours clip-path and the heading would never reveal
   itself (Q6).

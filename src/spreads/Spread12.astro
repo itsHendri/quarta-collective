@@ -2,7 +2,7 @@
 import Clipping from "~/components/Clipping.astro"
 import Note from "~/components/Note.astro"
 import Sticker from "~/components/Sticker.astro"
-import PixelMark from "~/components/PixelMark.astro"
+import SketchMark from "~/components/SketchMark.astro"
 
 /* Spread 12 — the made thing. The yellow sheet turning back to white. */
 ---
@@ -20,8 +20,8 @@ import PixelMark from "~/components/PixelMark.astro"
         purpose.
     </p>
 
-    <Sticker x={1080} y={110} rotate={-7} tone="blue">no. 3 · 2026</Sticker>
-    <PixelMark motif="pencil" x={1140} y={620} w={110} rotate={6} ink="blue" pass2="pink" />
+    <Sticker x={1080} y={110} rotate={-7} tone="red">no. 3 · 2026</Sticker>
+    <SketchMark motif="asterisk" x={1140} y={620} w={64} rotate={6} ink="red" weight={3} />
 
     <Clipping
         id="12-0"
@@ -31,7 +31,7 @@ import PixelMark from "~/components/PixelMark.astro"
         y={340}
         w={540}
         h={350}
-        kind="photo"
+        kind="scan"
     />
 
     <Clipping
@@ -42,7 +42,7 @@ import PixelMark from "~/components/PixelMark.astro"
         y={370}
         w={420}
         h={270}
-        kind="polaroid"
+        kind="scan"
         rotate={2}
     />
 

@@ -35,7 +35,7 @@ interface Props {
     /** Hand-authored tilt, in degrees. */
     rotate?: number
     /** How it got onto the page: stuck in, or printed. */
-    kind?: "photo" | "polaroid" | "scrap" | "riso"
+    kind?: "scan" | "photo" | "polaroid" | "scrap" | "riso"
     /** For `riso`: the one ink the picture is printed in. */
     ink?: "blue" | "red" | "pink" | "green"
     /** A strip of masking tape across the top. */
@@ -57,7 +57,7 @@ const {
     w,
     h,
     rotate,
-    kind = "photo",
+    kind = "scan",
     ink = "blue",
     tape = false,
     eager = false,

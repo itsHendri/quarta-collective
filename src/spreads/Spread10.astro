@@ -1,7 +1,7 @@
 ---
 import Clipping from "~/components/Clipping.astro"
 import Note from "~/components/Note.astro"
-import PixelMark from "~/components/PixelMark.astro"
+import SketchMark from "~/components/SketchMark.astro"
 
 /* Spread 10 — printing. The block and its two passes, printed on the page. */
 ---
@@ -27,13 +27,13 @@ import PixelMark from "~/components/PixelMark.astro"
         y={350}
         w={450}
         h={290}
-        kind="photo"
+        kind="scan"
     />
 
     {/* The block itself, printed twice: the second pass lands 4px off. */}
-    <PixelMark motif="scissors" x={610} y={390} w={130} rotate={-6} ink="blue" pass2="red" />
-    <PixelMark motif="staple" x={800} y={450} w={110} rotate={8} ink="green" />
-    <Note x={600} y={590} rotate={-2} size="sm" tone="blue">second pass, 4mm out — keep</Note>
+    <SketchMark motif="asterisk" x={610} y={390} w={70} rotate={-6} ink="red" weight={3} />
+    <SketchMark motif="box" x={800} y={450} w={120} rotate={8} ink="ink" />
+    <Note x={600} y={590} rotate={-2} size="sm" tone="ink">second pass, 4mm out — keep</Note>
 
     <Clipping
         id="10-1"
@@ -43,7 +43,7 @@ import PixelMark from "~/components/PixelMark.astro"
         y={310}
         w={320}
         h={320}
-        kind="polaroid"
+        kind="scan"
         rotate={3}
     />
 </section>

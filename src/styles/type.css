@@ -3,13 +3,9 @@
  *
  * Three faces, and the split is the zine:
  *
- *   Bricolage Grotesque  what gets PRINTED — the headline on each spread,
- *                      bold, large, slightly misregistered, wrapping to two
- *                      lines rather than running off the page. One word per
- *                      headline in the second ink. (The riso studios whose
- *                      sites were looked at — Risotto, Hato Press, Can Can
- *                      Press — all set their web type in quiet grotesques and
- *                      let the printed work be loud. Q11.)
+ *   Special Elite      what gets TYPED LARGE — the headline on each spread,
+ *                      uppercase, two lines, a row of typed "=" under it in
+ *                      the red ribbon. Exploration 02 (DECISIONS Q12).
  *   Caveat             what gets WRITTEN — margin notes, captions, arrows,
  *                      the page number in the corner.
  *   Courier Prime      what gets TYPED — eyebrows, the body note, stamps,
@@ -21,7 +17,7 @@
  */
 
 :root {
-    --font-display: "Bricolage Grotesque Variable", "Archivo Black", Impact, sans-serif;
+    --font-display: "Special Elite", "Courier Prime", "Courier New", monospace;
     --font-hand: "Caveat Variable", "Bradley Hand", "Segoe Print", cursive;
     --font-type: "Courier Prime", "Courier New", Courier, monospace;
 }
@@ -29,43 +25,26 @@
 /* ── Presets ────────────────────────────────────────────────────────────── */
 
 /*
- * Display. Bold, tight, mixed case, and sized to FIT: two lines at most,
- * balanced, inside the spread. memory-lane's bleeding headline (#27) is
- * retired here on Hendri's call — a cut headline read as too big, not as a
- * surface larger than the window.
- *
- * The `em` is the second ink: red at display size clears 3.5:1 on every
- * stock, the large-text threshold with headroom; never used below 40px.
- *
- * The text-shadow is the misregistration — the red pass landing a few px
- * off the black one. It sits BEHIND the glyphs, so it shows as a fringe on
- * one side, which is how a real two-pass print reads.
+ * Display. A typewriter's capitals, two lines at most, inside the spread.
+ * No misregistration, no second ink in the headline — the red is the "===="
+ * rule typed under it (spread.css). Exploration 02.
  */
 .t-display {
     font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 40px;
-    line-height: 0.96;
-    letter-spacing: -0.025em;
+    font-weight: 400;
+    font-size: 44px;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
     color: var(--tc-fg);
     text-wrap: balance;
-    max-width: 1180px;
-    text-shadow: 3px 2px 0 var(--misregister);
+    max-width: 1000px;
 }
 .t-display em {
     font-style: normal;
-    color: var(--riso-red);
-    text-shadow: -3px -2px 0 color-mix(in srgb, var(--tc-fg) 70%, transparent);
+    color: inherit;
 }
 
-/* Below the breakpoint nothing pans, so there is nothing to bleed onto and
- * the headline wraps (memory-lane's mobile fix). */
-@media (max-width: 810px) {
-    .t-display {
-        text-wrap: balance;
-        line-height: 1;
-    }
-}
 @media (min-width: 810px) {
     .t-display {
         font-size: 68px;
@@ -81,7 +60,7 @@
 .t-eyebrow {
     font-family: var(--font-type);
     font-weight: 400;
-    font-size: 11px;
+    font-size: 12px;
     line-height: 1.5;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -104,10 +83,10 @@
 .t-body {
     font-family: var(--font-type);
     font-weight: 400;
-    font-size: 14px;
-    line-height: 1.75;
+    font-size: 15px;
+    line-height: 1.7;
     letter-spacing: 0;
-    color: var(--tc-fg-dim);
+    color: var(--tc-fg);
 }
 
 /* Hand — anything written on the page. Three sizes; `is-lg` is for the one

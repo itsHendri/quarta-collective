@@ -9,7 +9,7 @@ making this season is a notebook by hand, half printed and half blank; the
 site tells its story and nothing more. Vertical scroll turns a wide strip of
 twelve spreads left→right beneath a pinned viewport, and the stock changes
 as you go — white, a warm white, newsprint, a yellow sheet, and back.
-Headlines are printed heavy and a little out of register; notes are written
+Headlines are typed in capitals with a red rule under them; notes are written
 in the margins; photographs are taped in, or printed in one riso ink; block
 prints land where there was room.
 
@@ -32,7 +32,7 @@ terminal, synthesized static) does not.
 | Styling | Vanilla CSS + custom properties (`src/styles/`) |
 | Motion | The inherited scroll rig — native scroll + sticky stage + lerped pan, no library |
 | Paper | CSS only: SVG-noise grain, ruling, staples, tape, torn edges, stamps, block prints, halftone, duotones |
-| Type | Bricolage Grotesque · Caveat · Courier Prime, via `@fontsource` |
+| Type | Special Elite · Caveat · Courier Prime, via `@fontsource` |
 | Content | Hand-authored Astro markup, one file per spread (`src/spreads/`) |
 | Imagery | Unsplash placeholders, optimised to AVIF at build (`src/content/clippings.ts`) |
 | Hosting | GitHub Pages |
@@ -62,5 +62,5 @@ node scripts/sweep-contrast.ts
 ## Credits
 
 Placeholder photographs: Unsplash, credited by handle in the colophon and in
-`src/content/clippings.ts`. Type: Bricolage Grotesque, Caveat, Courier Prime (all OFL).
+`src/content/clippings.ts`. Type: Special Elite, Caveat, Courier Prime (all OFL).
 Direction: Hendri's "Zine" Pinterest board. A piece by hendri.design · 2026.

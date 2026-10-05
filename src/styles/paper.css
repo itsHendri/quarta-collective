@@ -286,6 +286,26 @@
     overflow: visible;
 }
 
+/* ── Sketched marks ────────────────────────────────────────────────────── */
+
+/* A mark drawn by hand in the red ribbon or in ink: an asterisk, an arrow, a
+ * ring around a word, a box. Stroke only, round caps. Exploration 02. */
+.sketch {
+    position: absolute;
+    display: block;
+    pointer-events: none;
+    color: var(--tc-fg);
+}
+.sketch[data-ink="red"] {
+    color: var(--riso-red);
+}
+.sketch svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
 /* ── Halftone ──────────────────────────────────────────────────────────── */
 
 /* A screen of dots over a picture, the way a riso turns a photograph into
@@ -342,6 +362,7 @@
     }
     .binding,
     .blockprint,
+    .sketch,
     .tc-sector::after,
     .tc-sector.is-ruled::before {
         display: none;

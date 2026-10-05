@@ -22,10 +22,10 @@
 
 :root {
     /* ── Paper stocks ───────────────────────────────────────────────────── */
-    --paper: #f6f4ee; /* white stock; the ramp's rest state */
-    --paper-warm: #f3eedd; /* a warmer white */
+    --paper: #f3eedd; /* warm stock; the ramp's rest state (exploration 02) */
+    --paper-warm: #f6f4ee; /* a whiter sheet */
     --newsprint: #e9e7df; /* grey newsprint */
-    --paper-yellow: #f3e9a8; /* the yellow sheet */
+    --paper-yellow: #efe4c2; /* a yellowed sheet */
     --white: #fffdf8; /* a photo's matte — material, not page */
     --ink: #1b1917; /* authored ink, for things that never travel (favicon) */
     --graphite: #6b655c; /* pencil grey; the derived dim overrides it on the page */
@@ -33,19 +33,19 @@
     /* ── Riso inks ──────────────────────────────────────────────────────── */
     --riso-blue: #0078bf; /* decorative: prints, duotones. 4.3:1 — not for small text */
     --riso-blue-deep: #1a52b5; /* the second TEXT ink: 6.5:1 white, 5.8:1 newsprint */
-    --riso-red: #e03a2a; /* display-size only (3.5:1+). Never body text */
+    --riso-red: #b5371f; /* the typewriter's red ribbon: clears 4.5:1 on every stock, so it may carry small text (tab numbers, stamps) */
     --riso-red-fluo: #ff665e; /* decorative only */
     --riso-pink: #ff48b0; /* decorative only */
     --riso-green: #00a95c; /* decorative only */
     --riso-yellow: #ffe800; /* decorative only */
-    --tape: rgba(255, 232, 0, 0.42); /* masking tape, translucent */
+    --tape: rgba(217, 207, 163, 0.6); /* masking tape, kraft-coloured, translucent */
 
     /* ── Semantic aliases ───────────────────────────────────────────────── */
     --rule: color-mix(in srgb, var(--graphite) 30%, transparent);
-    --ruled-line: color-mix(in srgb, var(--riso-blue) 30%, transparent);
+    --ruled-line: color-mix(in srgb, #a8956c 45%, transparent); /* sepia ruling */
     --margin-line: color-mix(in srgb, var(--riso-red) 45%, transparent);
     --dot: color-mix(in srgb, var(--graphite) 40%, transparent);
-    --misregister: color-mix(in srgb, var(--riso-red) 85%, transparent);
+    --misregister: transparent; /* exploration 02 has no misregistration */
 
     /*
      * The stock ramp. Consumed by the rig in JS (RAMP_HEX in contrast.ts —
@@ -68,7 +68,7 @@
     --tc-pan: 0px;
     --tc-bg: var(--paper);
     --tc-fg: #000000;
-    --tc-fg-dim: rgb(98, 97, 94);
+    --tc-fg-dim: rgb(97, 95, 88);
     --tc-field: var(--paper);
 
     /* ── Geometry ───────────────────────────────────────────────────────── */

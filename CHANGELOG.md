@@ -6,6 +6,12 @@ All notable changes to this project are documented here. The format is
 ## [Unreleased]
 
 ### Changed
+- Direction: exploration 02, the typewriter, in colour (Q12). Special Elite
+  headlines with a typed red rule, bracketed eyebrows, warm stock, one red,
+  scans with tape, `SketchMark` marks, index down the left gutter.
+  Bricolage Grotesque and `PixelMark` removed.
+
+### Changed
 - Review pass (Q11): Bricolage Grotesque, wrapping headlines, tab fill
   instead of the head line, page-edge dividers, `is-squared`, date-only
   eyebrows, `PixelMark` motifs replacing `BlockPrint`.
