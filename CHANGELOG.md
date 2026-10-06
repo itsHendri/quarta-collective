@@ -5,6 +5,10 @@ All notable changes to this project are documented here. The format is
 
 ## [Unreleased]
 
+### Changed
+- Q14: a plain spread between every patterned one; the cover is page 01;
+  the index is in a right-hand gutter.
+
 ### Fixed
 - Audit pass (Q13): index first in the document, focus follows the pan,
   headline and pictures ready on jump, spreads re-laid at 96px, body on

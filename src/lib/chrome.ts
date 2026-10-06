@@ -140,10 +140,9 @@ export interface PageCounterOptions {
 }
 
 /**
- * "p. 4" in the corner, in handwriting. Identity, not a fraction: the cover
- * says how many pages there are, the corner says which one this is
- * (memory-lane's reasoning for `sector 00`, never `00 / 11`). The cover
- * itself is not a page — it reads "cover".
+ * "p. 4" in the corner. Identity, not a fraction (memory-lane's reasoning
+ * for `sector 00`, never `00 / 11`). The cover counts as page 1 so the
+ * index and the corner agree.
  */
 export function initPageCounter(options: PageCounterOptions): () => void {
     const { root, sectors = 12 } = options
@@ -157,7 +156,8 @@ export function initPageCounter(options: PageCounterOptions): () => void {
         const current = Math.min(sectors - 1, Math.floor(p * sectors))
         if (current === last) return
         last = current
-        if (pageEl) pageEl.textContent = current === 0 ? "cover" : `p. ${current}`
+        // The cover is page 1, not "cover": one numbering, everywhere (Hendri).
+        if (pageEl) pageEl.textContent = `p. ${current + 1}`
         root.dataset.page = String(current)
     }
 

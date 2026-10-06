@@ -21,10 +21,10 @@
 
 .tc-track {
     position: relative;
-    /* The tab column lives in a fixed gutter down the left (exploration 02).
-     * The track starts after it, so the stage measures and clips the strip
-     * from there — no spread content ever sits under the tabs. */
-    margin-left: var(--gutter, 96px);
+    /* The index lives in a fixed gutter down the RIGHT (Hendri; exploration
+     * 02 drew it left). The track stops short of it, so the stage measures
+     * and clips the strip before the gutter — no spread content ever sits
+     * under the tabs. */
     width: calc(100% - var(--gutter, 96px));
     /* Set per-page from the sector count: sectors × 100vh. */
     height: calc(var(--tc-sectors, 12) * 100vh);
@@ -85,7 +85,6 @@
 @media (max-width: 810px) {
     .tc-track {
         height: auto;
-        margin-left: 0;
         width: 100%;
     }
 

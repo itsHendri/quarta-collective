@@ -32,14 +32,10 @@ const { sectors = 12, titles } = Astro.props
                         class="tab"
                         data-cell={i}
                         data-state="unread"
-                        aria-label={
-                            i === 0 ? "Cover" : `Page ${i}: ${titles[i] ?? ""}`
-                        }
+                        aria-label={`Page ${i + 1}: ${titles[i] ?? ""}`}
                     >
-                        <span class="tab-n">
-                            {i === 0 ? "c" : String(i).padStart(2, "0")}
-                        </span>
-                        <span class="tab-caret" aria-hidden="true">◀</span>
+                        <span class="tab-caret" aria-hidden="true">▶</span>
+                        <span class="tab-n">{String(i + 1).padStart(2, "0")}</span>
                         <span class="tab-title t-hand is-sm" aria-hidden="true">
                             {titles[i] ?? ""}
                         </span>
@@ -52,7 +48,7 @@ const { sectors = 12, titles } = Astro.props
 
 <!-- ── Page number ────────────────────────────────────────────────────── -->
 <div class="page t-hand" id="tc-page" aria-live="polite" data-page="0">
-    <span data-page>cover</span>
+    <span data-page>p. 1</span>
 </div>
 
 <!-- ── Close the notebook ─────────────────────────────────────────────── -->
@@ -89,23 +85,25 @@ const { sectors = 12, titles } = Astro.props
     .tabs {
         position: fixed;
         top: 0;
-        left: 0;
+        right: 0;
         bottom: 0;
         width: var(--gutter, 96px);
         z-index: 6;
         color: var(--tc-fg);
     }
+    /* The wordmark stays top-left of the page; the index lives on the right. */
     .tabs-mark {
-        position: absolute;
+        position: fixed;
         top: 14px;
-        left: 20px;
+        left: 24px;
         white-space: nowrap;
     }
     .tabs-col {
         position: absolute;
         top: 96px;
-        left: 14px;
+        right: 14px;
         display: flex;
+        flex-direction: row-reverse;
         gap: 10px;
     }
     .tabs-rule {
@@ -134,7 +132,8 @@ const { sectors = 12, titles } = Astro.props
         gap: 6px;
         height: 44px;
         padding: 0 8px;
-        margin-left: -4px;
+        margin-right: -4px;
+        justify-content: flex-end;
         font-family: var(--font-type);
         font-size: 12px;
         letter-spacing: 0.08em;
@@ -160,12 +159,13 @@ const { sectors = 12, titles } = Astro.props
         color: var(--tc-fg);
     }
 
-    /* The title shows on hover or focus, written beside the number. */
+    /* The title shows on hover or focus, written beside the number, on the
+     * page side. */
     .tab-title {
         position: absolute;
-        left: 100%;
+        right: 100%;
         top: 50%;
-        margin-left: 10px;
+        margin-right: 10px;
         transform: translateY(-50%) rotate(-2deg);
         white-space: nowrap;
         color: var(--tc-fg);
@@ -194,7 +194,7 @@ const { sectors = 12, titles } = Astro.props
     /* ── Close ──────────────────────────────────────────────────────── */
     .close {
         position: fixed;
-        right: 36px;
+        right: calc(var(--gutter, 96px) + 36px);
         bottom: 26px;
         z-index: 6;
         display: inline-flex;
@@ -225,6 +225,9 @@ const { sectors = 12, titles } = Astro.props
         .tabs {
             bottom: auto;
             width: auto;
+        }
+        .close {
+            right: 20px;
         }
         .tabs-mark {
             padding-top: 16px;

@@ -437,3 +437,22 @@ copy, consistency), all findings fixed in one pass:
   carry no literal colours but one tape clip.
 - **Credits moved to the last page**, where a zine prints them; the cover
   colophon is three lines.
+
+---
+
+### Q14. Rulings never touch; the cover is page 1; the index moves to the right
+
+**2026-10-06, Hendri.** Three notes on the live build:
+
+- **A lined page beside a grid page still read as one odd sheet** (12 was
+  squared, 13 ruled). The rule is now stricter than "no two alike": every
+  ruled, dotted or squared spread has a PLAIN spread on both sides. The
+  write page keeps its ruling and the draw page its dots; both sit between
+  plain pages.
+- **"cover" is gone.** The cover is page 01 in the index and "p. 1" in the
+  corner, so there is one numbering everywhere. Fourteen pages, 01–14.
+- **The index is on the far right.** The gutter moves to the right edge, the
+  track stops short of it (`width: calc(100% - gutter)`), numbers are
+  right-aligned with the caret pointing at the rule, the title appears on
+  the page side on hover, and the wordmark stays top-left. The close control
+  and the lightbox close sit inside the gutter's edge.
