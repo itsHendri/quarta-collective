@@ -40,9 +40,9 @@ those files. Our own `DECISIONS.md` records only what is NEW here, as
 - **One red on the page, `#B5371F`, and it clears 4.5:1 on every stock** so
   it may carry the tab numbers and stamps. No blue on the page in this
   direction; the riso tokens stay declared for a later issue (Q12).
-- **The scroll track stops short of the 96px gutter on the RIGHT**
-  (`--gutter`, Q14). Do not put fixed chrome inside the gutter that is not
-  the index; the close controls sit just inside its edge.
+- **The scroll track stops short of the 48px gutter on the RIGHT**
+  (`--gutter`, Q14/Q16). Do not put fixed chrome inside the gutter that is
+  not the index; the close controls sit just inside its edge.
 - **The cover is page 1.** Tabs read 01–14; the corner reads "p. N".
 - **The headline wipe is a mask, never a clip-path** — Chrome's
   IntersectionObserver honours clip-path and the heading would never reveal
@@ -62,8 +62,8 @@ those files. Our own `DECISIONS.md` records only what is NEW here, as
 - **Notebook pages persist under stable keys** (`qc:notebook:write-1`,
   `draw-1`), never the page number.
 - **Rulings never touch**: every ruled, dotted or squared spread has a plain
-  spread on both sides (Q14). Every spread has a page edge
-  (`.tc-sector::after`). Headlines wrap; they no longer bleed.
+  spread on both sides (Q14). No page-edge divider (Q16). Headlines wrap;
+  they no longer bleed.
 
 ## How to work here
 

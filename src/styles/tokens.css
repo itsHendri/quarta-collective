@@ -79,6 +79,7 @@
 
     /* ── Geometry ───────────────────────────────────────────────────────── */
     --sector-w: 1400px; /* one spread's width in the strip */
+    --gutter: 48px; /* the index column on the right (Q16: Hendri narrowed it from 96) */
     --stage-h: 100vh;
     --bp-phone: 810px; /* below this the rig goes inert; vertical read */
     --bp-desk: 1200px;

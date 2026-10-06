@@ -21,9 +21,9 @@ const { sectors = 12, titles } = Astro.props
 
 <!-- ── Index tabs, down the left ──────────────────────────────────────── -->
 <nav class="tabs" id="tc-rail" aria-label="Index">
-    <span class="tabs-mark t-eyebrow">Quarta Collective · wednesdays</span>
+    <span class="tabs-mark t-eyebrow">Quarta Collective</span>
+    <i class="tabs-rule" aria-hidden="true"></i>
     <div class="tabs-col">
-        <i class="tabs-rule" aria-hidden="true"><b data-rail-fill></b></i>
         <div class="tabs-cells" data-rail-cells>
             {
                 Array.from({ length: sectors }, (_, i) => (
@@ -34,7 +34,6 @@ const { sectors = 12, titles } = Astro.props
                         data-state="unread"
                         aria-label={`Page ${i + 1}: ${titles[i] ?? ""}`}
                     >
-                        <span class="tab-caret" aria-hidden="true">▶</span>
                         <span class="tab-n">{String(i + 1).padStart(2, "0")}</span>
                         <span class="tab-title t-hand is-sm" aria-hidden="true">
                             {titles[i] ?? ""}
@@ -76,50 +75,42 @@ const { sectors = 12, titles } = Astro.props
 <style>
     /* ── Tabs ───────────────────────────────────────────────────────── */
     /*
-     * A typed index down the left gutter (exploration 02): the page numbers
-     * in Courier, the current one in the red ribbon with a caret, a hairline
-     * rule beside them. Progress is the rule filling red from the top to the
-     * current page — continuous, but vertical and inside the gutter, not a
-     * line gliding across the page.
+     * Hendri's Index component (Q16): a 48px column on the right edge, a
+     * hairline on its page side running full height, fourteen numbers
+     * centred and stacked at a 48px pitch, the whole stack centred
+     * vertically. The current page is bold; the others sit at half opacity.
+     * No caret, no red, no progress line.
      */
     .tabs {
         position: fixed;
         top: 0;
         right: 0;
         bottom: 0;
-        width: var(--gutter, 96px);
+        width: var(--gutter, 48px);
         z-index: 6;
-        color: var(--tc-fg);
+        color: var(--tc-fg-dim);
     }
-    /* The wordmark stays top-left of the page; the index lives on the right. */
+    /* The wordmark stays top-left of the page. */
     .tabs-mark {
         position: fixed;
         top: 14px;
         left: 24px;
         white-space: nowrap;
     }
-    .tabs-col {
-        position: absolute;
-        top: 96px;
-        right: 14px;
-        display: flex;
-        flex-direction: row-reverse;
-        gap: 10px;
-    }
     .tabs-rule {
-        position: relative;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
         width: 1px;
         background: color-mix(in srgb, var(--tc-fg) 30%, transparent);
     }
-    .tabs-rule b {
+    .tabs-col {
         position: absolute;
-        top: 0;
+        top: 50%;
         left: 0;
-        width: 100%;
-        height: 100%;
-        background: var(--riso-red);
-        transform-origin: top;
-        transform: scaleY(var(--rail-fill, 0));
+        right: 0;
+        transform: translateY(-50%);
     }
     .tabs-cells {
         display: flex;
@@ -129,34 +120,24 @@ const { sectors = 12, titles } = Astro.props
         position: relative;
         display: flex;
         align-items: center;
-        gap: 6px;
-        height: 44px;
-        padding: 0 8px;
-        margin-right: -4px;
-        justify-content: flex-end;
+        justify-content: center;
+        height: 48px; /* 32 visual + the 16 gap, so the hit area is the pitch */
+        width: 100%;
+        padding: 0;
         font-family: var(--font-type);
         font-size: 12px;
         letter-spacing: 0.08em;
         color: var(--tc-fg-dim);
-    }
-    .tab-caret {
-        font-size: 9px;
-        opacity: 0;
+        opacity: 0.5;
         transition: opacity 160ms linear;
-    }
-    .tab[data-state="read"] {
-        color: var(--tc-fg);
     }
     .tab[data-state="reading"] {
         font-weight: 700;
-        color: var(--riso-red);
-    }
-    .tab[data-state="reading"] .tab-caret {
         opacity: 1;
     }
     .tab:hover,
     .tab:focus-visible {
-        color: var(--tc-fg);
+        opacity: 1;
     }
 
     /* The title shows on hover or focus, written beside the number, on the
@@ -194,7 +175,7 @@ const { sectors = 12, titles } = Astro.props
     /* ── Close ──────────────────────────────────────────────────────── */
     .close {
         position: fixed;
-        right: calc(var(--gutter, 96px) + 36px);
+        right: calc(var(--gutter, 48px) + 36px);
         bottom: 26px;
         z-index: 6;
         display: inline-flex;
@@ -219,7 +200,8 @@ const { sectors = 12, titles } = Astro.props
      * to index, and their seek buttons duplicate ordinary scrolling. The page
      * number and the close control survive. */
     @media (max-width: 810px) {
-        .tabs-col {
+        .tabs-col,
+        .tabs-rule {
             display: none;
         }
         .tabs {

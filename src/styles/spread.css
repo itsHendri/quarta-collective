@@ -392,9 +392,6 @@
 .notebook-tools button:hover {
     background: color-mix(in srgb, var(--tc-fg) 10%, transparent);
 }
-.notebook-hint {
-    margin-left: 10px;
-}
 
 /* ── Lightbox ──────────────────────────────────────────────────────────── */
 
@@ -435,7 +432,7 @@
 .lightbox-close {
     position: absolute;
     top: 56px;
-    right: calc(var(--gutter, 96px) + 36px);
+    right: calc(var(--gutter, 48px) + 36px);
     padding: 8px 12px;
     border: 1.5px solid var(--tc-fg);
     border-radius: 2px;

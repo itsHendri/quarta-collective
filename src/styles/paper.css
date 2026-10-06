@@ -68,24 +68,9 @@
     background-position: 12px 12px;
 }
 
-/*
- * The page edge. Every spread is a leaf; where two meet there is a crease —
- * a hairline with the faintest shadow on the leaf behind it. Without it,
- * ruling running straight into a dot grid read as one odd sheet rather than
- * two pages (Hendri). Never two of the same ruling side by side, either:
- * see the spread order in pages/index.astro.
- */
-.tc-sector::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    width: 1px;
-    background: color-mix(in srgb, var(--tc-fg) 22%, transparent);
-    box-shadow: -10px 0 14px -10px rgb(var(--shadow-rgb) / 0.35);
-    pointer-events: none;
-}
+/* No page-edge divider: Hendri removed them in the design (Q16). The
+ * alternating rulings, with a plain page between every patterned one, do
+ * the separating now. */
 
 /* ── Fold and staples (spread 00 only) ─────────────────────────────────── */
 
@@ -363,7 +348,6 @@
     .binding,
     .blockprint,
     .sketch,
-    .tc-sector::after,
     .tc-sector.is-ruled::before {
         display: none;
     }

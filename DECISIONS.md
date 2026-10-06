@@ -470,3 +470,24 @@ body sits 44px under it, matching the Figma frames (headline y 118, body y
 253). The headline reveal wipe stays. The chrome in Figma is now components
 — Wordmark, Tab (default/current), Index, Page number — so a universal edit
 there is one edit; the site's chrome already comes from one component.
+
+---
+
+### Q16. Hendri's second round of Figma edits: the index, the wordmark, the hints
+
+**2026-10-06.** Read from the "Full design — T1" page and mirrored here:
+
+- **Index.** Now a 48px column on the right edge (`--gutter: 48px`), a
+  hairline on its page side running the full height, fourteen numbers
+  centred at a 48px pitch with the stack centred vertically. Current page
+  bold, the rest at half opacity. No caret, no red, no progress fill — the
+  gutter only says which page is current. The hit area stays 48px tall.
+- **Wordmark** reads "Quarta Collective"; "wednesdays" is gone.
+- **Page-edge dividers** removed; the alternating rulings separate pages.
+- **"Saved in this browser only"** removed from both notebook pages. The
+  pages still persist in localStorage; they just no longer say so.
+
+Flag for Hendri, not changed: the half-opacity index numbers measure about
+2.4:1 on the warm stock. They are a navigation aid with the current page
+at 5:1 and each row carrying an aria-label, so the index is still usable,
+but the dim numbers are below the small-text threshold by design.

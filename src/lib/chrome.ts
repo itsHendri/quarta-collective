@@ -78,7 +78,6 @@ export interface ProgressRailOptions {
 export function initProgressRail(options: ProgressRailOptions): () => void {
     const { root, sectors = 12 } = options
     const cellsEl = root.querySelector<HTMLElement>("[data-rail-cells]")
-    const fillEl = root.querySelector<HTMLElement>("[data-rail-fill]")
 
     let lastCell = -1
 
@@ -86,16 +85,8 @@ export function initProgressRail(options: ProgressRailOptions): () => void {
         const clamped = Math.min(1, Math.max(0, p))
         const current = Math.min(sectors - 1, Math.floor(clamped * sectors))
 
-        // Continuous progress lives INSIDE the current tab — it fills left to
-        // right as the reader moves through that spread. memory-lane's gliding
-        // head line did the same job and read as a stray rule across the top
-        // of the page; the fill is the same information, kept in the tab.
-        const within = clamped * sectors - current
-        const live = cellsEl?.children[current] as HTMLElement | undefined
-        if (live) live.style.setProperty("--tab-fill", within.toFixed(3))
-        // The gutter's rule fills top to bottom with overall progress, so the
-        // reader can see how far through the whole notebook they are.
-        if (fillEl) fillEl.style.setProperty("--rail-fill", clamped.toFixed(4))
+        // No continuous progress any more (Q16): the index only says which
+        // page is current. Hendri removed the fill from the design.
 
         if (current !== lastCell && cellsEl) {
             lastCell = current
@@ -105,7 +96,6 @@ export function initProgressRail(options: ProgressRailOptions): () => void {
                 cell.dataset.state =
                     i < current ? "read" : i === current ? "reading" : "unread"
                 cell.setAttribute("aria-current", i === current ? "page" : "false")
-                if (i !== current) cell.style.removeProperty("--tab-fill")
             }
         }
     }

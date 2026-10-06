@@ -5,6 +5,11 @@ All notable changes to this project are documented here. The format is
 
 ## [Unreleased]
 
+### Changed
+- Q16, from Hendri's Figma edits: 48px index with centred numbers, no
+  caret, no red, no progress fill; wordmark without "wednesdays"; page-edge
+  dividers and the notebook hint removed.
+
 ### Removed
 - Eyebrows and the typed rule under headlines, and the cover's "open me" note
   (Q15, from Hendri's Figma edits).
