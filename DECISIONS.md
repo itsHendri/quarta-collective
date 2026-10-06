@@ -491,3 +491,27 @@ Flag for Hendri, not changed: the half-opacity index numbers measure about
 2.4:1 on the warm stock. They are a navigation aid with the current page
 at 5:1 and each row carrying an aria-label, so the index is still usable,
 but the dim numbers are below the small-text threshold by design.
+
+---
+
+### Q17. The details: text column, rulings, hand weights, the clear button
+
+**2026-10-06.** A second, closer read of the Figma frames — rulings and every
+text node — against the build:
+
+- **Text column at x 76.** Headline, body, colophon and credits all sit at
+  Figma x 48 (spread x 76); the headline no longer hangs 4px left of the
+  body. `.tc-sector` padding-left is 76.
+- **Ruling colours are the exact Figma values** — lines `#D4C8A8`, margin
+  `#E0A7A0`, dots `#B9B2A0`, squares `#CFC4A6` — instead of colour-mixes
+  that landed close. Pitch (28px), margin (spread x 60) and the 24px square
+  grid were already right. The dot field is shifted to match Hendri's nudge.
+- **Handwriting weights**: Caveat Bold at 22 and 30, Regular at 18, as in
+  the frames (was 500 / 600 / 400).
+- **Placeholders** ("write here…", "draw here…") at 70% of the dim tone.
+- **The clear button** sits bottom-right of the notebook pages, where
+  Hendri moved it.
+
+Everything else — headline 96/95%/−2%, body 15 at 170% (187% on ruled
+pages), captions 14, stamps 12 Bold at 14% tracking, the red — already
+matched.

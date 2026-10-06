@@ -93,7 +93,7 @@
  * line per spread that was written with feeling. */
 .t-hand {
     font-family: var(--font-hand);
-    font-weight: 500;
+    font-weight: 700;
     font-size: 22px;
     line-height: 1.15;
     letter-spacing: 0;
@@ -105,7 +105,7 @@
 }
 .t-hand.is-lg {
     font-size: 30px;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 /* Value — numbers the chrome reports. Tabular so nothing reflows. */

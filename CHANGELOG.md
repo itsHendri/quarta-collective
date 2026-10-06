@@ -6,6 +6,10 @@ All notable changes to this project are documented here. The format is
 ## [Unreleased]
 
 ### Changed
+- Q17: text column at x 76, exact ruling colours, hand weights 700/400/700,
+  placeholders at 70%, clear button bottom-right.
+
+### Changed
 - Q16, from Hendri's Figma edits: 48px index with centred numbers, no
   caret, no red, no progress fill; wordmark without "wednesdays"; page-edge
   dividers and the notebook hint removed.

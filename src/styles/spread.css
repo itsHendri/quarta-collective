@@ -223,7 +223,7 @@
 /* ── Credits (last spread) ─────────────────────────────────────────────── */
 .credits {
     position: absolute;
-    left: 72px;
+    left: 76px;
     right: 72px;
     bottom: 56px;
     max-width: 700px;
@@ -236,7 +236,7 @@
  * (memory-lane #36). */
 .colophon {
     position: absolute;
-    left: 72px;
+    left: 76px;
     right: 72px;
     bottom: 64px;
     max-width: 520px;
@@ -248,7 +248,9 @@
 /* ── Spread padding ────────────────────────────────────────────────────── */
 
 .tc-sector {
-    padding: 92px 72px;
+    /* 76 on the left: the headline and body sit at Figma x 48, which is
+     * spread x 76 (Q17). */
+    padding: 92px 72px 92px 76px;
 }
 
 /* ── Vertical read ─────────────────────────────────────────────────────── */
@@ -349,6 +351,7 @@
 .notebook-text:empty::before {
     content: attr(data-placeholder);
     color: var(--tc-fg-dim);
+    opacity: 0.7;
     pointer-events: none;
 }
 .notebook-text:focus-visible {
@@ -368,15 +371,17 @@
     left: 8px;
     top: 4px;
     color: var(--tc-fg-dim);
+    opacity: 0.7;
     pointer-events: none;
 }
 .notebook.has-ink .notebook-cue {
     display: none;
 }
 .notebook-tools {
+    /* Bottom-right, where Hendri put the clear button in Figma (Q17). */
     position: absolute;
-    left: 72px;
-    bottom: 48px;
+    right: 28px;
+    bottom: 65px;
     display: flex;
     align-items: center;
     gap: 8px;

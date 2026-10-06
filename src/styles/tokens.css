@@ -48,9 +48,10 @@
 
     /* ── Semantic aliases ───────────────────────────────────────────────── */
     --rule: color-mix(in srgb, var(--graphite) 30%, transparent);
-    --ruled-line: color-mix(in srgb, #a8956c 45%, transparent); /* sepia ruling */
-    --margin-line: color-mix(in srgb, var(--riso-red) 45%, transparent);
-    --dot: color-mix(in srgb, var(--graphite) 40%, transparent);
+    --ruled-line: #d4c8a8; /* sepia ruling, as drawn in Figma (Q17) */
+    --margin-line: #e0a7a0;
+    --dot: #b9b2a0;
+    --square-line: #cfc4a6;
     --misregister: transparent; /* exploration 02 has no misregistration */
 
     /*
