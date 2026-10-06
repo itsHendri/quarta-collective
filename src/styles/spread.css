@@ -9,26 +9,6 @@
  * touch the ruling.
  */
 
-/* The eyebrow is only the date now — "wednesday no. 3". The page number
- * moved to the corner (chrome) and off the page itself (Hendri). The rule
- * survives on the cover only. */
-.spread-head {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px 14px;
-    align-items: center;
-    max-width: 560px;
-}
-.spread-head > span {
-    white-space: nowrap;
-}
-/* Typed in brackets, the way a typist marks a note to self. */
-.spread-head > span:not(.rule)::before {
-    content: "[ ";
-}
-.spread-head > span:not(.rule)::after {
-    content: " ]";
-}
 
 /* A rule between the spread's number and its date. */
 .spread-head .rule {
@@ -55,7 +35,7 @@
  */
 .spread-title {
     position: relative;
-    margin-top: 12px;
+    margin-top: 26px;
     mask-image: linear-gradient(to right, #000 0 47%, transparent 53% 100%);
     mask-size: 220% 100%;
     mask-position: 100% 0;
@@ -64,29 +44,12 @@
 .spread-title.is-revealed {
     mask-position: 0 0;
 }
-/* A row of "=" typed under the headline in the red ribbon — exploration 02's
- * rule. Typed on reveal: the clip opens character by character. */
-.spread-title::after {
-    content: "==================================";
-    display: block;
-    margin-top: 10px;
-    font-family: var(--font-type);
-    font-size: 16px;
-    line-height: 1;
-    letter-spacing: 0;
-    text-transform: none;
-    color: var(--riso-red);
-    max-width: 0;
-    overflow: hidden;
-    white-space: nowrap;
-    transition: max-width 500ms 250ms steps(34);
-}
-.spread-title.is-revealed::after {
-    max-width: 340px;
-}
+/* No rule under the headline and no eyebrow above it — Hendri removed both
+ * in the Figma design (Q15). The headline takes the eyebrow's place; the
+ * typed note follows 44px below, as drawn. */
 
 .spread-note {
-    margin-top: 18px;
+    margin-top: 44px;
     max-width: 420px;
 }
 /* On a ruled page the typed lines sit ON the ruling: the pitch is 28px, so
@@ -358,7 +321,7 @@
  * outright — no mode to pick.
  */
 .notebook-prompt {
-    margin-top: 16px;
+    margin-top: 26px;
     max-width: 640px;
     color: var(--tc-fg-dim);
 }

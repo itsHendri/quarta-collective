@@ -5,6 +5,10 @@ All notable changes to this project are documented here. The format is
 
 ## [Unreleased]
 
+### Removed
+- Eyebrows and the typed rule under headlines, and the cover's "open me" note
+  (Q15, from Hendri's Figma edits).
+
 ### Changed
 - Q14: a plain spread between every patterned one; the cover is page 01;
   the index is in a right-hand gutter.

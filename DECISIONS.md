@@ -456,3 +456,17 @@ copy, consistency), all findings fixed in one pass:
   right-aligned with the caret pointing at the rule, the title appears on
   the page side on hover, and the wordmark stays top-left. The close control
   and the lightbox close sit inside the gutter's edge.
+
+---
+
+### Q15. Hendri's edits in Figma: no eyebrows, no rule under the headline
+
+**2026-10-06.** With the full design in Figma, Hendri removed every eyebrow
+("[ wednesday no. 3 ]") and every typed "====" rule under the headlines, and
+the "open me" note on the cover. The build follows: `.spread-head` is gone
+from all spreads and the notebook pages, `.spread-title::after` is gone, the
+headline takes the eyebrow's place (26px below the running head) and the
+body sits 44px under it, matching the Figma frames (headline y 118, body y
+253). The headline reveal wipe stays. The chrome in Figma is now components
+— Wordmark, Tab (default/current), Index, Page number — so a universal edit
+there is one edit; the site's chrome already comes from one component.
