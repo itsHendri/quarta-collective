@@ -8,7 +8,12 @@ work is Hendri's direction, not more build.
 
 ## Waiting on Hendri
 
-0. ~~Pick a direction from the Figma explorations.~~ Done: 02, in colour (Q12). Eight cover + page-one
+0. ~~Pick a direction from the Figma explorations.~~ Done: 02, in colour (Q12).
+   The **full fourteen-spread design** now lives on the Figma page "Full
+   design — T1" (same file), built from the code's data on 2026-10-06 so
+   Hendri can remove and rearrange items there; each item is a named layer.
+   When edits come back, carry them into `src/spreads/` by hand — the Figma
+   coordinates equal the spread coordinates minus 28 on x. Eight cover + page-one
    variations (display face, palette, image treatment, marks, tab position):
    https://www.figma.com/design/COEWX2JAX3PEiYMsANgtJH — 2026-10-05. Hendri's
    review of the live build said: headline face and treatment not liked,
