@@ -35,7 +35,13 @@
  */
 .spread-title {
     position: relative;
-    margin-top: 26px;
+    /* The wipe mask clips to the box, and at 95% leading Special Elite's
+     * capitals rise above the line box — the tops of the letters were being
+     * shaved off (Hendri, Q18). Padding makes the box tall enough; the
+     * negative margin keeps the headline where it was. */
+    padding: 0.14em 0.1em 0.06em 0;
+    margin-top: calc(26px - 0.14em);
+    margin-bottom: calc(-0.06em);
     mask-image: linear-gradient(to right, #000 0 47%, transparent 53% 100%);
     mask-size: 220% 100%;
     mask-position: 100% 0;
@@ -391,7 +397,7 @@
     border: 1.5px solid var(--tc-fg);
     border-radius: 2px;
     color: var(--tc-fg);
-    background: transparent;
+    background: var(--white); /* a white card, as drawn (Q18) */
     transition: background-color 140ms linear;
 }
 .notebook-tools button:hover {

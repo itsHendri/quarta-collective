@@ -515,3 +515,23 @@ text node — against the build:
 Everything else — headline 96/95%/−2%, body 15 at 170% (187% on ruled
 pages), captions 14, stamps 12 Bold at 14% tracking, the red — already
 matched.
+
+---
+
+### Q18. Edge lines on textured pages, the stamp, the clear card, the clipped capitals
+
+**2026-10-06, Hendri.** Four things from the Figma frames that the build had
+not picked up or had wrong:
+
+- **Textured pages are capped at both ends.** Every ruled, dotted or squared
+  page carries a red hairline down its left and right edge (the margin red),
+  so the ruling arrives and leaves with the page as the strip pans instead
+  of floating in unbounded. Borders on the spread, so the 1400px holds.
+- **"est. autumn 2026"** is gone from page 2.
+- **The clear button is a white card** with an ink stroke.
+- **The headline's capitals were clipped at the top.** The wipe is a
+  `mask-image`, and a mask clips to the element's box; at 95% leading the
+  tops of Special Elite's capitals rise above the line box. Padding now
+  makes room, with a negative margin so nothing moves. Visible the moment
+  one looks at a title; a measured check (no pixel of ink outside the box)
+  would have caught it earlier.

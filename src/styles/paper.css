@@ -46,7 +46,7 @@
     position: absolute;
     top: 0;
     bottom: 0;
-    left: 60px;
+    left: 59px; /* 60 from the page edge, inside the 1px edge line */
     width: 1px;
     background: var(--margin-line);
     pointer-events: none;
@@ -69,9 +69,20 @@
     background-position: 12px 12px;
 }
 
-/* No page-edge divider: Hendri removed them in the design (Q16). The
- * alternating rulings, with a plain page between every patterned one, do
- * the separating now. */
+/*
+ * Textured pages are capped at both ends (Q18). A ruled, dotted or squared
+ * page carries a red hairline down its left and right edge — the same red
+ * as the margin — so the ruling arrives and leaves with the page instead of
+ * floating in from nowhere as the strip pans. Borders, not pseudo-elements:
+ * `::before` is the ruled page's margin, and with border-box sizing the
+ * spread keeps its 1400px.
+ */
+.tc-sector.is-ruled,
+.tc-sector.is-grid,
+.tc-sector.is-squared {
+    border-left: 1px solid var(--margin-line);
+    border-right: 1px solid var(--margin-line);
+}
 
 /* ── Fold and staples (spread 00 only) ─────────────────────────────────── */
 
@@ -351,6 +362,12 @@
     .sketch,
     .tc-sector.is-ruled::before {
         display: none;
+    }
+    .tc-sector.is-ruled,
+    .tc-sector.is-grid,
+    .tc-sector.is-squared {
+        border-left: 0;
+        border-right: 0;
     }
     .tc-sector.is-ruled {
         background-position: 0 60px;

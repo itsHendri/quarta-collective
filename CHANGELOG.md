@@ -5,6 +5,10 @@ All notable changes to this project are documented here. The format is
 
 ## [Unreleased]
 
+### Fixed
+- Q18: red edge lines on textured pages, page-2 stamp removed, white clear
+  button, headline capitals no longer clipped by the wipe mask.
+
 ### Changed
 - Q17: text column at x 76, exact ruling colours, hand weights 700/400/700,
   placeholders at 70%, clear button bottom-right.
