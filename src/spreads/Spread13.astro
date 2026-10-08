@@ -1,13 +1,11 @@
 ---
 import Clipping from "~/components/Clipping.astro"
 import Note from "~/components/Note.astro"
-import { CREDITS } from "~/content/clippings"
 import SketchMark from "~/components/SketchMark.astro"
 
 /*
- * Spread 13 — the next one. Mostly blank ruled page, on purpose. The "close
- * the notebook" control (chrome) appears over it once the read completes.
- * Back on white stock.
+ * Spread 13 — the next one. Mostly blank ruled page, on purpose. Under it,
+ * the back cover, with the credits (Q21). Back on the warm stock.
  */
 ---
 
@@ -43,9 +41,4 @@ import SketchMark from "~/components/SketchMark.astro"
 
     <SketchMark motif="asterisk" x={700} y={400} w={60} rotate={20} ink="red" weight={3} />
 
-    {/* The credits moved here from the cover (Q13) — the last page is where a
-        zine prints them. Nothing may come after the track, so they stay on it. */}
-    <p class="credits t-eyebrow">
-        placeholder photographs, unsplash: {CREDITS.map((c) => `@${c}`).join(" · ")}
-    </p>
 </section>

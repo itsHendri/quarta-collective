@@ -1,33 +1,38 @@
 /*
- * SECTOR READ — the scroll mechanism's layout.
+ * THE PILE — the scroll mechanism's layout (Q19).
  *
- *   .tc-track   tall, ordinary page height (sectors × 100vh). This is what the
- *               browser actually scrolls.
+ *   .tc-track   tall, ordinary page height ((sheets + 1) × 100vh). This is
+ *               what the browser actually scrolls.
  *   .tc-stage   100vh, position: sticky — pins while the track scrolls past.
- *   .tc-strip   the wide surface, translated horizontally by the rig.
- *   .tc-sector  one screen of story, a fixed 1400px wide.
+ *               It IS the desk: graph paper a shade darker than the stock.
+ *   .back-cover under everything, set into the desk; revealed when the last
+ *               sheet goes (Q21).
+ *   .tc-strip   the pile: one sheet-sized box, centred on the desk and scaled
+ *               to fit it (--sheet-s). Kept its id and name so the rig, the
+ *               hover and the focus-follow still find it.
+ *   .tc-sector  one sheet, 1400 × 880, stacked absolutely. The rig slides the
+ *               top one off to the left and the next is already underneath.
+ *
+ * It used to be a strip 19,600px wide panned by a transform. The plates on a
+ * sheet keep their pixel coordinates; only what moves has changed.
  *
  * NOTHING MAY COME AFTER THE TRACK. A section below it keeps scrolling once
- * the read is done and takes the pinned stage — memory card included — off the
- * top of the screen. The colophon lives on sector 00 for exactly this reason.
- * (Upstream #36.)
+ * the read is done and takes the pinned stage off the top of the screen.
+ * That is why the back cover is INSIDE the stage, under the pile, and not a
+ * footer after it — paper.design's footer reveal, done the only way this rig
+ * allows. (Upstream #36.)
  *
- * Upstream additionally needed the track and every ancestor to keep
- * `overflow: visible`, because Framer clips containers by default and any
- * clipping ancestor becomes the sticky containing block, which silently stops
- * the stage pinning (upstream #14). We do not clip anything here, but that is
- * the failure mode if the stage ever stops sticking.
+ * Any clipping ancestor becomes the sticky containing block and silently
+ * stops the stage pinning (upstream #14). Only the stage clips.
  */
 
 .tc-track {
     position: relative;
-    /* The index lives in a fixed gutter down the RIGHT (Hendri; exploration
-     * 02 drew it left). The track stops short of it, so the stage measures
-     * and clips the strip before the gutter — no spread content ever sits
-     * under the tabs. */
+    /* The index lives in a fixed gutter down the RIGHT. The track stops short
+     * of it, so the desk and the pile are measured inside it. */
     width: calc(100% - var(--gutter, 48px));
-    /* Set per-page from the sector count: sectors × 100vh. */
-    height: calc(var(--tc-sectors, 12) * 100vh);
+    /* One viewport of scroll per sheet, plus the one the stage stands in. */
+    height: calc((var(--tc-sectors, 12) + 1) * 100vh);
 }
 
 .tc-stage {
@@ -36,51 +41,132 @@
     height: 100vh;
     width: 100%;
     /*
-     * The one element that clips. It should: it hides the parts of the strip
-     * that have not arrived yet.
+     * The one element that clips: a sheet slid off the pile leaves under the
+     * left edge of the desk.
      */
     overflow: clip;
-    background: var(--tc-bg);
+    background-color: var(--desk);
     /*
-     * Upstream wrote this colour imperatively onto the element every frame,
-     * because in Framer the stage's fill was authored and a CSS variable could
-     * never reach it. Here the variable is the whole mechanism.
+     * Graph paper, as paper.design draws it: a fine grid in CSS and a major
+     * grid as a small SVG tile (one dashed and one solid line, 0.5px) — our
+     * own tile, not theirs. Both are anchored to the stage's centre so the
+     * pile sits square on them.
      */
+    background-image:
+        /* The ruler printed down the desk's left edge, the same tick as the
+         * index's ruler on the right and in the same phase, so a tick on
+         * one side faces a tick on the other (Q20). */
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M0 .5H7M0 12.5H4M0 24.5H11M0 36.5H4' stroke='%23281e0a' stroke-opacity='.5'/%3E%3C/svg%3E"),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cpath d='M60.25 0V120' stroke='%23281e0a' stroke-opacity='.32' stroke-width='.5' stroke-dasharray='6 6'/%3E%3Cpath d='M0 60.25H120' stroke='%23281e0a' stroke-opacity='.32' stroke-width='.5'/%3E%3C/svg%3E"),
+        linear-gradient(to right, var(--desk-line) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--desk-line) 1px, transparent 1px);
+    background-repeat: repeat-y, repeat, repeat, repeat;
+    background-size:
+        48px 48px,
+        120px 120px,
+        10px 10px,
+        10px 10px;
+    background-position:
+        0 calc(50vh - var(--tc-sectors, 14) * 24px),
+        center,
+        center,
+        center;
+}
+
+/* The desk's own fibre, under the pile. Each sheet carries its own (paper.css). */
+.tc-stage::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image: url("../assets/textures/paper.png");
+    background-size: 512px 512px;
+    mix-blend-mode: multiply;
+    opacity: 0.5; /* TEXTURE_ON.desk — the sweep charges the desk for it */
 }
 
 .tc-strip {
     position: absolute;
-    inset-block: 0;
-    left: 0;
-    display: flex;
-    /*
-     * `max-content` so the strip's own width equals its content and
-     * `scrollWidth` is unambiguous — the rig measures travel as
-     * `strip.scrollWidth - stage.clientWidth`.
-     */
-    width: max-content;
-    height: 100%;
-    /* The rig writes translate3d here. Do not add a transition: the lerp IS
-     * the smoothing, and a CSS transition on top double-smooths and lags. */
-    will-change: transform;
+    z-index: 2;
+    left: 50%;
+    top: 50%;
+    width: var(--sheet-w);
+    height: var(--sheet-h);
+    /* Scaled as one, so a sheet's transform is only ever its own slide. */
+    transform: translate(-50%, -50%) scale(var(--sheet-s, 1));
+    transform-origin: 50% 50%;
 }
 
 .tc-sector {
-    position: relative;
-    flex: none;
-    width: var(--sector-w);
-    height: 100%;
-    /* Plates are positioned absolutely within a sector, and a hovered plate
-     * tips in 3D — so the sector is the containing block AND the element that
-     * carries `perspective` (the rig sets it on first hover, because an
-     * element's own perspective applies to its children, not itself). */
+    position: absolute;
+    inset: 0;
+    width: var(--sheet-w);
+    height: var(--sheet-h);
+    box-sizing: border-box;
+    /* Its own stacking context on every layout, so the paper texture (z 6)
+     * stays on the sheet and never multiplies over the chrome. */
+    isolation: isolate;
+    background-color: var(--tc-bg);
+    /* The rig writes translate + rotate here. Do not add a transition: the
+     * lerp IS the smoothing, and a CSS transition on top double-smooths. */
+    transform-origin: 50% 110%;
+    /*
+     * At rest, mono's offset shadow: a sheet lying on another. As it is
+     * picked up (--lift 0 → 1) paper.design's deeper five-layer shadow comes
+     * in. Animated on the one moving sheet only.
+     */
+    --lift: 0;
+    box-shadow:
+        0 0 0 0.5px rgb(var(--shadow-rgb) / 0.14),
+        2px 3px 4px -2px rgb(var(--shadow-rgb) / 0.14),
+        3px 6px 12px -6px rgb(var(--shadow-rgb) / 0.16),
+        0 calc(var(--lift) * 18px) calc(var(--lift) * 40px)
+            calc(var(--lift) * -10px) rgb(var(--shadow-rgb) / calc(var(--lift) * 0.28)),
+        0 calc(var(--lift) * 6px) calc(var(--lift) * 14px)
+            calc(var(--lift) * -4px) rgb(var(--shadow-rgb) / calc(var(--lift) * 0.18));
+    /*
+     * Plates are positioned absolutely within a sheet, and a hovered plate
+     * tips in 3D — so the sheet is the containing block AND the element that
+     * carries `perspective` (the rig sets it on first hover).
+     */
+}
+/* Only the sheet in motion gets its own layer: fourteen 1400 × 880 layers at
+ * 2× would cost a quarter of a gigabyte for nothing. */
+.tc-sector.is-moving {
+    will-change: transform;
+}
+
+/* Crop marks at the pile's corners, printed on the desk (Q20). Inside the
+ * strip so they scale with it; under every sheet. */
+.crop {
+    position: absolute;
+    inset: -34px;
+    z-index: 0;
+    pointer-events: none;
+    --c: rgb(var(--shadow-rgb) / 0.45);
+    --len: 22px;
+    background:
+        /* top-left */
+        linear-gradient(var(--c), var(--c)) 0 34px / var(--len) 1px,
+        linear-gradient(var(--c), var(--c)) 34px 0 / 1px var(--len),
+        /* top-right */
+        linear-gradient(var(--c), var(--c)) 100% 34px / var(--len) 1px,
+        linear-gradient(var(--c), var(--c)) calc(100% - 34px) 0 / 1px var(--len),
+        /* bottom-left */
+        linear-gradient(var(--c), var(--c)) 0 calc(100% - 34px) / var(--len) 1px,
+        linear-gradient(var(--c), var(--c)) 34px 100% / 1px var(--len),
+        /* bottom-right */
+        linear-gradient(var(--c), var(--c)) 100% calc(100% - 34px) / var(--len) 1px,
+        linear-gradient(var(--c), var(--c)) calc(100% - 34px) 100% / 1px var(--len);
+    background-repeat: no-repeat;
 }
 
 /*
- * Below the cutoff the strip does not pan: the page becomes an ordinary
- * vertical read. The rig keeps publishing progress from vertical scroll so the
- * chrome stays alive — without a publisher the rail, log, ticks and card park
- * all go inert. (Upstream #9.)
+ * Below the cutoff there is no pile: the page becomes an ordinary vertical
+ * read of sheets, one after another, each in its own stock. The rig keeps
+ * publishing progress from vertical scroll so the chrome stays alive.
+ * (Upstream #9.) The back cover follows the last sheet in flow.
  */
 @media (max-width: 810px) {
     .tc-track {
@@ -92,20 +178,31 @@
         position: static;
         height: auto;
         overflow: visible;
+        display: flex;
+        flex-direction: column;
+    }
+    .tc-stage::before {
+        display: none;
     }
 
     .tc-strip {
         position: static;
-        flex-direction: column;
         width: 100%;
         height: auto;
         transform: none !important;
-        will-change: auto;
     }
 
     .tc-sector {
+        position: relative;
+        inset: auto;
         width: 100%;
         height: auto;
         min-height: 100svh;
+        transform: none !important;
+        box-shadow: 0 1px 0 rgb(var(--shadow-rgb) / 0.12);
+    }
+
+    .crop {
+        display: none;
     }
 }

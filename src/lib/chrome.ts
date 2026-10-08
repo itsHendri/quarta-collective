@@ -1,10 +1,11 @@
 /**
  * Notebook chrome — what the notebook itself can carry.
  *
- * Three subscribers to the `tc:scroll` bus: the index tabs along the top
- * edge, the page number in the corner, and the "close the notebook" release
- * at the end. None of them recompute scroll position; all of them bind their
- * type to `--tc-fg` / `--tc-fg-dim` so they stay legible on every paper shade.
+ * Three subscribers to the `tc:scroll` bus: the index tabs on the ruler down
+ * the right, the page number in the corner, and the "back to the top"
+ * release on the back cover. None of them recompute scroll position — they
+ * read the page on top from the bus — and all of them bind their type to
+ * `--tc-fg` / `--tc-fg-dim`, measured for the surface they sit on.
  *
  * THE CHROME RULE survives from memory-lane (#15) in spirit: the chrome may
  * only say what a notebook could carry — page numbers, dates, index tabs.
@@ -15,41 +16,57 @@
  * pinned horizontal story without them is a trap.
  */
 
+import { progressForSheet } from "./pile"
+
 /* ═══════════════════════════════════════════════════ jumping ═══ */
 
+/** The sheets of the pile, in order. The strip also holds the crop marks. */
+function sheetsOf(strip: Element): HTMLElement[] {
+    return Array.from(strip.children).filter((el) =>
+        el.classList.contains("tc-sector")
+    ) as HTMLElement[]
+}
+
+/** The page on top, as last published. Focus-follow compares against it. */
+let pageOnTop = 0
+if (typeof window !== "undefined") {
+    window.addEventListener("tc:scroll", (e) => {
+        pageOnTop = e.detail?.page ?? pageOnTop
+    })
+}
+
 /**
- * Scroll so that spread `i` sits CENTRED in the stage. Geometry comes from
- * the DOM, so a change to --sector-w or a resize cannot drift it (Q5).
+ * Scroll so that sheet `i` lies on top of the pile, settled. The position
+ * comes from the same arithmetic the rig moves the sheets with (pile.ts), so
+ * a jump can never land between two pages (Q19; was DOM centring, Q5).
  *
- * Two things happen on the way (Q13): the spread's headline is revealed at
- * once rather than waiting for the observer — after a jump the title is the
- * first thing the reader looks for and used to be the last to arrive — and
- * its lazy clippings are switched to eager so the pictures are loading
- * while the pan is still travelling, instead of landing as blank mattes.
+ * Two things happen on the way (Q13): the sheet's headline is revealed at
+ * once rather than waiting — after a jump the title is the first thing the
+ * reader looks for — and its lazy clippings are switched to eager so the
+ * pictures are loading while the pile is still moving.
  */
 export function jumpToSector(i: number): void {
     const track = document.getElementById("tc-track")
     const strip = document.getElementById("tc-strip")
-    const sector = strip?.children[i] as HTMLElement | undefined
-    if (!track || !strip || !sector) return
+    if (!track || !strip) return
+    const sheets = sheetsOf(strip)
+    const sector = sheets[i]
+    if (!sector) return
     sector.querySelector(".spread-title")?.classList.add("is-revealed")
     sector.querySelectorAll<HTMLImageElement>('img[loading="lazy"]').forEach((img) => {
         img.loading = "eager"
     })
-    const stageW = strip.parentElement?.clientWidth || window.innerWidth
-    const distance = Math.max(1, strip.scrollWidth - stageW)
-    const centre = sector.offsetLeft + sector.offsetWidth / 2 - stageW / 2
-    const p = Math.min(1, Math.max(0, centre / distance))
+    const p = progressForSheet(i, sheets.length)
     const top = window.scrollY + track.getBoundingClientRect().top
     const travel = track.offsetHeight - window.innerHeight
     window.scrollTo({ top: top + travel * p, behavior: "smooth" })
 }
 
 /**
- * Focus follows the pan. A clipping or a notebook control three spreads away
- * can take keyboard focus while the stage clips it out of view; Enter would
- * then open a lightbox for a picture nobody saw. When something inside the
- * strip is focused and its spread is not the one on screen, jump there.
+ * Focus follows the pile. A clipping or a notebook control on a sheet three
+ * deep can take keyboard focus while another sheet covers it; Enter would
+ * then open a lightbox for a picture nobody saw. When something on a sheet
+ * is focused and that sheet is not the one on top, bring it to the top.
  * (memory-lane's backlog item "focus should settle the pan"; Q13.)
  */
 export function initFocusFollow(options: { strip: HTMLElement }): () => void {
@@ -59,10 +76,8 @@ export function initFocusFollow(options: { strip: HTMLElement }): () => void {
         const sector = target?.closest<HTMLElement>(".tc-sector")
         if (!sector || sector.parentElement !== strip) return
         if (window.innerWidth <= 810) return // vertical read: the browser scrolls
-        const stage = strip.parentElement!.getBoundingClientRect()
-        const r = sector.getBoundingClientRect()
-        const visible = r.left >= stage.left - 2 && r.right <= stage.right + 2
-        if (!visible) jumpToSector(Array.prototype.indexOf.call(strip.children, sector))
+        const i = sheetsOf(strip).indexOf(sector)
+        if (i >= 0 && i !== pageOnTop) jumpToSector(i)
     }
     strip.addEventListener("focusin", onFocus)
     return () => strip.removeEventListener("focusin", onFocus)
@@ -81,9 +96,8 @@ export function initProgressRail(options: ProgressRailOptions): () => void {
 
     let lastCell = -1
 
-    function paint(p: number) {
-        const clamped = Math.min(1, Math.max(0, p))
-        const current = Math.min(sectors - 1, Math.floor(clamped * sectors))
+    function paint(page: number) {
+        const current = Math.min(sectors - 1, Math.max(0, page))
 
         // No continuous progress any more (Q16): the index only says which
         // page is current. Hendri removed the fill from the design.
@@ -102,7 +116,7 @@ export function initProgressRail(options: ProgressRailOptions): () => void {
 
     const onScroll = (e: Event) => {
         const d = (e as CustomEvent).detail
-        if (d) paint(d.p ?? 0)
+        if (d) paint(d.page ?? 0)
     }
 
     const jump = (i: number) => jumpToSector(i)
@@ -142,8 +156,7 @@ export function initPageCounter(options: PageCounterOptions): () => void {
     const onScroll = (e: Event) => {
         const d = (e as CustomEvent).detail
         if (!d) return
-        const p = Math.min(1, Math.max(0, d.p ?? 0))
-        const current = Math.min(sectors - 1, Math.floor(p * sectors))
+        const current = Math.min(sectors - 1, Math.max(0, d.page ?? 0))
         if (current === last) return
         last = current
         // The cover is page 1, not "cover": one numbering, everywhere (Hendri).
@@ -155,7 +168,7 @@ export function initPageCounter(options: PageCounterOptions): () => void {
     return () => window.removeEventListener("tc:scroll", onScroll)
 }
 
-/* ═══════════════════════════════════════════════ close the notebook ═══ */
+/* ═══════════════════════════════════════════════ back to the top ═══ */
 
 export interface CloseButtonOptions {
     button: HTMLElement
@@ -163,10 +176,10 @@ export interface CloseButtonOptions {
 
 /**
  * The release at the end. memory-lane never ported its EJECT / RE-READ end
- * state and its STATUS noted the reader was "abandoned, not released". Here
- * the last spread offers to close the notebook, which is scroll-to-top as a
- * gesture the fiction allows. Appears only once the read is complete, so it
- * is never a "skip to end" in disguise.
+ * state and its STATUS noted the reader was "abandoned, not released". Since
+ * Q21 it is printed on the back cover: once the last sheet has gone, "back to
+ * the top" puts the pile back together. It is shown only then, so it is
+ * never a "skip to end" in disguise — and while hidden it cannot take focus.
  */
 export function initCloseButton(options: CloseButtonOptions): () => void {
     const { button } = options
@@ -175,7 +188,10 @@ export function initCloseButton(options: CloseButtonOptions): () => void {
     const onScroll = (e: Event) => {
         const d = (e as CustomEvent).detail
         if (!d) return
-        const complete = (d.p ?? 0) >= 0.985
+        // The back cover is showing: the last sheet is most of the way off.
+        // On the vertical read there is no pile, so read progress decides.
+        const complete =
+            window.innerWidth > 810 ? (d.end ?? 0) >= 0.9 : (d.p ?? 0) >= 0.985
         if (complete === shown) return
         shown = complete
         button.hidden = !complete

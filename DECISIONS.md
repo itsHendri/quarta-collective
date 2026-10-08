@@ -535,3 +535,149 @@ not picked up or had wrong:
   makes room, with a negative margin so nothing moves. Visible the moment
   one looks at a title; a measured check (no pixel of ink outside the box)
   would have caught it earlier.
+
+---
+
+### Q19. A pile of sheets, not a strip
+
+**2026-10-08, Hendri.** Prompted by paper.design and paper.design/mono: the
+site should feel like pages stacked on a desk that you slide off one by
+one. Chosen from three options: sheets slide off to the **left** (keeps
+the left-to-right read and the index on the right), rather than lifting
+upward page by page, or keeping the strip and only revealing the end.
+
+- **What changed in the rig.** The track, sticky stage, native scroll and
+  horizontal-wheel conversion are untouched (upstream #2, #14, #20).
+  Progress p becomes f = p × n, the number of sheets taken off. Each sheet
+  owns one unit of f: it **rests for the first 35%** (HOLD) so it can be
+  read, then slides left with a smoothstep, turns up to −4°, rises 10px
+  and deepens its shadow. The lerp now moves f, not px. All the arithmetic
+  is in `src/lib/pile.ts`, shared by the rig and the chrome, so a jump can
+  never land between pages. The track is (n + 1) × 100vh: one viewport per
+  sheet.
+- **Geometry.** Every spread is a 1400 × 880 sheet (880 = the lowest
+  plate edge, 780, plus the 92px padding). The pile is scaled as one to fit
+  the desk (`--sheet-s` on the stage; 0.93 at 1440×900, 0.82 at 1280×800)
+  with 44/38px of desk round it. Plates keep their pixel coordinates; no
+  spread changed layout. Measured with `offsetWidth`, never a rect, under
+  the scale (upstream #6).
+- **The pile is not square.** Each sheet lies a fraction of a degree and a
+  few px off true, fixed per index; the cover lies square on the crop marks.
+- **z-order** is static (sheet i is n − i). Only a sheet in motion gets
+  `will-change` — fourteen full-size layers at 2× would cost about 250MB.
+- **One stock per sheet.** Two sheets are on screen at once, so the single
+  interpolated `--tc-bg` cannot be right for both. Each sheet gets its four
+  `--tc-*` tokens once at mount from `sheetTint(i, n)` (the same ramp,
+  sampled at even points). `:root` now holds the DESK's values, for the
+  chrome. `publish()` no longer writes colour; type still binds only to
+  `--tc-*` (upstream #33 governs how both are measured).
+- **The page on top** is `pageAt(f)`: it flips when the top sheet is half
+  gone. The index, "p. N" and focus-follow read it from the bus
+  (`detail.page`) instead of `floor(p × n)`. A tab jump scrolls to
+  `progressForSheet(i)`, mid-rest; it no longer centres by `offsetLeft` (Q5).
+- **Reveal.** On the desk every sheet intersects the viewport, so the
+  IntersectionObserver would have revealed every headline at load. On the
+  desk a headline now reveals when the pile exposes its sheet
+  (`detail.exposed`: the top page, plus the one under it once the top one
+  moves). The observer still decides on the vertical read.
+- **Draw page.** The canvas sizes from its layout box and maps the pointer
+  through the scale, so a stroke lands under the pen at any `--sheet-s` and
+  after a resize (a scale change fires no ResizeObserver).
+- **Reduced motion.** No slide: a sheet is on the pile until the page flips,
+  then gone.
+- **Lazy images.** All 24 clippings are "in view" under the pile and load at
+  once (A13). 377KB in total, so left alone.
+
+Verified by injection: `__tcPan(3.5/14)` puts sheet 4 mid-slide with sheet 5
+untouched under it, page "p. 4", tab 4 current; tab 8 lands at
+`progressForSheet(7)` to the pixel; a focus on a clipping on sheet 11 jumps
+there; strokes land centred under the pointer at 0.90 and 0.82.
+
+---
+
+### Q20. Material: paper, desk, rulers, crop marks
+
+**2026-10-08.** What paper.design actually does, read from its live CSS: **no
+shaders on the paper.** The texture is a scanned 405px PNG tile multiplied
+over the page. The grid paper is a 10px CSS gradient grid plus a 120px SVG
+tile (one dashed, one solid 0.5px line). The rulers are 30 × 120 SVG tiles
+of ticks at the page edges at 40% opacity. Their WebGL canvas is the hero
+art, not the paper. We drew our own versions of each; none of their assets
+are used.
+
+- **Paper texture per surface.** The fixed `.grain` overlay is gone: the
+  sheets move independently now, and a viewport-fixed grain would swim
+  across a sliding sheet (upstream #4, the same rule from the other side).
+  Each sheet multiplies a fibre tile over itself (`.tc-sector::after`,
+  0.45); the desk carries its own (0.5); the ruler blends it in. The tile is
+  drawn by `scripts/make-paper-texture.ts` (mottle at three scales, 2,200
+  short fibres, tooth; seamless; seeded), not scanned. Swap in a real scan
+  at `src/assets/textures/paper.png`.
+- **The texture is charged to the contrast budget.** Multiplied over a
+  stock, it darkens what the type sits on. The sweep now measures every
+  surface — desk, ruler, each of the fourteen sheets — **with its texture
+  on** (at the tile's mean, `TEXTURE_MEAN`). The first tile (mean 236, at
+  0.55) put the red at 4.30 on the desk and 4.47 on the yellow sheet; the
+  tile was re-curved (mean 246), the opacities lowered and the desk lifted
+  a step until everything clears. Worst case now: red 4.51:1 on the desk,
+  dim 5.23:1.
+- **The desk** is `#EAE4D2` with the 10px grid, the 120px dashed/solid
+  major grid, centred, and its texture.
+- **Rulers.** The index column is now a ruler laid on the desk: the whiter
+  stock, its own texture, a soft shadow, ticks on its page edge every 12px
+  with the long tick on each number's centre — so the fourteen numbers read
+  as the ruler's figures. The same tick runs down the desk's left edge in
+  the same phase. Both offsets derive from the number of sheets, so they
+  stay aligned. The ruler's dim tone is measured at build (`tintOf`).
+- **Crop marks** at the pile's four corners, on the desk, under the sheets.
+- **Shadows.** At rest, mono's short offset shadow (a sheet on a sheet). As
+  a sheet is picked up, paper.design's deeper shadow fades in through
+  `--lift`.
+
+The Q18 red edge lines on textured pages were there so the ruling would
+start and stop with a panning page. Sheets now have real edges and
+shadows; Hendri had them removed (Q22).
+
+---
+
+### Q21. The back cover — paper.design's footer, inside the stage
+
+**2026-10-08, Hendri.** paper.design ends with a footer that stays still
+while the page above lifts off it: the footer box clips
+(`clip-path: border-box`) and every layer in it is `position: fixed;
+bottom: 0`, so its box is a growing window onto content that never moves.
+mono does the same with `position: sticky; bottom: 0`.
+
+- **On the desk** that cannot be a footer: nothing may come after the
+  track (upstream #36). So the back cover lives INSIDE the stage, under the
+  pile, and the last sheet slides off it like every other. It is hidden
+  outright until the last sheet starts to move, so its wordmark never shows
+  round a sheet's margin and its button cannot take focus.
+- **On the vertical read** there is no pile, so it follows the last sheet
+  in flow and does paper.design's trick exactly: `clip-path: inset(0)` on
+  the cover, `position: fixed` inside. Nothing observes it, so Q6 holds.
+- **What is on it:** a huge "QUARTA" pressed into the desk (ink at 7.5%,
+  multiplied, a light edge below), and three columns: what the collective
+  is, the **colophon** (moved from the cover) and the **photo credits**
+  (moved from p. 14). "Close the notebook" became **"back to the top"** and
+  moved here; it shows once the last sheet is 90% gone.
+- Found on the way, older than this change: on the vertical read the
+  stickers kept their desktop x (paper.css's `.sticker` out-ranked the
+  phone override by source order) and a 380px note overflowed, so the page
+  was 1238px wide. It only showed because the back cover's fixed layer
+  took the inflated viewport. Both are fixed; the page is 375 wide at 375.
+
+---
+
+### Q22. The red edge lines are gone
+
+**2026-10-08, Hendri.** The Q18 hairlines down both edges of every ruled,
+dotted and squared page are removed. They were there so a ruling would
+start and stop with its page while the strip panned; on the pile each sheet
+has a real edge and a shadow, and the lines only doubled them. The ruled
+page's red MARGIN (60px in) stays.
+
+Removing a 1px border moves a page's padding box 1px left, so the margin
+line (59 → 60px) and the dot and square fields (+1px) were re-set to land
+exactly where they were. Plates on those pages move 1px left, now on the
+same coordinates as the plain pages, as they are in Figma.

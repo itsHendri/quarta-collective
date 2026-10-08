@@ -227,30 +227,6 @@
 }
 
 /* ── Credits (last spread) ─────────────────────────────────────────────── */
-.credits {
-    position: absolute;
-    left: 76px;
-    right: 72px;
-    bottom: 56px;
-    max-width: 700px;
-    line-height: 1.8;
-}
-
-/* ── Colophon (spread 00 only) ─────────────────────────────────────────── */
-
-/* Lives on the cover, not after the strip: nothing may come after the track
- * (memory-lane #36). */
-.colophon {
-    position: absolute;
-    left: 76px;
-    right: 72px;
-    bottom: 64px;
-    max-width: 520px;
-}
-.colophon p {
-    margin-top: 10px;
-}
-
 /* ── Spread padding ────────────────────────────────────────────────────── */
 
 .tc-sector {
@@ -274,12 +250,6 @@
     .spread-title::after {
         width: min(36%, 300px);
     }
-    .colophon,
-    .credits {
-        position: static;
-        margin-top: 32px;
-        max-width: none;
-    }
     /* Clippings and notes stack in flow rather than being placed. Rotation
      * is kept but small enough not to overflow the column. */
     .clipping {
@@ -300,6 +270,10 @@
     }
     .note {
         position: static;
+        /* The authored width is inline (up to 380px) and a phone column is
+         * narrower: let the note take the column instead of widening the
+         * page. */
+        width: auto !important;
         max-width: none;
         margin: 10px 0 0;
         transform: none !important;
@@ -309,7 +283,10 @@
     .note .note-arrow {
         display: none;
     }
-    .sticker {
+    /* `.tc-sector` for weight: paper.css loads after this file, and its
+     * `.sticker { position: absolute }` was winning, so on a phone the
+     * stickers sat at their desktop x (up to 1150px) and widened the page. */
+    .tc-sector .sticker {
         position: static;
         display: inline-block;
         margin: 16px 0 0;
@@ -409,7 +386,7 @@
 .lightbox {
     position: fixed;
     inset: 0;
-    z-index: 9; /* under the grain (10), over the chrome (6) */
+    z-index: 9; /* over the chrome (6) */
     display: grid;
     place-items: center;
     padding: 48px;

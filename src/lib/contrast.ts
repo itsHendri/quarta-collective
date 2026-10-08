@@ -163,3 +163,77 @@ export const RAMP_HEX = [
 ] as const
 
 export const RAMP: RGB[] = RAMP_HEX.map(hexToRgb)
+
+/**
+ * Paper texture (Q20). Every surface has the fibre tile multiplied over it at
+ * some opacity, which darkens the stock the type actually sits on. The sweep
+ * must measure THAT, not the flat hex, or a dim tone measured at 4.6:1 on
+ * the hex reads at 4.3:1 on the page. Charged at the tile's mean (printed by
+ * scripts/make-paper-texture.ts): a single fibre under a letter is too thin
+ * to change what the eye reads.
+ */
+export const TEXTURE_MEAN = 245.7
+
+/** Each surface's texture opacity — must match the CSS that applies it. */
+export const TEXTURE_ON = {
+    sheet: 0.45, // .tc-sector::after, paper.css
+    desk: 0.5, // .tc-stage::before, stage.css
+    ruler: 1, // .tabs background-blend-mode: multiply, NotebookChrome.astro
+} as const
+
+/** A colour as it reads with the tile multiplied over it at `opacity`. */
+export function textured(c: RGB, opacity: number): RGB {
+    const k = 1 - opacity * (1 - TEXTURE_MEAN / 255)
+    return [Math.round(c[0] * k), Math.round(c[1] * k), Math.round(c[2] * k)]
+}
+
+/**
+ * The tint of a stock that is printed with texture: `bg` is still the flat
+ * stock (the texture is a layer over it), but the foreground and the dim are
+ * derived from — and `rgb`/`lum` report — the textured colour.
+ */
+export function tintTextured(c: RGB, opacity: number): Tint {
+    const t = textured(c, opacity)
+    const L = luminance(...t)
+    const dark = L < FLIP
+    const fgChannel = dark ? 255 : 0
+    return {
+        bg: rgbToCss(c),
+        fg: dark ? "#FFFFFF" : "#000000",
+        dim: rgbToCss(pickDim(t, fgChannel, L)),
+        rgb: t,
+        lum: L,
+    }
+}
+
+/**
+ * The desk the sheets lie on (Q19): a darker shade of the warm stock, under
+ * graph paper. The index, wordmark and page number are printed on the desk,
+ * not on a sheet, so `:root` carries these values and every sheet overrides
+ * them with its own. Mirrors --desk in tokens.css. Measured by the sweep: the
+ * ink and the red must both clear 4.5:1 here too.
+ */
+export const DESK_HEX = "#EAE4D2"
+
+/** The index column is a ruler laid on the desk: the whiter sheet's stock. */
+export const RULER_HEX = "#F6F4EE"
+
+/** The one red (`--riso-red`). Kept here so the sweep can measure it. */
+export const RED_HEX = "#B5371F"
+
+/** A flat surface's derived foreground, texture included. */
+export function tintOf(hex: string, opacity = 0): Tint {
+    return tintTextured(hexToRgb(hex), opacity)
+}
+
+/**
+ * The stock of sheet `i` of `n`. Each sheet now carries ONE colour of its
+ * own — two are on screen at once while the top one slides, so the old
+ * single interpolated stage colour cannot be right for both (Q19). The
+ * sheets sample the same ramp at evenly spaced points, so the read still
+ * travels warm → white → newsprint → yellow → warm. Measured with the
+ * sheet's texture on.
+ */
+export function sheetTint(i: number, n: number, stops: RGB[] = RAMP): Tint {
+    return tintTextured(sampleRamp(stops, n <= 1 ? 0 : i / (n - 1)), TEXTURE_ON.sheet)
+}

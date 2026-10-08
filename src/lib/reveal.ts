@@ -9,9 +9,16 @@
  *
  * Three constraints carried over (memory-lane #26):
  *   - it happens once and STOPS;
- *   - it is gated on an IntersectionObserver, so off-screen spreads do not all
- *     reveal before anyone sees them — the strip is 16,800px wide;
+ *   - it is gated on being SEEN, so pages do not all reveal before anyone
+ *     looks at them;
  *   - it never rewrites DOM text; it toggles one class.
+ *
+ * "Seen" has two meanings since the pile (Q19). On the desk every sheet is
+ * inside the viewport the whole time — stacked under the top one — so an
+ * IntersectionObserver would call every headline seen at load. There, a
+ * sheet is seen when the pile exposes it (`detail.exposed` on the bus). On
+ * the vertical read sheets really do scroll into view, and the observer
+ * still decides.
  *
  * Elements inside one spread stagger by their document order, via
  * `--reveal-delay`, so a note lands after the clipping it annotates.
@@ -46,8 +53,32 @@ export function initReveal(root: ParentNode = document): () => void {
         counts.set(spread, n + 1)
     }
 
+    const desk = () => window.innerWidth > 810
+
+    // The pile: reveal every sheet down to the deepest one showing.
+    const sheets = Array.from(
+        document.querySelectorAll<HTMLElement>("#tc-strip > .tc-sector")
+    )
+    let revealedTo = -1
+    const onScroll = (e: Event) => {
+        if (!desk()) return
+        const exposed = (e as CustomEvent).detail?.exposed ?? 0
+        if (exposed <= revealedTo) return
+        for (let i = revealedTo + 1; i <= exposed; i++) {
+            sheets[i]
+                ?.querySelectorAll<HTMLElement>("[data-reveal]")
+                .forEach((h) => h.classList.add("is-revealed"))
+        }
+        revealedTo = exposed
+    }
+    window.addEventListener("tc:scroll", onScroll)
+
+    // The vertical read: the observer, as before. On the desk it stays
+    // observing without acting, so a resize down to the phone layout still
+    // reveals what arrives.
     const io = new IntersectionObserver(
         (entries) => {
+            if (desk()) return
             for (const e of entries) {
                 if (!e.isIntersecting) continue
                 ;(e.target as HTMLElement).classList.add("is-revealed")
@@ -61,6 +92,7 @@ export function initReveal(root: ParentNode = document): () => void {
     for (const h of hosts) io.observe(h)
 
     return () => {
+        window.removeEventListener("tc:scroll", onScroll)
         io.disconnect()
         for (const h of hosts) h.classList.add("is-revealed")
     }
