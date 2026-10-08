@@ -26,7 +26,7 @@ html {
 body {
     margin: 0;
     background: transparent;
-    font-family: var(--font-type);
+    font-family: var(--font-body);
 }
 
 /*

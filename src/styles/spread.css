@@ -3,7 +3,7 @@
  * handwritten notes.
  *
  * Two worlds, as in memory-lane (#15) but with the roles recast: the PAGE
- * (ruling, grain, binding) is the notebook; the things on it (clippings,
+ * (ruling, texture) is the notebook; the things on it (clippings,
  * notes, stamps) were put there by a hand. Material belongs to the page and
  * never tilts; rotation and shadow belong to what is pasted on and never
  * touch the ruling.
@@ -35,12 +35,14 @@
  */
 .spread-title {
     position: relative;
-    /* The wipe mask clips to the box, and at 95% leading Special Elite's
-     * capitals rise above the line box — the tops of the letters were being
-     * shaved off (Hendri, Q18). Padding makes the box tall enough; the
-     * negative margin keeps the headline where it was. */
+    /* The wipe mask clips to the box, and at 95% leading a face's capitals
+     * can rise above the line box — Special Elite's tops were being shaved
+     * off (Hendri, Q18). Padding makes the box tall enough; the negative
+     * margin keeps the headline where it is drawn. The title's line box
+     * starts at sheet y 96, as in Hendri's cover (Q24): 92 of sheet padding
+     * plus 4. */
     padding: 0.14em 0.1em 0.06em 0;
-    margin-top: calc(26px - 0.14em);
+    margin-top: calc(4px - 0.14em);
     margin-bottom: calc(-0.06em);
     mask-image: linear-gradient(to right, #000 0 47%, transparent 53% 100%);
     mask-size: 220% 100%;
@@ -148,7 +150,7 @@
     top: 100%;
     margin-top: 10px;
     white-space: nowrap;
-    font-family: var(--font-display);
+    font-family: var(--font-typed);
     font-size: 14px;
     font-weight: 400;
     line-height: 1.3;
@@ -360,7 +362,21 @@
 .notebook.has-ink .notebook-cue {
     display: none;
 }
+/*
+ * The draw page draws edge to edge (Q23). The canvas was the ruled block's
+ * box — 72px in from each side, starting under the prompt — so a line ran
+ * off an invisible edge in the middle of the paper. Now the whole sheet is
+ * the canvas; the prompt and the clear button sit on it, the button above.
+ */
+.notebook[data-nb-kind="draw"] {
+    inset: 0;
+}
+.notebook[data-nb-kind="draw"] .notebook-cue {
+    left: 76px;
+    top: 232px;
+}
 .notebook-tools {
+    z-index: 1; /* over the edge-to-edge canvas */
     /* Bottom-right, where Hendri put the clear button in Figma (Q17). */
     position: absolute;
     right: 28px;
@@ -441,6 +457,16 @@
         bottom: auto;
         height: 52svh;
         margin-top: 20px;
+    }
+    /* Edge to edge on the phone too: out through the column's padding. */
+    .notebook[data-nb-kind="draw"] {
+        inset: auto;
+        margin-left: -20px;
+        margin-right: -20px;
+    }
+    .notebook[data-nb-kind="draw"] .notebook-cue {
+        left: 20px;
+        top: 4px;
     }
     .notebook-text {
         font-size: 22px;

@@ -1,0 +1,247 @@
+---
+import { SIGNUP } from "~/content/signup"
+
+/*
+ * "Pull up a chair" — the signup sheet the cover's "+" opens (Q25).
+ *
+ * A native <dialog>, opened with showModal(): the browser gives it the top
+ * layer, traps focus inside it, makes the rest of the page inert and closes
+ * it on Escape. That is the whole accessibility story for free, which a
+ * hand-rolled overlay (like the lightbox) has to rebuild.
+ *
+ * It is drawn as one more sheet of the stock, laid on top of the pile: the
+ * same paper, texture and shadow as a page, with a ruled box to write in.
+ *
+ * Two questions, as Hendri chose: an email to reply to, and what you would
+ * make. Submissions go to the form service configured in content/signup.ts.
+ */
+const configured = !!SIGNUP.endpoint
+---
+
+<dialog class="signup" id="tc-signup" aria-labelledby="tc-signup-title">
+    <form
+        class="signup-sheet"
+        method="post"
+        action={SIGNUP.endpoint ?? undefined}
+        data-endpoint={SIGNUP.endpoint ?? ""}
+        novalidate
+    >
+        <button type="button" class="signup-close t-label" data-signup-close aria-label="Close">close ✕</button>
+
+        <h2 class="signup-title t-display" id="tc-signup-title">Pull up a chair</h2>
+        <p class="signup-intro t-body">
+            Three of us, one table, Wednesday evenings. Tell us what you would
+            make and we will write back.
+        </p>
+
+        <label class="signup-field">
+            <span class="signup-label t-eyebrow">your email</span>
+            <input
+                class="t-body"
+                type="email"
+                name="email"
+                autocomplete="email"
+                inputmode="email"
+                required
+                placeholder="you@example.com"
+            />
+            <span class="signup-error t-hand is-sm" data-error-for="email" hidden></span>
+        </label>
+
+        <label class="signup-field">
+            <span class="signup-label t-eyebrow">what would you make?</span>
+            <textarea class="t-body" name="make" rows="4" maxlength="1200"></textarea>
+        </label>
+
+        {Object.entries(SIGNUP.hidden).map(([k, v]) => <input type="hidden" name={k} value={v} />)}
+        <input type="hidden" name="subject" value="Quarta Collective — someone pulled up a chair" />
+        {/* Spam trap: invisible to people, filled in by bots. Both services
+            know these names; the script also drops any submission that has it. */}
+        <div class="signup-trap" aria-hidden="true">
+            <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+            <input type="checkbox" name="botcheck" tabindex="-1" />
+        </div>
+
+        <div class="signup-actions">
+            <p class="signup-status t-hand is-sm" role="status" aria-live="polite" data-status></p>
+            <button type="submit" class="signup-send t-label" data-signup-send>send →</button>
+        </div>
+        <p class="signup-small t-eyebrow">
+            {configured ? "We only use your email to reply." : "Not connected yet — this form does not send anywhere."}
+        </p>
+    </form>
+</dialog>
+
+<style>
+    .signup {
+        /* The dialog itself is only a frame for the sheet. */
+        padding: 0;
+        border: 0;
+        background: transparent;
+        max-width: min(640px, calc(100vw - 32px));
+        width: 100%;
+        overflow: visible;
+    }
+    .signup::backdrop {
+        background: rgb(var(--shadow-rgb) / 0.32);
+    }
+
+    .signup-sheet {
+        position: relative;
+        isolation: isolate;
+        padding: 44px 48px 36px;
+        background: var(--paper);
+        color: var(--tc-fg);
+        rotate: -0.6deg;
+        box-shadow:
+            0 0 0 0.5px rgb(var(--shadow-rgb) / 0.14),
+            0 18px 40px -10px rgb(var(--shadow-rgb) / 0.35),
+            0 6px 14px -4px rgb(var(--shadow-rgb) / 0.2);
+    }
+    /* The same fibre as every sheet (Q20). */
+    .signup-sheet::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        background-image: url("../assets/textures/paper.png");
+        background-size: 512px 512px;
+        mix-blend-mode: multiply;
+        opacity: 0.45;
+    }
+
+    .signup-close {
+        position: absolute;
+        top: 16px;
+        right: 18px;
+        padding: 6px 8px;
+        color: var(--tc-fg-dim);
+    }
+    .signup-close:hover,
+    .signup-close:focus-visible {
+        color: var(--tc-fg);
+    }
+
+    .signup-title {
+        font-size: 72px;
+        max-width: none;
+    }
+    .signup-intro {
+        margin-top: 14px;
+        max-width: 440px;
+    }
+
+    .signup-field {
+        display: block;
+        margin-top: 28px;
+    }
+    .signup-label {
+        display: block;
+        margin-bottom: 6px;
+    }
+    .signup-field input,
+    .signup-field textarea {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        color: var(--tc-fg);
+        font-size: 16px; /* 16 or iOS zooms the page on focus */
+        outline: none;
+    }
+    .signup-field input {
+        padding: 6px 0;
+        border-bottom: 1px solid color-mix(in srgb, var(--tc-fg) 45%, transparent);
+    }
+    /* Written on ruled lines, at the ruled page's 28px pitch and colours. */
+    .signup-field textarea {
+        padding: 0;
+        line-height: 28px;
+        resize: vertical;
+        min-height: 112px;
+        background-image: repeating-linear-gradient(
+            to bottom,
+            transparent 0 27px,
+            var(--ruled-line) 27px 28px
+        );
+        background-attachment: local;
+    }
+    .signup-field input:focus-visible {
+        border-bottom-color: var(--tc-fg);
+        box-shadow: 0 1px 0 var(--tc-fg);
+    }
+    .signup-field textarea:focus-visible {
+        box-shadow: -8px 0 0 -6px var(--tc-fg);
+    }
+    .signup-field input::placeholder {
+        color: var(--tc-fg-dim);
+        opacity: 0.7;
+    }
+    .signup-field [aria-invalid="true"] {
+        border-bottom-color: var(--riso-red);
+    }
+    .signup-error {
+        display: block;
+        margin-top: 4px;
+        color: var(--riso-red);
+    }
+
+    .signup-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 18px;
+        margin-top: 28px;
+    }
+    .signup-status {
+        margin: 0 auto 0 0;
+        color: var(--tc-fg);
+    }
+    .signup-status[data-tone="error"] {
+        color: var(--riso-red);
+    }
+    .signup-send {
+        padding: 12px 22px;
+        border-radius: 999px;
+        background: color-mix(in srgb, var(--tc-fg) 84%, var(--tc-field));
+        color: var(--tc-field);
+        transition: opacity 140ms linear;
+    }
+    .signup-send:hover {
+        background: var(--tc-fg);
+    }
+    .signup-send:focus-visible {
+        outline: 2px solid var(--tc-fg);
+        outline-offset: 3px;
+    }
+    .signup-send[disabled] {
+        opacity: 0.5;
+        cursor: progress;
+    }
+    .signup-small {
+        margin-top: 18px;
+        text-transform: none;
+        letter-spacing: 0.02em;
+    }
+
+    .signup-trap {
+        position: absolute;
+        left: -9999px;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+    }
+
+    @media (max-width: 810px) {
+        .signup-sheet {
+            padding: 36px 22px 28px;
+            rotate: 0deg;
+        }
+        .signup-title {
+            font-size: 56px;
+        }
+    }
+</style>

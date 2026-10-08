@@ -1,0 +1,148 @@
+---
+import { Image } from "astro:assets"
+import { PEOPLE, JOIN_LABEL, portraitUrl } from "~/content/people"
+
+/*
+ * The three of us, on the cover (Q24) — Hendri's Figma cover, as drawn:
+ * 64px photos overlapping by 16 with a thin white ring, then a dashed "+"
+ * 16px after the stack that opens the signup sheet (Q25). Hovering or focusing a face shows its name in a
+ * dark pill just under it.
+ *
+ * Each face is focusable, so the names are reachable from the keyboard as
+ * well as the pointer; the name is also the photo's alt text, so a screen
+ * reader gets it without the tooltip (which is aria-hidden).
+ */
+---
+
+<ul class="people" aria-label="The three of us">
+    {
+        PEOPLE.map((p) => (
+            <li class="person" tabindex="0">
+                {typeof p.photo === "string" ? (
+                    <Image
+                        src={portraitUrl(p.photo)}
+                        alt={p.name}
+                        width={128}
+                        height={128}
+                        fit="cover"
+                        format="avif"
+                        loading="eager"
+                    />
+                ) : (
+                    <Image src={p.photo} alt={p.name} width={128} height={128} format="avif" loading="eager" />
+                )}
+                <span class="tip" aria-hidden="true">{p.name}</span>
+            </li>
+        ))
+    }
+    <li class="join">
+        {/* Opens the signup sheet (SignupSheet.astro, Q25). */}
+        <button type="button" class="join-mark" data-signup-open aria-haspopup="dialog" aria-label="Join us: sign up">+</button>
+        <span class="tip" aria-hidden="true">{JOIN_LABEL}</span>
+    </li>
+</ul>
+
+<style>
+    .people {
+        display: flex;
+        align-items: center;
+        margin: 34px 0 0; /* face tops at sheet y 398, as drawn */
+        padding: 0;
+        list-style: none;
+    }
+    .person,
+    .join {
+        position: relative;
+        width: 64px;
+        height: 64px;
+    }
+    /* The stack: each face sits 16px over the one before it; later faces on
+     * top, as in the frame. */
+    .person + .person {
+        margin-left: -16px;
+    }
+    .join {
+        margin-left: 16px;
+    }
+    .person img {
+        display: block;
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        object-fit: cover;
+        box-sizing: border-box;
+        border: 2px solid var(--white);
+        box-shadow: 0 2px 7px rgb(var(--shadow-rgb) / 0.18);
+    }
+    .person:hover,
+    .person:focus-visible {
+        z-index: 2; /* the face being named comes to the front of the stack */
+    }
+    .person:focus-visible img,
+    .join-mark:focus-visible {
+        outline: 2px solid var(--tc-fg);
+        outline-offset: 2px;
+    }
+    .person:focus-visible {
+        outline: none;
+    }
+
+    .join-mark {
+        display: grid;
+        place-items: center;
+        width: 64px;
+        height: 64px;
+        box-sizing: border-box;
+        border-radius: 50%;
+        border: 1px dashed var(--tc-fg);
+        background: var(--white);
+        color: var(--tc-fg);
+        font-family: var(--font-title);
+        font-size: 56px;
+        line-height: 1;
+        text-decoration: none;
+        cursor: pointer;
+        padding: 0;
+        transition: background-color 140ms linear;
+    }
+    .join-mark:hover {
+        background: var(--paper);
+    }
+
+    /* The name: a dark pill 11px under the face, centred on it. Dark is the
+     * ink, softened toward the stock, and the text is the stock — so it is
+     * measured like any inverted chip (memory-lane #34). */
+    .tip {
+        position: absolute;
+        top: calc(100% + 11px);
+        left: 50%;
+        z-index: 3;
+        padding: 9px 16px;
+        border-radius: 999px;
+        background: color-mix(in srgb, var(--tc-fg) 84%, var(--tc-field));
+        color: var(--tc-field);
+        font-family: var(--font-type);
+        font-size: 14px;
+        line-height: 1.15;
+        white-space: nowrap;
+        box-shadow: 0 6px 16px rgb(var(--shadow-rgb) / 0.2);
+        pointer-events: none;
+        opacity: 0;
+        transform: translate(-50%, -4px);
+        transition:
+            opacity 140ms linear,
+            transform 180ms cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+    .person:hover .tip,
+    .person:focus-visible .tip,
+    .join:hover .tip,
+    .join:focus-within .tip {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .tip {
+            transition: none;
+        }
+    }
+</style>

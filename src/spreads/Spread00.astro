@@ -1,29 +1,29 @@
 ---
 import Clipping from "~/components/Clipping.astro"
-import Note from "~/components/Note.astro"
-import SketchMark from "~/components/SketchMark.astro"
+import People from "~/components/People.astro"
 
 /*
  * Spread 00 — the cover.
  *
- * The only spread with the fold and staples. The colophon that used to be
- * printed here moved to the back cover (Q21).
+ * The fold and staples are gone: on the pile the cover is a loose sheet,
+ * and the binding read as a clipboard (Q23). So is the red asterisk. The
+ * colophon moved to the back cover (Q21).
  *
  * "Quarta" — quarta-feira, Wednesday. The evening we meet.
  */
 ---
 
 <section class="tc-sector" id="tc-sector-00" aria-label="Cover: Quarta Collective">
-    <div class="binding" aria-hidden="true"></div>
-
 
     <h1 class="spread-title t-display" data-reveal>The art of <em>making</em></h1>
 
     <p class="spread-note t-body">
-        A space to make and create with friends. Four of us, one table,
+        A space to make and create with friends. Three of us, one table,
         Wednesday evenings. This is the story of how a thing gets made here —
         this season, a notebook, by hand: half printed, half blank.
     </p>
+
+    <People />
 
     <Clipping
         id="00-0"
@@ -37,8 +37,5 @@ import SketchMark from "~/components/SketchMark.astro"
         rotate={3}
         eager
     />
-
-
-    <SketchMark motif="asterisk" x={660} y={430} w={64} rotate={-8} ink="red" weight={3} />
 
 </section>
