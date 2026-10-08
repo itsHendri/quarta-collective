@@ -237,7 +237,7 @@ export function initScrollRig(options: ScrollRigOptions = {}): () => void {
         return Math.min(1, Math.max(0, -r.top / scrollable))
     }
 
-    function publish(p: number, velocity: number, f: number) {
+    function publish(p: number, velocity: number, f: number, page = pageAt(f, n)) {
         document.documentElement.style.setProperty("--tc-p", p.toFixed(5))
         window.dispatchEvent(
             new CustomEvent<TcScrollDetail>("tc:scroll", {
@@ -245,7 +245,7 @@ export function initScrollRig(options: ScrollRigOptions = {}): () => void {
                     p,
                     f,
                     n,
-                    page: pageAt(f, n),
+                    page,
                     exposed: exposedAt(f, n),
                     end: sheetT(f, n - 1, reduce),
                     velocity,
@@ -317,23 +317,50 @@ export function initScrollRig(options: ScrollRigOptions = {}): () => void {
     let mobileRunning = false
     let mobilePrev = 0
 
+    /*
+     * The vertical pile (Q26). Each sheet is sticky by its bottom edge, which
+     * needs its own height as `--h` — measured, and re-measured whenever a
+     * picture loads or the text reflows. Sheets are of uneven height here,
+     * so the page on top is read from the DOM: the last sheet whose top has
+     * reached the middle of the screen. Progress alone (p × n) would name
+     * the wrong page on a long sheet.
+     */
+    const heights = new ResizeObserver((entries) => {
+        for (const e of entries) {
+            const el = e.target as HTMLElement
+            el.style.setProperty("--h", `${Math.ceil(el.offsetHeight)}px`)
+        }
+    })
+    function pageFromDom(): number {
+        const mid = window.innerHeight / 2
+        let page = 0
+        for (let i = 0; i < n; i++) {
+            if (sheets[i]!.getBoundingClientRect().top <= mid) page = i
+            else break
+        }
+        return page
+    }
+
     function mobileFrame() {
         if (!mobileRunning) return
         const p = progress()
         const velocity = (p - mobilePrev) * 900 // scaled to feel like px-ish
         mobilePrev = p
-        publish(p, velocity, p * n)
+        publish(p, velocity, p * n, pageFromDom())
         mobileRaf = requestAnimationFrame(mobileFrame)
     }
     function startMobile() {
         if (mobileRunning) return
         mobileRunning = true
+        sheets.forEach((sheet) => heights.observe(sheet))
         mobilePrev = progress()
         mobileRaf = requestAnimationFrame(mobileFrame)
     }
     function stopMobile() {
         mobileRunning = false
         cancelAnimationFrame(mobileRaf)
+        heights.disconnect()
+        sheets.forEach((sheet) => sheet.style.removeProperty("--h"))
     }
 
     function settleImmediately() {
@@ -620,7 +647,7 @@ export function initScrollRig(options: ScrollRigOptions = {}): () => void {
         if (!enabled()) {
             pinned = clamped
             mobilePrev = clamped
-            publish(clamped, 0, clamped * n)
+            publish(clamped, 0, clamped * n, pageFromDom())
             return
         }
         measure()

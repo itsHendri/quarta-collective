@@ -1,15 +1,20 @@
 /*
  * QUARTA COLLECTIVE — type system
  *
- * Three faces, and the split is the zine:
+ * Five faces, one job each (Q24, from Hendri's Figma cover; was the
+ * typewriter set of Q12):
  *
- *   Special Elite      what gets TYPED LARGE — the headline on each spread,
- *                      uppercase, two lines, a row of typed "=" under it in
- *                      the red ribbon. Exploration 02 (DECISIONS Q12).
- *   Caveat             what gets WRITTEN — margin notes, captions, arrows,
- *                      the page number in the corner.
- *   Courier Prime      what gets TYPED — eyebrows, the body note, stamps,
- *                      index tabs. Typed on cards and pasted in.
+ *   Amatic SC          TITLES — the headline on each sheet, and the back
+ *                      cover's wordmark. A hand-drawn small-caps face: the
+ *                      title is written in sentence case and the face does
+ *                      the capitals, so there is no text-transform.
+ *   Inter              BODY — the note under a headline, the back cover's
+ *                      columns, anything you read in sentences.
+ *   Courier Prime      LABELS — the wordmark, eyebrows, stamps, index tabs,
+ *                      the avatar tooltip. Typed on cards and pasted in.
+ *   Special Elite      CAPTIONS — what is typed under a clipping, and the
+ *                      page number in the corner.
+ *   Caveat             NOTES — anything written on the page by hand.
  *
  * The faces ship as @fontsource packages imported in Base.astro (DECISIONS
  * Q3), so there are no @font-face rules here — Vite hashes and base-prefixes
@@ -17,7 +22,9 @@
  */
 
 :root {
-    --font-display: "Special Elite", "Courier Prime", "Courier New", monospace;
+    --font-title: "Amatic SC", "Special Elite", cursive;
+    --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-typed: "Special Elite", "Courier Prime", "Courier New", monospace;
     --font-hand: "Caveat Variable", "Bradley Hand", "Segoe Print", cursive;
     --font-type: "Courier Prime", "Courier New", Courier, monospace;
 }
@@ -25,17 +32,15 @@
 /* ── Presets ────────────────────────────────────────────────────────────── */
 
 /*
- * Display. A typewriter's capitals, two lines at most, inside the spread.
- * No misregistration, no second ink in the headline — the red is the "===="
- * rule typed under it (spread.css). Exploration 02.
+ * Display. Amatic SC Bold, as Hendri set the cover: 128px, 95% leading,
+ * −2% tracking, sentence case (the face supplies the small capitals).
  */
 .t-display {
-    font-family: var(--font-display);
-    font-weight: 400;
-    font-size: 44px;
+    font-family: var(--font-title);
+    font-weight: 700;
+    font-size: 56px;
     line-height: 0.95;
     letter-spacing: -0.02em;
-    text-transform: uppercase;
     color: var(--tc-fg);
     text-wrap: balance;
     max-width: 1000px;
@@ -47,12 +52,7 @@
 
 @media (min-width: 810px) {
     .t-display {
-        font-size: 72px;
-    }
-}
-@media (min-width: 1200px) {
-    .t-display {
-        font-size: 96px;
+        font-size: 128px;
     }
 }
 
@@ -78,10 +78,9 @@
     color: var(--tc-fg);
 }
 
-/* Body — the typed note under a headline. A card from a typewriter whose
- * ribbon has seen some use: the dim tone, measured, never an alpha. */
+/* Body — the note under a headline, in Inter at 15/170% (Q24). */
 .t-body {
-    font-family: var(--font-type);
+    font-family: var(--font-body);
     font-weight: 400;
     font-size: 15px;
     line-height: 1.7;

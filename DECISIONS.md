@@ -681,3 +681,122 @@ Removing a 1px border moves a page's padding box 1px left, so the margin
 line (59 → 60px) and the dot and square fields (+1px) were re-set to land
 exactly where they were. Plates on those pages move 1px left, now on the
 same coordinates as the plain pages, as they are in Figma.
+
+---
+
+### Q23. Cover: no binding, no asterisk, three of us; the draw page goes edge to edge
+
+**2026-10-08, Hendri.**
+
+- **The binding is gone.** The fold line and two staples down the cover's
+  left edge read as a clipboard once the cover became a loose sheet on the
+  pile. Removed with its CSS.
+- **The red asterisk on the cover is gone.** Hendri did not like it.
+- **"Three of us"**, not four.
+- **The draw page draws edge to edge.** The canvas used to be the ruled
+  block's box (72px in from each side, starting under the prompt), so a
+  line stopped at an invisible edge in the middle of the paper. The whole
+  1400 × 880 sheet is now the canvas; the prompt sits on it and the clear
+  button sits above it (z 1). On the phone it runs out through the column
+  padding. The storage key is unchanged (`qc:notebook:draw-1`); a drawing
+  saved under the old box is stretched to the new one.
+
+Avatars for the three of us, a "join us" call to action and a new title face
+are being chosen in Figma: page "Cover options — the pile", five options
+(A–E) beside the current cover.
+
+---
+
+### Q24. Amatic SC and Inter; the three of us on the cover
+
+**2026-10-08, Hendri.** Chosen from the Figma cover options (page "Cover
+options — the pile", frame "Edits", node 47:336), with "use these fonts
+everywhere".
+
+- **Type, one job per face.** Titles: **Amatic SC Bold**, 128px, 95%
+  leading, −2% tracking, written in sentence case (the face supplies the
+  small capitals, so `text-transform` is gone; 56px on the phone). Body:
+  **Inter** 15/170%. Labels stay Courier Prime (wordmark, eyebrows, stamps,
+  index, tooltip); captions and the page number stay Special Elite; notes
+  stay Caveat. `--font-display` is split into `--font-title`,
+  `--font-body` and `--font-typed`. The back cover's wordmark is Amatic SC
+  too. Preloads: Amatic 700, Inter 400, Special Elite, Courier Prime.
+- **Title position.** The title's line box starts at sheet y 96 as drawn
+  (was 118); the body follows 44px below, at 262. Checked on all fourteen
+  sheets: no title or body overlaps a clipping, note or stamp.
+- **Avatars** (`People.astro`, data in `content/people.ts`). Three 64px
+  photos overlapping by 16 with a 2px white ring and a soft shadow, then a
+  dashed 64px "+" 16px after the stack, 34px under the body. Hover or focus
+  shows the name in a dark pill 11px under the face (ink at 84% over the
+  stock, text in the stock — an inverted chip, memory-lane #34). Each face
+  is focusable and its name is the photo's alt text.
+- **Placeholders, on purpose and loudly.** Only "Hendri" is real. The other
+  two names and all three photos (Unsplash portraits, HEAD-checked) are
+  stand-ins, and the "+" has no destination yet (`JOIN_HREF = null`: shown
+  with its "join us" tooltip but not a link). These must be replaced before
+  the cover goes public — a stranger's face over a member's name is worse
+  than no face.
+
+---
+
+### Q25. The "+" opens a signup sheet; Bruno and Tiuri
+
+**2026-10-08, Hendri.** The three of us are Hendri, Bruno and Tiuri (the
+photos are still placeholders; Hendri will add them). The "+" opens a
+signup form on the site itself, asking two things: an email (required) and
+"what would you make?" (optional).
+
+- **A native `<dialog>`** opened with `showModal()`: top layer, focus
+  trapped inside, the page behind inert, Escape closes, focus returns to
+  the "+". Drawn as one more sheet of the stock laid on the pile (paper,
+  fibre, shadow, a slight turn), with the answer box ruled at 28px.
+- **No server** (memory-lane A1), so it POSTs from the browser to a form
+  service: Formspree or Web3Forms, configured in `content/signup.ts`. Sent
+  with `Accept: application/json` so the page stays put; with JS off the
+  form posts normally to the same endpoint. Both services' honeypot names
+  are included, and a filled trap is dropped before sending.
+- **Until an endpoint is set** the sheet opens and validates, then says it
+  is not connected and sends nothing. The line under the button says so too.
+- Tested with a faked network: sends `email`, `make`, `subject` (and any
+  configured key); success clears the form, failure keeps it and says so;
+  the spam trap sends nothing.
+
+This is a third interactive feature beyond the two notebook pages and the
+lightbox (Q11); Hendri asked for it.
+
+---
+
+### Q26. The pile on a phone; real faces; a link preview
+
+**2026-10-08, Hendri,** to share the site with friends. Chosen from three
+phone models: "a pile you scroll through" (over a swipe deck, or a tidied
+long scroll).
+
+- **Sticky by the bottom edge.** On the vertical read each sheet is
+  `position: sticky` with `top: min(0, 100svh − its height)`. A sheet taller
+  than the screen scrolls through first and pins only once its last line is
+  showing; the next sheet then slides up over it with a shadowed edge. The
+  rig measures each sheet's height into `--h` with a ResizeObserver
+  (pictures load, text reflows). The desk's z-order (cover on top) is reset
+  on this layout so later sheets cover earlier ones. This was the open
+  FUTURE.md item; the "sheet taller than the screen" problem it named is
+  what the bottom-edge offset solves.
+- **The page number** on a phone is read from the DOM (the last sheet whose
+  top has passed the middle of the screen), not `floor(p × n)`: sheets are
+  of uneven height there.
+- **A top bar.** The wordmark and "p. N" used to float over the text; they
+  now sit in a 44px strip of desk across the top, and sheets slide under it.
+- **Collage, not posters.** Clippings keep their authored proportion
+  (`--ar`) and take a width by shape (wide 78%, square 64%, tall 54%),
+  alternating left and right. Notes and stamps no longer stretch to the
+  column (the sheet is a flex column; they are `align-self: flex-start`).
+  Measured at 390 × 844: no element overlaps another on any sheet, nothing
+  wider than the screen, about 16 screens long (was 19).
+- **Real faces.** Hendri, Bruno (in the cap) and Tiuri (no shirt), cropped
+  square to the face from Hendri's photos, 512px, metadata (including GPS)
+  stripped. In `src/assets/people/`.
+- **Link preview.** `og:image` (and `twitter:image`) is the cover, 1200 ×
+  630, an 88 KB JPEG from the Figma frame "Link preview — 1200 × 630" with
+  the real faces composited in locally. Absolute URL from `site`. The page
+  description now reads "A space to make and create with friends. Three of
+  us, one table, Wednesday evenings."

@@ -3,7 +3,7 @@
  * handwritten notes.
  *
  * Two worlds, as in memory-lane (#15) but with the roles recast: the PAGE
- * (ruling, grain, binding) is the notebook; the things on it (clippings,
+ * (ruling, texture) is the notebook; the things on it (clippings,
  * notes, stamps) were put there by a hand. Material belongs to the page and
  * never tilts; rotation and shadow belong to what is pasted on and never
  * touch the ruling.
@@ -35,12 +35,14 @@
  */
 .spread-title {
     position: relative;
-    /* The wipe mask clips to the box, and at 95% leading Special Elite's
-     * capitals rise above the line box — the tops of the letters were being
-     * shaved off (Hendri, Q18). Padding makes the box tall enough; the
-     * negative margin keeps the headline where it was. */
+    /* The wipe mask clips to the box, and at 95% leading a face's capitals
+     * can rise above the line box — Special Elite's tops were being shaved
+     * off (Hendri, Q18). Padding makes the box tall enough; the negative
+     * margin keeps the headline where it is drawn. The title's line box
+     * starts at sheet y 96, as in Hendri's cover (Q24): 92 of sheet padding
+     * plus 4. */
     padding: 0.14em 0.1em 0.06em 0;
-    margin-top: calc(26px - 0.14em);
+    margin-top: calc(4px - 0.14em);
     margin-bottom: calc(-0.06em);
     mask-image: linear-gradient(to right, #000 0 47%, transparent 53% 100%);
     mask-size: 220% 100%;
@@ -148,7 +150,7 @@
     top: 100%;
     margin-top: 10px;
     white-space: nowrap;
-    font-family: var(--font-display);
+    font-family: var(--font-typed);
     font-size: 14px;
     font-weight: 400;
     line-height: 1.3;
@@ -250,23 +252,49 @@
     .spread-title::after {
         width: min(36%, 300px);
     }
-    /* Clippings and notes stack in flow rather than being placed. Rotation
-     * is kept but small enough not to overflow the column. */
+    /*
+     * A collage, not a column of posters (Q26). Clippings stack in flow,
+     * keep their own proportion (`--ar`, from the authored box) and their
+     * authored tilt, and take a width by shape: wide pictures most of the
+     * column, tall ones a little over half. They alternate left and right,
+     * as if pasted in one after another.
+     */
     .clipping {
         position: relative;
         left: auto !important;
         top: auto !important;
-        width: 100% !important;
+        width: 78% !important;
         height: auto !important;
         box-sizing: border-box;
-        aspect-ratio: 3 / 2;
-        margin: 36px 0 44px;
+        aspect-ratio: var(--ar, 3 / 2);
+        margin: 28px 0 40px;
+        align-self: flex-start;
+    }
+    .clipping[data-shape="square"] {
+        width: 64% !important;
+    }
+    .clipping[data-shape="tall"] {
+        width: 54% !important;
+    }
+    .clipping:nth-of-type(even) {
+        align-self: flex-end;
+    }
+    /* The caption hangs below its picture, so the next picture leaves it
+     * room rather than tucking under. */
+    .clipping + .clipping {
+        margin-top: 8px;
     }
     .clipping[data-kind="polaroid"] {
         aspect-ratio: auto;
     }
     .clipping[data-kind="polaroid"] img {
-        aspect-ratio: 4 / 3;
+        aspect-ratio: var(--ar, 4 / 3);
+    }
+    /* Flex children stretch by default; the things pasted on keep their
+     * own width. */
+    .note,
+    .tc-sector .sticker {
+        align-self: flex-start;
     }
     .note {
         position: static;
@@ -360,7 +388,21 @@
 .notebook.has-ink .notebook-cue {
     display: none;
 }
+/*
+ * The draw page draws edge to edge (Q23). The canvas was the ruled block's
+ * box — 72px in from each side, starting under the prompt — so a line ran
+ * off an invisible edge in the middle of the paper. Now the whole sheet is
+ * the canvas; the prompt and the clear button sit on it, the button above.
+ */
+.notebook[data-nb-kind="draw"] {
+    inset: 0;
+}
+.notebook[data-nb-kind="draw"] .notebook-cue {
+    left: 76px;
+    top: 232px;
+}
 .notebook-tools {
+    z-index: 1; /* over the edge-to-edge canvas */
     /* Bottom-right, where Hendri put the clear button in Figma (Q17). */
     position: absolute;
     right: 28px;
@@ -441,6 +483,16 @@
         bottom: auto;
         height: 52svh;
         margin-top: 20px;
+    }
+    /* Edge to edge on the phone too: out through the column's padding. */
+    .notebook[data-nb-kind="draw"] {
+        inset: auto;
+        margin-left: -20px;
+        margin-right: -20px;
+    }
+    .notebook[data-nb-kind="draw"] .notebook-cue {
+        left: 20px;
+        top: 4px;
     }
     .notebook-text {
         font-size: 22px;

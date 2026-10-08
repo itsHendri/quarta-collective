@@ -75,6 +75,10 @@ const full = remote
       })
     : await getImage({ src, width: 1600, format: "avif" })
 const altText = alt ?? (remote ? SOURCES[src].alt : caption)
+// For the phone's collage (Q26): the picture's own proportion, and a coarse
+// shape so wide, square and tall pictures can take different widths.
+const ratio = w / h
+const shape = ratio >= 1.15 ? "wide" : ratio <= 0.87 ? "tall" : "square"
 const classes = [
     "clipping",
     kind === "scrap" ? "torn" : null,
@@ -94,6 +98,7 @@ const INKS = {
     class={classes}
     id={`tc-item-${id}`}
     data-kind={kind}
+    data-shape={shape}
     data-tape={tape ? "" : undefined}
     data-reveal
     data-full={full.src}
@@ -103,7 +108,7 @@ const INKS = {
     aria-label={`${caption} — enlarge`}
     data-tc-label={caption}
     data-tc-file={remote ? src : undefined}
-    style={`left:${x}px; top:${y}px; width:${w}px; height:${h}px;${
+    style={`left:${x}px; top:${y}px; width:${w}px; height:${h}px; --ar:${ratio.toFixed(4)};${
         rotate ? ` transform: rotate(${rotate}deg);` : ""
     }${kind === "riso" ? ` --riso-ink:${INKS[ink]};` : ""}`}
 >

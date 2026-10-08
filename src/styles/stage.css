@@ -163,10 +163,10 @@
 }
 
 /*
- * Below the cutoff there is no pile: the page becomes an ordinary vertical
- * read of sheets, one after another, each in its own stock. The rig keeps
- * publishing progress from vertical scroll so the chrome stays alive.
- * (Upstream #9.) The back cover follows the last sheet in flow.
+ * Below the cutoff the pile runs vertically: sheets in flow, each in its
+ * own stock, each pinning as the next slides up over it (Q26). The rig
+ * keeps publishing progress from vertical scroll so the chrome stays alive
+ * (upstream #9). The back cover follows the last sheet in flow.
  */
 @media (max-width: 810px) {
     .tc-track {
@@ -192,14 +192,35 @@
         transform: none !important;
     }
 
+    /*
+     * The pile, for a thumb (Q26). Each sheet is sticky by its BOTTOM edge:
+     * `top` is the screen height minus the sheet's own height (--h, measured
+     * by the rig), so a sheet taller than the screen scrolls through first
+     * and only pins once its last line is in view. The next sheet then
+     * slides up over it — taking the top sheet off the pile, upward. A sheet
+     * no taller than the screen pins at the top (min-height makes that the
+     * same number).
+     *
+     * The containing block is the strip, which has every sheet's height in
+     * flow, and no ancestor clips on this layout (upstream #14).
+     *
+     * z-index is reset: on the desk the cover is on top (n − i); here each
+     * later sheet must cover the one before, which is plain DOM order.
+     */
     .tc-sector {
-        position: relative;
-        inset: auto;
+        position: sticky;
+        top: min(0px, calc(100svh - var(--h, 100svh)));
+        z-index: 1 !important;
+        inset-inline: auto;
+        bottom: auto;
         width: 100%;
         height: auto;
         min-height: 100svh;
         transform: none !important;
-        box-shadow: 0 1px 0 rgb(var(--shadow-rgb) / 0.12);
+        /* The edge of the sheet arriving, cast on the one it covers. */
+        box-shadow:
+            0 -1px 0 rgb(var(--shadow-rgb) / 0.12),
+            0 -14px 28px -18px rgb(var(--shadow-rgb) / 0.45);
     }
 
     .crop {

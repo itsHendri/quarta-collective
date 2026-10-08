@@ -46,7 +46,7 @@ import { CREDITS } from "~/content/clippings"
             <div class="back-col">
                 <p class="back-label t-label">Photographs</p>
                 <p class="t-body">
-                    Placeholders, from Unsplash: {CREDITS.map((c) => `@${c}`).join(" · ")}
+                    Placeholders, from Unsplash: {CREDITS.map((c) => `@${c}`).join(" · ")}.
                 </p>
                 <button class="back-top t-hand" id="tc-close" type="button" hidden>
                     back to the top
@@ -163,11 +163,11 @@ import { CREDITS } from "~/content/clippings"
         right: 0;
         bottom: -0.2em;
         text-align: center;
-        font-family: var(--font-display);
+        font-family: var(--font-title);
         font-size: min(30vw, 62vh);
         line-height: 1;
         letter-spacing: -0.02em;
-        text-transform: uppercase;
+        font-weight: 700;
         white-space: nowrap;
         color: var(--tc-fg);
         opacity: 0.075;

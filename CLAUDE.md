@@ -11,9 +11,10 @@ desk, one by one, sliding each to the left, down to a back cover (Q19,
 Q21; the strip panned until 2026-10-08). The look comes from
 Hendri's "Zine" Pinterest board: white stock, riso inks, misregistered
 headlines were the first reading; the chosen direction is **exploration 02,
-the typewriter** (Q12): Special Elite capitals with a typed red rule, warm
-stock, one red, colour scans with tape, sketched marks, the index down the
-left gutter.
+the typewriter** (Q12), since retyped from Hendri's Figma cover (Q24):
+Amatic SC titles, Inter body, Courier Prime labels, Special Elite captions,
+Caveat notes; warm stock, one red, colour scans with tape, the index as a
+ruler down the right.
 
 This is a **fork of `~/Development/memory-lane`** (SECTOR READ). The scroll
 rig, stage layout, derived-colour tokens and the type-system shape are lifted
@@ -70,7 +71,7 @@ those files. Our own `DECISIONS.md` records only what is NEW here, as
 - The index tabs are real `<button>`s: the piece's only keyboard navigation
   (upstream #16).
 - **Exactly two interactive pages — write (p. 03) and draw (p. 05) — plus
-  the lightbox.** Hendri asked for these in review (Q11) after Q10 had
+  the lightbox and the cover's signup sheet (Q25).** Hendri asked for these in review (Q11) after Q10 had
   removed a first attempt; the physical notebook is still a separate object.
   Before adding any other "feature", check whether Hendri is describing the
   site or the thing the site is about.
@@ -115,5 +116,11 @@ node scripts/sweep-contrast.ts
   notebook paper should replace `src/assets/textures/paper.png`.
 - The copy is a first draft of the real notebook project; Hendri owns it.
 - The two prompts on the visitor's pages are first drafts.
+- **On a phone the pile is vertical** (Q26): sheets are sticky by their
+  bottom edge (`--h`, measured by the rig) and the next slides up over the
+  last. Never give a phone-layout ancestor of the strip `overflow` other
+  than visible, or the sheets stop pinning (upstream #14).
+- **The signup form is not connected** until `endpoint` is set in
+  `src/content/signup.ts` (Formspree or Web3Forms).
 - "Quarta = Wednesday" is a reading of the name, not a brief. Easy to change
   in `NotebookChrome.astro` (wordmark) and the spread eyebrows.

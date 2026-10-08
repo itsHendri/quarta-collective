@@ -1,18 +1,26 @@
 ---
 /*
- * Fonts first: the three faces ship as @fontsource packages, so their
- * @font-face rules bundle into the single stylesheet and Vite hashes and
- * base-prefixes the files. The preloads below import the SAME files with
- * `?url`, so the href is whatever Vite emitted — no hand-built `/fonts/…`
- * path to 404 under the deploy base (memory-lane A23; DECISIONS Q3).
+ * Fonts first: the faces ship as @fontsource packages, so their @font-face
+ * rules bundle into the single stylesheet and Vite hashes and base-prefixes
+ * the files. The preloads below import the SAME files with `?url`, so the
+ * href is whatever Vite emitted — no hand-built `/fonts/…` path to 404 under
+ * the deploy base (memory-lane A23; DECISIONS Q3).
+ *
+ * Five faces, one job each (Q24): Amatic SC titles, Inter body, Courier
+ * Prime labels, Special Elite captions and the page number, Caveat notes.
  */
+import "@fontsource/amatic-sc/latin-700.css"
+import "@fontsource/inter/latin-400.css"
 import "@fontsource/special-elite/latin-400.css"
 import "@fontsource-variable/caveat/index.css"
 import "@fontsource/courier-prime/latin-400.css"
 import "@fontsource/courier-prime/latin-700.css"
-import displayUrl from "@fontsource/special-elite/files/special-elite-latin-400-normal.woff2?url"
-import handUrl from "@fontsource-variable/caveat/files/caveat-latin-wght-normal.woff2?url"
+import titleUrl from "@fontsource/amatic-sc/files/amatic-sc-latin-700-normal.woff2?url"
+import bodyUrl from "@fontsource/inter/files/inter-latin-400-normal.woff2?url"
+import typedUrl from "@fontsource/special-elite/files/special-elite-latin-400-normal.woff2?url"
 import typeUrl from "@fontsource/courier-prime/files/courier-prime-latin-400-normal.woff2?url"
+
+import ogCover from "~/assets/og-cover.jpg"
 
 import "~/styles/tokens.css"
 import "~/styles/type.css"
@@ -25,10 +33,18 @@ interface Props {
 
 const {
     title = "Quarta Collective",
-    description = "A notebook of making. A few of us, one evening a week.",
+    description = "A space to make and create with friends. Three of us, one table, Wednesday evenings.",
 } = Astro.props
 
 const canonical = new URL(Astro.url.pathname, Astro.site)
+
+/*
+ * The link preview (Q26): the cover with the three of us, 1200 × 630, as a
+ * JPEG under 100 KB so WhatsApp and iMessage show it. Made from Hendri's
+ * Figma cover ("Link preview — 1200 × 630"), with the real faces pasted in.
+ * The URL must be absolute, so it is resolved against `site`.
+ */
+const ogImage = new URL(ogCover.src, Astro.site)
 
 /*
  * public/ files are served verbatim under the deploy base and nothing
@@ -50,20 +66,28 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "")
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:url" content={canonical} />
+        <meta property="og:site_name" content="Quarta Collective" />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:image:width" content={String(ogCover.width)} />
+        <meta property="og:image:height" content={String(ogCover.height)} />
+        <meta property="og:image:alt" content="The cover: “The art of making”, the three of us, and the notebook we're making." />
         <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content={ogImage} />
 
         <meta name="theme-color" content="#f3eedd" />
 
         <link rel="icon" href={`${base}/favicon.svg`} type="image/svg+xml" />
 
         {/*
-          All three faces paint above the fold — the headline, the caption
-          under the first clipping, the eyebrow — so all three preload.
+          The four faces on the cover preload: the title, the body, the
+          caption under the clipping and the page number, the wordmark and
+          the tooltip. Caveat is not on the cover, so it does not.
           `crossorigin` is required even same-origin for fonts, or the
           preload is fetched twice.
         */}
-        <link rel="preload" href={displayUrl} as="font" type="font/woff2" crossorigin />
-        <link rel="preload" href={handUrl} as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href={titleUrl} as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href={bodyUrl} as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href={typedUrl} as="font" type="font/woff2" crossorigin />
         <link rel="preload" href={typeUrl} as="font" type="font/woff2" crossorigin />
 
         <slot name="head" />

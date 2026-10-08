@@ -15,6 +15,7 @@ import Spread13 from "~/spreads/Spread13.astro"
 import NotebookPage from "~/components/NotebookPage.astro"
 import NotebookChrome from "~/components/NotebookChrome.astro"
 import BackCover from "~/components/BackCover.astro"
+import SignupSheet from "~/components/SignupSheet.astro"
 import { TITLES } from "~/spreads/titles"
 import "~/styles/stage.css"
 import "~/styles/spread.css"
@@ -71,6 +72,9 @@ const SPREADS = TITLES.length
         </div>
     </div>
 
+    {/* The "+" on the cover opens this: a sheet laid on top of the pile. */}
+    <SignupSheet />
+
     {/* A clipping held up to the light, over everything else. */}
     <div
         class="lightbox"
@@ -93,6 +97,7 @@ const SPREADS = TITLES.length
     import { initReveal } from "~/lib/reveal"
     import { initNotebook } from "~/lib/notebook"
     import { initLightbox } from "~/lib/lightbox"
+    import { initSignup } from "~/lib/signup"
     import {
         initProgressRail,
         initPageCounter,
@@ -114,6 +119,7 @@ const SPREADS = TITLES.length
     initReveal()
     initScrollRig()
     initNotebook()
+    initSignup()
 
     const lightbox = byId("tc-lightbox")
     if (lightbox) initLightbox({ root: lightbox })

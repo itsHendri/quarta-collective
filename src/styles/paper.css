@@ -1,5 +1,5 @@
 /*
- * QUARTA COLLECTIVE — paper: grain, ruling, staples, tape, torn edges,
+ * QUARTA COLLECTIVE — paper: texture, ruling, tape, torn edges,
  * stamps, block prints, halftone.
  *
  * Everything here is MATERIAL, not type. It replaces memory-lane's tube
@@ -72,43 +72,6 @@
         linear-gradient(to bottom, var(--square-line) 1px, transparent 1px);
     background-size: 24px 24px;
     background-position: 13px 12px; /* +1 since the 1px edge line went (Q22) */
-}
-
-/* ── Fold and staples (spread 00 only) ─────────────────────────────────── */
-
-/* The zine is one sheet folded and stapled twice. The crease is a soft
- * line; the staples are two short bars of steel sitting across it. */
-.binding {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 30px;
-    width: 1px;
-    background: linear-gradient(
-        to bottom,
-        transparent,
-        color-mix(in srgb, var(--tc-fg) 18%, transparent) 12%,
-        color-mix(in srgb, var(--tc-fg) 18%, transparent) 88%,
-        transparent
-    );
-    pointer-events: none;
-}
-.binding::before,
-.binding::after {
-    content: "";
-    position: absolute;
-    left: -2px;
-    width: 5px;
-    height: 34px;
-    border-radius: 2px;
-    background: linear-gradient(to right, var(--steel), var(--steel-light) 45%, var(--steel-dark));
-    box-shadow: 0 1px 1px rgb(var(--shadow-rgb) / 0.25);
-}
-.binding::before {
-    top: 28%;
-}
-.binding::after {
-    top: 66%;
 }
 
 /* ── Tape ──────────────────────────────────────────────────────────────── */
@@ -344,7 +307,6 @@
  * perspective, which the rig puts on the spread on first hover. Nothing here. */
 
 @media (max-width: 810px) {
-    .binding,
     .blockprint,
     .sketch,
     .tc-sector.is-ruled::before {
