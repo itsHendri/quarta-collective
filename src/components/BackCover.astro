@@ -1,0 +1,224 @@
+---
+import { CREDITS } from "~/content/clippings"
+
+/*
+ * The back cover (Q21) — what is waiting under the last sheet.
+ *
+ * paper.design ends with a footer that sits still while the page above it
+ * lifts away. This is that, inside the rules of this rig: nothing may come
+ * after the scroll track (upstream #36), so the back cover lives INSIDE the
+ * stage, under the pile, printed on the desk. The last sheet slides off it
+ * like every other sheet.
+ *
+ * It took the colophon from the cover and the credits from p. 14: the back
+ * of a zine is where those are printed. And "back to the top" — the release
+ * that used to float over the last spread as "close the notebook".
+ *
+ * On the vertical read there is no pile, so it follows the last sheet in
+ * flow and does paper.design's trick exactly: the cover's own box clips
+ * (`clip-path: inset(0)`) and everything in it is `position: fixed` to the
+ * bottom of the screen, so the sheets scroll up and off it and it never
+ * moves. Nothing observes it, so the clip-path cannot blind an
+ * IntersectionObserver (Q6).
+ */
+---
+
+<section class="back-cover" id="tc-back" aria-label="Back cover" data-shown="false">
+    <div class="back-inner">
+        <div class="back-desk" aria-hidden="true"></div>
+
+        <div class="back-cols">
+            <div class="back-col">
+                <p class="back-label t-label">Quarta Collective</p>
+                <p class="t-body">
+                    A space to make and create with friends. Quarta-feira:
+                    Wednesday evenings, one table, a few of us.
+                </p>
+            </div>
+            <div class="back-col">
+                <p class="back-label t-label">Colophon</p>
+                <p class="t-body">
+                    This site tells the story; the notebook itself is made by
+                    hand. Type: Special Elite · Caveat · Courier Prime.
+                    hendri.design · 2026.
+                </p>
+            </div>
+            <div class="back-col">
+                <p class="back-label t-label">Photographs</p>
+                <p class="t-body">
+                    Placeholders, from Unsplash: {CREDITS.map((c) => `@${c}`).join(" · ")}
+                </p>
+                <button class="back-top t-hand" id="tc-close" type="button" hidden>
+                    back to the top
+                    <svg viewBox="0 0 46 34" width="30" height="22" aria-hidden="true">
+                        <path
+                            d="M3 24 C 12 8, 26 6, 41 15"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                        />
+                        <path
+                            d="M33 9 L 41 15 L 32 19"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        {/* Pressed into the desk, the way paper.design sets its name into
+            its footer: ink at a whisper, multiplied, with a light edge. */}
+        <p class="back-wordmark" aria-hidden="true">Quarta</p>
+    </div>
+</section>
+
+<script>
+    /*
+     * On the desk the back cover is covered by the pile until the last sheet
+     * starts to go; until then it is hidden outright, so its wordmark never
+     * peeks round the sheet's margins and its button cannot take focus.
+     */
+    const back = document.getElementById("tc-back")
+    if (back) {
+        window.addEventListener("tc:scroll", (e) => {
+            const shown = window.innerWidth <= 810 || (e.detail?.end ?? 0) > 0
+            const next = String(shown)
+            if (back.dataset.shown !== next) back.dataset.shown = next
+        })
+    }
+</script>
+
+<style>
+    .back-cover {
+        position: absolute;
+        inset: 0;
+        z-index: 1; /* on the desk, under the pile (2) */
+        pointer-events: none;
+    }
+    .back-cover[data-shown="false"] {
+        visibility: hidden;
+    }
+    .back-inner {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+    }
+    /* The stage is already the desk; only the vertical read needs its own. */
+    .back-desk {
+        display: none;
+    }
+
+    .back-cols {
+        position: absolute;
+        left: 50%;
+        top: calc(50% - var(--sheet-h) * var(--sheet-s, 1) / 2);
+        width: calc(var(--sheet-w) * var(--sheet-s, 1));
+        transform: translateX(-50%);
+        box-sizing: border-box;
+        padding: 72px 72px 0 76px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 56px;
+        pointer-events: auto;
+    }
+    .back-col {
+        max-width: 340px;
+    }
+    .back-col .t-body {
+        color: var(--tc-fg);
+        line-height: 1.7;
+    }
+    .back-label {
+        margin-bottom: 14px;
+        color: var(--tc-fg-dim);
+    }
+
+    .back-top {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 28px;
+        padding: 6px 4px;
+        color: var(--tc-fg);
+        transform: rotate(-2deg);
+        text-decoration: underline;
+        text-decoration-thickness: 1.5px;
+        text-underline-offset: 4px;
+    }
+    .back-top svg {
+        transform: rotate(-90deg);
+    }
+    .back-top[hidden] {
+        display: none;
+    }
+
+    .back-wordmark {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -0.2em;
+        text-align: center;
+        font-family: var(--font-display);
+        font-size: min(30vw, 62vh);
+        line-height: 1;
+        letter-spacing: -0.02em;
+        text-transform: uppercase;
+        white-space: nowrap;
+        color: var(--tc-fg);
+        opacity: 0.075;
+        mix-blend-mode: multiply;
+        /* Pressed in: a light edge below the stroke, as embossing catches it. */
+        text-shadow: 0 2px 0 rgb(255 255 255 / 0.9);
+        pointer-events: none;
+        user-select: none;
+    }
+
+    /*
+     * The vertical read: paper.design's footer, as they built it. The cover's
+     * box is a window (clip-path) onto layers fixed to the screen, so the last
+     * sheet scrolls up off a back cover that does not move.
+     */
+    @media (max-width: 810px) {
+        .back-cover {
+            position: relative;
+            inset: auto;
+            order: 2;
+            height: 100svh;
+            clip-path: inset(0);
+            pointer-events: auto;
+        }
+        .back-inner {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+        }
+        .back-desk {
+            display: block;
+            position: absolute;
+            inset: 0;
+            background-color: var(--desk);
+            background-image:
+                linear-gradient(to right, var(--desk-line) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--desk-line) 1px, transparent 1px);
+            background-size: 10px 10px;
+        }
+        .back-cols {
+            left: 0;
+            top: 0;
+            width: 100%;
+            transform: none;
+            padding: 72px 20px 0;
+            grid-template-columns: 1fr;
+            gap: 28px;
+        }
+        .back-top {
+            /* Finger-sized: the one thing on the vertical read a thumb must hit. */
+            padding: 12px 8px;
+        }
+    }
+</style>

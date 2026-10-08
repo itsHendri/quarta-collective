@@ -18,6 +18,12 @@ import {
     hexToRgb,
     FLIP,
     TARGET,
+    DESK_HEX,
+    RULER_HEX,
+    RED_HEX,
+    TEXTURE_ON,
+    tintOf,
+    sheetTint,
     type RGB,
 } from "../src/lib/contrast.ts"
 
@@ -54,7 +60,37 @@ for (let i = 0; i < SAMPLES; i++) {
     prevDark = dark
 }
 
-const pass = minFg >= 4.5 && minDim >= 4.5
+/*
+ * The surfaces that are not the ramp (Q19): the desk the chrome is printed
+ * on, the ruler the index is printed on, and each sheet's own fixed stock.
+ * And the one red, which may carry small text, on every one of them.
+ */
+const SHEETS = 14
+const red = luminance(...hexToRgb(RED_HEX))
+const surfaces = [
+    { name: `desk ${DESK_HEX}`, t: tintOf(DESK_HEX, TEXTURE_ON.desk) },
+    { name: `ruler ${RULER_HEX}`, t: tintOf(RULER_HEX, TEXTURE_ON.ruler) },
+    ...Array.from({ length: SHEETS }, (_, i) => ({
+        name: `sheet ${String(i + 1).padStart(2, "0")}`,
+        t: sheetTint(i, SHEETS),
+    })),
+]
+let surfacesPass = true
+const surfaceLines: string[] = []
+let minRed = Infinity
+for (const { name, t } of surfaces) {
+    const fg = contrastRatio(luminance(...hexToRgb(t.fg)), t.lum)
+    const dim = contrastRatio(luminance(...(t.dim.match(/\d+/g)!.map(Number) as RGB)), t.lum)
+    const r = contrastRatio(red, t.lum)
+    minRed = Math.min(minRed, r)
+    const ok = fg >= 4.5 && dim >= 4.5 && r >= 4.5
+    if (!ok) surfacesPass = false
+    surfaceLines.push(
+        `  ${name.padEnd(14)} ${t.bg.padEnd(18)} → ${String(t.rgb).padEnd(12)} fg ${fg.toFixed(2)}  dim ${dim.toFixed(2)}  red ${r.toFixed(2)}${ok ? "" : "  ← FAIL"}`
+    )
+}
+
+const pass = minFg >= 4.5 && minDim >= 4.5 && surfacesPass
 
 console.log(`ramp: ${RAMP_HEX.join(" → ")}`)
 console.log(`samples: ${SAMPLES}   flip threshold: L ${FLIP}   target: ${TARGET}:1`)
@@ -88,6 +124,11 @@ for (let i = 0; i <= 1000; i++) {
         if (alt < 4.5 && nearBlackFailsAt === null) nearBlackFailsAt = L
     }
 }
+
+console.log("surfaces (desk, ruler, each sheet's stock), measured with their texture on:")
+for (const l of surfaceLines) console.log(l)
+console.log(`  min red contrast: ${minRed.toFixed(2)}:1`)
+console.log("")
 
 console.log("flip-threshold proof (across all luminances, not just this ramp):")
 console.log(`  pure #000/#fff worst case:      ${worstPure.toFixed(2)}:1`)

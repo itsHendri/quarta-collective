@@ -14,6 +14,7 @@ import Spread12 from "~/spreads/Spread12.astro"
 import Spread13 from "~/spreads/Spread13.astro"
 import NotebookPage from "~/components/NotebookPage.astro"
 import NotebookChrome from "~/components/NotebookChrome.astro"
+import BackCover from "~/components/BackCover.astro"
 import { TITLES } from "~/spreads/titles"
 import "~/styles/stage.css"
 import "~/styles/spread.css"
@@ -21,7 +22,9 @@ import "~/styles/paper.css"
 
 /*
  * The notebook: twelve printed spreads telling the story, and two pages —
- * one to write on, one to draw on — that are the visitor's.
+ * one to write on, one to draw on — that are the visitor's. A pile of
+ * fourteen sheets on a desk; scrolling takes them off one by one, to the
+ * left, down to the back cover (Q19, Q21).
  *
  * RULINGS NEVER TOUCH. A lined page next to a grid page read as one odd
  * sheet (Hendri, twice), so every ruled, dotted or squared spread has a
@@ -30,11 +33,11 @@ import "~/styles/paper.css"
  *
  * NOTHING MAY COME AFTER THE TRACK — no footer, no colophon section. A section
  * below it keeps scrolling once the read is done and takes the pinned stage
- * off the top of the screen. The colophon lives on the cover for exactly
- * this reason. (memory-lane #36.)
+ * off the top of the screen. The colophon is on the back cover, which lives
+ * INSIDE the stage, under the pile, for exactly this reason. (memory-lane #36.)
  *
- * `--tc-sectors` drives the track's height (spreads × 100vh), so it must
- * match the number of spreads below — and `TITLES` in spreads/titles.ts.
+ * `--tc-sectors` drives the track's height ((sheets + 1) × 100vh), so it must
+ * match the number of sheets below — and `TITLES` in spreads/titles.ts.
  */
 
 const SPREADS = TITLES.length
@@ -47,7 +50,9 @@ const SPREADS = TITLES.length
 
     <div class="tc-track" id="tc-track" style={`--tc-sectors:${SPREADS}`}>
         <div class="tc-stage" id="tc-stage">
+            <BackCover />
             <div class="tc-strip" id="tc-strip">
+                <div class="crop" aria-hidden="true"></div>
                 <Spread00 />
                 <Spread01 />
                 <Spread02 />
@@ -66,7 +71,7 @@ const SPREADS = TITLES.length
         </div>
     </div>
 
-    {/* A clipping held up to the light. Under the grain, over everything else. */}
+    {/* A clipping held up to the light, over everything else. */}
     <div
         class="lightbox"
         id="tc-lightbox"
@@ -81,8 +86,6 @@ const SPREADS = TITLES.length
             <figcaption class="t-hand"></figcaption>
         </figure>
     </div>
-    {/* The sheet everything is printed on: above the chrome, under nothing. */}
-    <div class="grain" aria-hidden="true"></div>
 </Base>
 
 <script>
@@ -105,10 +108,11 @@ const SPREADS = TITLES.length
     /*
      * Everything here is cheap — there is no WebGL, no boot, no audio — so
      * there is no critical/deferred split any more (memory-lane A20). The
-     * rig first, so scroll works from the first frame.
+     * reveal subscribes before the rig's first publish, so the cover's
+     * headline hears it; then the rig, so scroll works from the first frame.
      */
-    initScrollRig()
     initReveal()
+    initScrollRig()
     initNotebook()
 
     const lightbox = byId("tc-lightbox")

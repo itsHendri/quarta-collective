@@ -1,14 +1,41 @@
-# Status — 2026-10-05
+# Status — 2026-10-08
 
-**Seventh pass: exploration 02 applied (Q12) and the UI audit fixed (Q13).** Quarta Collective
-is a space to make and create with friends; the website is a visual
-representation of that — twelve printed spreads telling the story of how a
-thing gets made there. The thing, this season, is a notebook made by hand:
-half printed like a zine, half blank (Q10). The writable pages of the third
-pass were a misreading and are gone. Built, measured, deployed to GitHub
-Pages. What remains is Hendri's eye and real photographs.
+**Eighth pass: the pile (Q19–Q21).** Quarta Collective is a space to make
+and create with friends; the website is a visual representation of that —
+fourteen sheets (twelve printed spreads and two pages that are the
+visitor's) telling the story of how a thing gets made there. The thing,
+this season, is a notebook made by hand (Q10).
 
-## Done
+Since 2026-10-08 the sheets lie in a pile on a graph-paper desk, and
+scrolling slides them off one by one to the left, down to a back cover
+with the colophon and credits. The texture, rulers, crop marks and the
+end reveal are taken from paper.design and paper.design/mono, drawn again
+in our own colours (Q20). Between Q13 and Q19, Hendri's Figma rounds
+(Q14–Q18) moved the index to a 48px ruler-gutter on the right and set the
+rulings. What remains is Hendri's eye, real photographs, and a scan of the
+real paper.
+
+## Verified — the pile (2026-10-08)
+
+| Check | Result |
+|---|---|
+| `astro check` | 0 errors, 0 warnings |
+| Contrast sweep, textured surfaces | desk, ruler and all 14 sheets pass; worst red 4.51:1 (desk), worst dim 5.23:1 |
+| `__tcPan(0)` / `(3.5/14)` / `(1)` | p. 1; sheet 4 mid-slide over an untouched sheet 5, "p. 4"; every sheet gone, back cover shown, "back to the top" shown |
+| Tab 08 | lands at `progressForSheet(7)` to the pixel; "p. 8" and the rail agree |
+| Focus-follow | a focused clipping on sheet 11 brings sheet 11 to the top |
+| Headlines at load | only the cover's is revealed |
+| Draw page | stroke centred under the pointer at scale 0.90 and 0.82, after a resize |
+| Ruler ticks | long tick on each index number's centre (y 138 = "01"); desk's left ruler in the same phase |
+| Mobile 375×812 | page 375 wide (was 1238: stickers and a note overflowed); back cover fixed under the last sheet, revealed as it scrolls |
+| Build | texture emitted as a hashed, base-prefixed `/_astro` asset |
+
+Not verified: motion feel (the slide, its ease, the hold) — Hendri's ⌘P
+check. The agent tab ran no rAF while the pane was hidden.
+
+## Earlier passes
+
+### Done (to Q13)
 
 - Forked from `~/Development/memory-lane`'s working tree (not the GitHub
   clone, so the uncommitted mobile fixes came too). Fresh history; the first
@@ -48,7 +75,7 @@ Pages. What remains is Hendri's eye and real photographs.
 - GitHub Pages: repo public, Pages set to workflow builds, remote-image cache
   restored between runs.
 
-## Verified (measured, not eyeballed)
+### Verified at Q13 (the strip; superseded where the pile changed it)
 
 | Check | Result |
 |---|---|
@@ -62,7 +89,7 @@ Pages. What remains is Hendri's eye and real photographs.
 | Fonts loaded | Special Elite, Caveat Variable, Courier Prime 400/700 |
 | Red ribbon on every stock | 5.12 / 5.41 / 4.80 / 4.69 : 1 |
 
-## Not verified
+### Not verified at Q13
 
 - **Motion feel** — the lerp, the wipe timing, the stagger. Only injected
   states were measured; rAF is throttled in the agent tab.
@@ -71,11 +98,13 @@ Pages. What remains is Hendri's eye and real photographs.
 
 ## Next — Hendri's
 
-1. **⌘P everything.** Cover, p. 4, p. 7, p. 11 especially.
-2. **The other 35 pins.** Only 24 of the board's 59 are visible signed out;
+1. **⌘P the pile.** How long a page rests (HOLD, 35% of its scroll), how far
+   it turns as it goes (−4°), and the back cover. All three are one
+   constant each in `pile.ts` / `scroll-rig.ts`.
+2. **Scan the real paper** (600dpi, blank) to replace the drawn texture.
+3. **The other 35 pins.** Only 24 of the board's 59 are visible signed out;
    the tracing-paper overlay, bulldog clip and pixel motifs are unbuilt.
-3. **Real photographs**, one key at a time in `src/content/clippings.ts`.
+4. **Real photographs**, one key at a time in `src/content/clippings.ts`.
    Riso duotones want high-contrast source pictures.
-4. Decide whether "wednesdays" stays in the wordmark.
 5. The copy is a first draft of the real project. Hendri knows what the
    notebook actually is; the spreads should follow that.

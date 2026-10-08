@@ -6,8 +6,9 @@ The website is a VISUAL REPRESENTATION of that: a storytelling piece, twelve
 printed spreads, about what the collective is and how a thing gets made
 there. It is not the thing. The thing — this season — is a notebook made by
 hand, half printed like a zine, half blank; the site only tells its story
-(Q10). Vertical scroll turns a wide strip of twelve spreads left→right
-under a pinned viewport. The look comes from
+(Q10). Vertical scroll takes fourteen sheets off a pile on a
+desk, one by one, sliding each to the left, down to a back cover (Q19,
+Q21; the strip panned until 2026-10-08). The look comes from
 Hendri's "Zine" Pinterest board: white stock, riso inks, misregistered
 headlines were the first reading; the chosen direction is **exploration 02,
 the typewriter** (Q12): Special Elite capitals with a typed red rule, warm
@@ -32,17 +33,29 @@ those files. Our own `DECISIONS.md` records only what is NEW here, as
 ## What must not break
 
 - **Nothing after the scroll track** — a section below it scrolls the pinned
-  stage off the top. The colophon lives on the cover (upstream #36).
+  stage off the top. The back cover (colophon, credits) lives INSIDE the
+  stage, under the pile (upstream #36, Q21).
 - **Type binds only to `--tc-fg` / `--tc-fg-dim` / `--tc-field`**, never to
-  `--ink` or a static grey. The dim tone is measured per paper shade
-  (upstream #33, memory-lane A3). Verify with `node scripts/sweep-contrast.ts`.
+  `--ink` or a static grey. They are scoped per surface: `:root` = the desk,
+  each sheet its own stock (set by the rig from `sheetTint`), the ruler its
+  own. The dim tone is measured WITH the paper texture on (Q20). Verify
+  with `node scripts/sweep-contrast.ts` — it covers desk, ruler and all
+  fourteen sheets.
+- **The pile's arithmetic lives in `src/lib/pile.ts`** and nowhere else; the
+  rig and the chrome both import it. Read the page from `detail.page`, never
+  from `floor(p × n)` (Q19).
+- **Texture belongs to a surface, never to the viewport.** There is no fixed
+  grain any more: sheets move. Change `TEXTURE_ON` in `contrast.ts` when you
+  change a texture opacity in CSS, and `TEXTURE_MEAN` when you regenerate
+  the tile (Q20).
 - **`RAMP_HEX` in `contrast.ts` and `--ramp-0…5` in `tokens.css` must match.**
-- **One red on the page, `#B5371F`, and it clears 4.5:1 on every stock** so
-  it may carry the tab numbers and stamps. No blue on the page in this
+- **One red on the page, `#B5371F`, and it clears 4.5:1 on every stock and
+  on the desk, texture included** so it may carry the tab numbers and stamps. No blue on the page in this
   direction; the riso tokens stay declared for a later issue (Q12).
 - **The scroll track stops short of the 48px gutter on the RIGHT**
-  (`--gutter`, Q14/Q16). Do not put fixed chrome inside the gutter that is
-  not the index; the close controls sit just inside its edge.
+  (`--gutter`, Q14/Q16). The gutter is the index, drawn as a ruler (Q20); its
+  ticks and the desk's left ruler share one phase derived from the sheet
+  count. Do not put other fixed chrome in it.
 - **The cover is page 1.** Tabs read 01–14; the corner reads "p. N".
 - **The headline wipe is a mask, never a clip-path** — Chrome's
   IntersectionObserver honours clip-path and the heading would never reveal
@@ -52,6 +65,8 @@ those files. Our own `DECISIONS.md` records only what is NEW here, as
   the whole build, not one picture (Q4).
 - Native scroll + sticky stage; only the horizontal wheel axis is intercepted
   (upstream #2, #20). Never add `scroll-behavior: smooth` to `html`.
+- **Under the scaled pile, measure with `offsetWidth`, never a rect**
+  (upstream #6): the draw canvas maps the pointer through `--sheet-s`.
 - The index tabs are real `<button>`s: the piece's only keyboard navigation
   (upstream #16).
 - **Exactly two interactive pages — write (p. 03) and draw (p. 05) — plus
@@ -77,6 +92,10 @@ node scripts/sweep-contrast.ts
 - `/specimen` shows every type preset on every ramp stop.
 - **Verify numerically, not from screenshots** where it matters: drive
   `window.__tcPan(p)` and read the DOM. Motion feel is Hendri's ⌘P check.
+  When the browser pane is hidden the tab runs no rAF at all: smooth
+  scrolls and the rig's loop freeze, and screenshots can be a frame stale.
+  `__tcPan` publishes synchronously and still works.
+- `node scripts/make-paper-texture.ts` regenerates the paper tile.
 - The agent harness resolves `.claude/launch.json` from its own working
   directory root; if `preview_start` cannot find it, a copy pointing
   `npm run dev --prefix` at this folder works.
@@ -92,6 +111,8 @@ node scripts/sweep-contrast.ts
   collective's own photographs when they exist.
 - Only 24 of the board's 59 pins were visible signed out. Tracing-paper
   overlays, bulldog clips and pixel motifs are unbuilt (FUTURE.md).
+- **The paper texture is drawn, not scanned.** A 600dpi scan of the real
+  notebook paper should replace `src/assets/textures/paper.png`.
 - The copy is a first draft of the real notebook project; Hendri owns it.
 - The two prompts on the visitor's pages are first drafts.
 - "Quarta = Wednesday" is a reading of the name, not a brief. Easy to change

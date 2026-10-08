@@ -1,4 +1,6 @@
 ---
+import { RULER_HEX, TEXTURE_ON, tintOf } from "~/lib/contrast"
+
 interface Props {
     sectors?: number
     /** One title per spread, for the index tabs' labels. */
@@ -7,23 +9,29 @@ interface Props {
 const { sectors = 12, titles } = Astro.props
 
 /*
- * The notebook's own furniture, in three places:
+ * The notebook's own furniture, printed on the desk:
  *
- *   tabs      fixed top — the index tabs along the page's top edge, one per
- *             spread. Real <button>s: the only keyboard navigation.
+ *   tabs      fixed right — the index, one number per sheet, on a RULER laid
+ *             along the desk's right edge (Q20). Real <button>s: the only
+ *             keyboard navigation.
+ *   mark      fixed top-left — the wordmark.
  *   page      fixed bottom-left — "p. 4", written in the corner.
- *   close     fixed bottom-right — "close the notebook", at the end only.
  *
- * All under the grain at z-index 10, so they are printed on the same sheet.
- * Nothing here addresses the visitor (memory-lane #15).
+ * "Back to the top" moved to the back cover (Q21). Nothing here addresses
+ * the visitor (memory-lane #15).
+ *
+ * The ruler is its own stock (the whiter sheet), so its numbers are measured
+ * against it, here, at build — the sweep measures the same hex.
  */
+const ruler = tintOf(RULER_HEX, TEXTURE_ON.ruler)
+const rulerVars = `--tc-bg:${ruler.bg};--tc-fg:${ruler.fg};--tc-fg-dim:${ruler.dim};--tc-field:${ruler.bg};`
 ---
 
-<!-- ── Index tabs, down the left ──────────────────────────────────────── -->
-<nav class="tabs" id="tc-rail" aria-label="Index">
+<!-- ── Index, on a ruler down the right ───────────────────────────────── -->
+<nav class="tabs" id="tc-rail" aria-label="Index" style={`--n:${sectors}`}>
     <span class="tabs-mark t-eyebrow">Quarta Collective</span>
     <i class="tabs-rule" aria-hidden="true"></i>
-    <div class="tabs-col">
+    <div class="tabs-col" style={rulerVars}>
         <div class="tabs-cells" data-rail-cells>
             {
                 Array.from({ length: sectors }, (_, i) => (
@@ -50,28 +58,6 @@ const { sectors = 12, titles } = Astro.props
     <span data-page>p. 1</span>
 </div>
 
-<!-- ── Close the notebook ─────────────────────────────────────────────── -->
-<button class="close t-hand" id="tc-close" type="button" hidden>
-    close the notebook
-    <svg viewBox="0 0 46 34" width="30" height="22" aria-hidden="true">
-        <path
-            d="M3 24 C 12 8, 26 6, 41 15"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-        />
-        <path
-            d="M33 9 L 41 15 L 32 19"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-        />
-    </svg>
-</button>
-
 <style>
     /* ── Tabs ───────────────────────────────────────────────────────── */
     /*
@@ -89,6 +75,23 @@ const { sectors = 12, titles } = Astro.props
         width: var(--gutter, 48px);
         z-index: 6;
         color: var(--tc-fg-dim);
+        /*
+         * A ruler laid along the desk (Q20): the whiter stock, the paper's
+         * fibre, and ticks on its page edge — paper.design's ruler tiles,
+         * drawn again on our pitch. A tick every 12px; the long one at 24
+         * falls on each number's centre, the middle one at 0 between two
+         * numbers, so the index reads as the ruler's own figures. Offset so
+         * the tile's phase starts where the centred stack of numbers does.
+         */
+        background-color: var(--ruler);
+        background-image:
+            url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M0 .5H7M0 12.5H4M0 24.5H11M0 36.5H4' stroke='%23281e0a' stroke-opacity='.5'/%3E%3C/svg%3E"),
+            url("../assets/textures/paper.png");
+        background-repeat: repeat-y, repeat;
+        background-size: 48px 48px, 512px 512px;
+        background-position: 0 calc(50vh - var(--n, 14) * 24px), 0 0;
+        background-blend-mode: normal, multiply;
+        box-shadow: -3px 0 8px -6px rgb(var(--shadow-rgb) / 0.35);
     }
     /* The wordmark stays top-left of the page. */
     .tabs-mark {
@@ -172,30 +175,6 @@ const { sectors = 12, titles } = Astro.props
         color: var(--tc-fg-dim);
     }
 
-    /* ── Close ──────────────────────────────────────────────────────── */
-    .close {
-        position: fixed;
-        right: calc(var(--gutter, 48px) + 36px);
-        bottom: 26px;
-        z-index: 6;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 6px 4px;
-        color: var(--tc-fg);
-        transform: rotate(-2deg);
-        text-decoration: underline;
-        text-decoration-thickness: 1.5px;
-        text-underline-offset: 4px;
-        transition: opacity 240ms linear;
-    }
-    .close svg {
-        transform: rotate(-90deg);
-    }
-    .close[hidden] {
-        display: none;
-    }
-
     /* The tabs are a desktop conceit: on the vertical read there is no pan
      * to index, and their seek buttons duplicate ordinary scrolling. The page
      * number and the close control survive. */
@@ -207,9 +186,8 @@ const { sectors = 12, titles } = Astro.props
         .tabs {
             bottom: auto;
             width: auto;
-        }
-        .close {
-            right: 20px;
+            background: none;
+            box-shadow: none;
         }
         .tabs-mark {
             padding-top: 16px;
@@ -217,12 +195,6 @@ const { sectors = 12, titles } = Astro.props
         .page {
             left: 20px;
             bottom: 16px;
-        }
-        .close {
-            right: 20px;
-            bottom: 16px;
-            /* Finger-sized: the one thing on the vertical read a thumb must hit. */
-            padding: 12px 8px;
         }
     }
 </style>

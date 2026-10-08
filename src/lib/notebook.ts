@@ -93,12 +93,19 @@ export function initNotebook(root: ParentNode = document): () => void {
             }
             // Sized to the CSS box at device resolution; a resize clears a
             // canvas, so the saved ink is painted back afterwards.
+            //
+            // The LAYOUT box (offsetWidth), not the rect: on the desk the
+            // sheet is scaled to fit (--sheet-s), the rect measures that
+            // scale in, and a scale change fires no ResizeObserver — so the
+            // canvas and the pointer would disagree after a window resize
+            // (Q19, upstream #6). Drawing happens in the sheet's own px.
             const size = () => {
                 dpr = Math.min(2, window.devicePixelRatio || 1)
-                const r = canvas.getBoundingClientRect()
-                if (r.width === 0 || r.height === 0) return
-                canvas.width = Math.round(r.width * dpr)
-                canvas.height = Math.round(r.height * dpr)
+                const w = canvas.offsetWidth
+                const h = canvas.offsetHeight
+                if (w === 0 || h === 0) return
+                canvas.width = Math.round(w * dpr)
+                canvas.height = Math.round(h * dpr)
                 ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
                 ctx.lineCap = "round"
                 ctx.lineJoin = "round"
@@ -111,9 +118,12 @@ export function initNotebook(root: ParentNode = document): () => void {
             ro.observe(canvas)
 
             let drawing = false
+            // Screen px → the sheet's px: undo whatever scale the pile is at.
             const pos = (e: PointerEvent) => {
                 const r = canvas.getBoundingClientRect()
-                return [e.clientX - r.left, e.clientY - r.top] as const
+                const kx = r.width ? canvas.offsetWidth / r.width : 1
+                const ky = r.height ? canvas.offsetHeight / r.height : 1
+                return [(e.clientX - r.left) * kx, (e.clientY - r.top) * ky] as const
             }
             const onDown = (e: PointerEvent) => {
                 drawing = true

@@ -5,8 +5,9 @@
  * system:
  *
  *   1. STATIC tokens (below) — authored values that never change.
- *   2. DERIVED tokens (--tc-*) — rewritten every frame by the scroll rig from
- *      the live page luminance. These are what type binds to.
+ *   2. DERIVED tokens (--tc-*) — measured from the stock under the type.
+ *      Since Q19 they are set once per surface (desk, ruler, each sheet),
+ *      not every frame. These are what type binds to.
  *
  * The page is a ZINE: white stock printed in one or two inks. The ramp moves
  * between paper stocks — white, a warm white, newsprint grey, a yellow sheet —
@@ -66,20 +67,39 @@
     --ramp-4: var(--paper-yellow);
     --ramp-5: var(--paper);
 
-    /* ── Derived, written per-frame by the rig ──────────────────────────── */
+    /* ── The desk (Q19) ──────────────────────────────────────────────────── */
     /*
-     * Fallbacks equal the ramp at progress 0, so the page is correct and
-     * legible before the rig's first frame and stays correct with JS off.
+     * The sheets lie on graph paper a shade darker than the stock, as
+     * paper.design's white cards lie on its cream layer. DESK_HEX in
+     * contrast.ts must match; the sweep measures it.
+     */
+    --desk: #eae4d2;
+    --desk-line: rgb(var(--shadow-rgb) / 0.09); /* the 10px grid */
+    --desk-major: rgb(var(--shadow-rgb) / 0.2); /* the 120px grid */
+    --ruler: var(--paper-warm); /* the index is a ruler laid on the desk; RULER_HEX */
+    --tick: rgb(var(--shadow-rgb) / 0.55);
+
+    /* ── Derived ────────────────────────────────────────────────────────── */
+    /*
+     * At :root these are the DESK's values, constant: the chrome (wordmark,
+     * page number, lightbox) is printed on the desk. Every sheet overrides
+     * all four with its own stock, set once by the rig from `sheetTint` (Q19);
+     * the ruler overrides them with its own. Type still binds only to these.
+     * The values here are what `tintOf(DESK_HEX, TEXTURE_ON.desk)` measures, so the page is
+     * legible before the rig runs and with JS off.
      */
     --tc-p: 0;
     --tc-pan: 0px;
-    --tc-bg: var(--paper);
+    --tc-bg: var(--desk);
     --tc-fg: #000000;
-    --tc-fg-dim: rgb(97, 95, 88);
-    --tc-field: var(--paper);
+    --tc-fg-dim: rgb(92, 90, 82);
+    --tc-field: var(--desk);
 
     /* ── Geometry ───────────────────────────────────────────────────────── */
-    --sector-w: 1400px; /* one spread's width in the strip */
+    --sector-w: 1400px; /* one spread's width: the sheet's */
+    --sheet-w: var(--sector-w);
+    --sheet-h: 880px; /* the lowest plate edge (780) plus the 92px padding, rounded */
+    --sheet-s: 1; /* the scale that fits a sheet to the desk; written by the rig */
     --gutter: 48px; /* the index column on the right (Q16: Hendri narrowed it from 96) */
     --stage-h: 100vh;
     --bp-phone: 810px; /* below this the rig goes inert; vertical read */

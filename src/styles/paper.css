@@ -9,25 +9,30 @@
  * the stamp, which is.
  */
 
-/* ── Grain ─────────────────────────────────────────────────────────────── */
+/* ── Paper ─────────────────────────────────────────────────────────────── */
 
 /*
- * One fixed overlay for the whole viewport, multiplied over the page at low
- * opacity. Fixed rather than per-spread so it never swims as the strip pans —
- * the grain belongs to the sheet the reader is looking through, not to the
- * content (the same reasoning as memory-lane's content-anchored dither, #4,
- * arrived at from the other side). z-index 10: above the chrome, like the tube
- * was, so the index tabs and page number are printed on the same paper.
+ * Every sheet carries its own fibre (Q20). This was one fixed grain overlay
+ * for the whole viewport, which was right while the content panned under a
+ * still sheet of paper. Now the SHEETS move — each one independently — and a
+ * viewport-fixed texture would swim across a sheet as it slides: the texture
+ * belongs to the paper (upstream #4, which arrived at the same rule for the
+ * dither). The desk has its own, under the pile (stage.css).
+ *
+ * The tile is a drawn imitation of a scan (scripts/make-paper-texture.ts),
+ * multiplied like paper.design's — over the pictures and the ink too, as
+ * print would be. Swap in a scan of the real notebook paper at the same path.
  */
-.grain {
-    position: fixed;
+.tc-sector::after {
+    content: "";
+    position: absolute;
     inset: 0;
-    z-index: 10;
+    z-index: 6; /* over a hovered plate (5): the photograph is on the paper */
     pointer-events: none;
-    opacity: 0.075;
+    background-image: url("../assets/textures/paper.png");
+    background-size: 512px 512px;
     mix-blend-mode: multiply;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-    background-size: 260px 260px;
+    opacity: 0.45; /* TEXTURE_ON.sheet — the sweep charges the stock for it */
 }
 
 /* ── Page furniture (per spread) ───────────────────────────────────────── */
@@ -46,7 +51,7 @@
     position: absolute;
     top: 0;
     bottom: 0;
-    left: 59px; /* 60 from the page edge, inside the 1px edge line */
+    left: 60px; /* 60 from the page edge (the edge lines are gone, Q22) */
     width: 1px;
     background: var(--margin-line);
     pointer-events: none;
@@ -57,7 +62,7 @@
     background-image: radial-gradient(var(--dot) 0.9px, transparent 1.1px);
     background-size: 20px 20px;
     /* Hendri nudged the dot field 19px right in Figma; 29 + 28 = 57, mod 20. */
-    background-position: 17px 10px;
+    background-position: 18px 10px; /* +1 since the 1px edge line went (Q22) */
 }
 
 /* A 24px squared grid — graph paper. */
@@ -66,22 +71,7 @@
         linear-gradient(to right, var(--square-line) 1px, transparent 1px),
         linear-gradient(to bottom, var(--square-line) 1px, transparent 1px);
     background-size: 24px 24px;
-    background-position: 12px 12px;
-}
-
-/*
- * Textured pages are capped at both ends (Q18). A ruled, dotted or squared
- * page carries a red hairline down its left and right edge — the same red
- * as the margin — so the ruling arrives and leaves with the page instead of
- * floating in from nowhere as the strip pans. Borders, not pseudo-elements:
- * `::before` is the ruled page's margin, and with border-box sizing the
- * spread keeps its 1400px.
- */
-.tc-sector.is-ruled,
-.tc-sector.is-grid,
-.tc-sector.is-squared {
-    border-left: 1px solid var(--margin-line);
-    border-right: 1px solid var(--margin-line);
+    background-position: 13px 12px; /* +1 since the 1px edge line went (Q22) */
 }
 
 /* ── Fold and staples (spread 00 only) ─────────────────────────────────── */
@@ -354,20 +344,11 @@
  * perspective, which the rig puts on the spread on first hover. Nothing here. */
 
 @media (max-width: 810px) {
-    .grain {
-        opacity: 0.06;
-    }
     .binding,
     .blockprint,
     .sketch,
     .tc-sector.is-ruled::before {
         display: none;
-    }
-    .tc-sector.is-ruled,
-    .tc-sector.is-grid,
-    .tc-sector.is-squared {
-        border-left: 0;
-        border-right: 0;
     }
     .tc-sector.is-ruled {
         background-position: 0 60px;

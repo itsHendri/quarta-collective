@@ -1,9 +1,11 @@
 /**
- * Scroll rig — vertical scroll drives horizontal travel.
+ * Scroll rig — vertical scroll takes sheets off a pile (Q19).
  *
- * The track is N×100vh of ordinary page height; the stage inside it is
+ * The track is (N + 1)×100vh of ordinary page height; the stage inside it is
  * `position: sticky` at 100vh, so it pins while the track scrolls past. Track
- * progress becomes a translate on the strip.
+ * progress becomes f = p × N, and each sheet's share of f slides it off the
+ * pile to the left (the arithmetic is in pile.ts). Until Q19 the same
+ * progress panned one long strip; the rig's shape is unchanged.
  *
  * Deliberately NOT a wheel hijack. Nothing calls preventDefault on the vertical
  * axis, so trackpad momentum, Page Up/Down, spacebar, the scrollbar,
@@ -11,35 +13,39 @@
  * cutoff the whole thing degrades to an ordinary vertical page. Hijacking wheel
  * buys nothing here and breaks every one of those. (Upstream #2.)
  *
- * The transform is written imperatively rather than through any framework's
- * state: panning at 60fps through a re-render would leave the strip a frame
+ * The transforms are written imperatively rather than through any framework's
+ * state: moving at 60fps through a re-render would leave the sheet a frame
  * behind its own scroll position. (Upstream #3.)
  *
  * ── The bus ──────────────────────────────────────────────────────────────
  * One writer, many readers. Each frame the rig publishes state twice:
- *   1. CSS custom properties on <html> (--tc-p, --tc-pan, --tc-bg, --tc-fg,
- *      --tc-fg-dim, --tc-field)
- *   2. a `tc:scroll` CustomEvent
- * Every other component in the piece — readout, rail, log, card, audio, effect
- * layer — subscribes rather than recomputing scroll position for itself. The
- * event fires in the SAME frame the transform is written, so the effect layer
- * can render its planes into the identical paint instead of trailing by one.
+ *   1. `--tc-p` on <html>
+ *   2. a `tc:scroll` CustomEvent: progress, the pile position, the page on
+ *      top, the deepest page visible, and how far the last sheet has gone.
+ * The chrome subscribes rather than recomputing scroll position for itself.
  *
- * Ported from ~/Framer/timeline-carousel/component/StripPan.tsx. Framer's
- * `--token-<uuid>` writes are gone (we own semantic token names); everything
- * else is behaviour-identical on purpose.
+ * Colour is no longer on the bus. Each sheet is ONE stock, set once at
+ * mount from `sheetTint`; :root holds the desk's (Q19, upstream #33 still
+ * governs how both are measured).
  */
 
-import { RAMP, tint, type RGB } from "./contrast"
+import { RAMP, sheetTint, type RGB } from "./contrast"
+import { exposedAt, pageAt, sheetT, smoothstep } from "./pile"
 
 export interface TcScrollDetail {
     /** Read progress, 0..1. */
     p: number
-    /** Current strip pan in px (positive; applied as a negative translate). */
-    panX: number
-    /** Where the pan is lerping toward. */
-    targetX: number
-    /** px of travel in the last frame. */
+    /** Sheets taken off the pile, 0..n (lerped — what is on screen). */
+    f: number
+    /** The number of sheets. */
+    n: number
+    /** The page on top: what the index and "p. N" name. */
+    page: number
+    /** The deepest sheet anyone can see (the one under a sliding page). */
+    exposed: number
+    /** How far the LAST sheet has gone, 0..1: the back cover's reveal. */
+    end: number
+    /** px of travel in the last frame, roughly. */
     velocity: number
 }
 
@@ -69,9 +75,9 @@ export interface ScrollRigOptions {
     stripId?: string
     /** 0 = follow scroll exactly; higher = more glide. */
     ease?: number
-    /** Background stops the strip travels through. Defaults to the piece's ramp. */
+    /** The stock ramp the sheets are cut from. Defaults to the piece's ramp. */
     stops?: RGB[]
-    /** Below this width the pan is meaningless and the read goes vertical. */
+    /** Below this width the pile is meaningless and the read goes vertical. */
     mobileMax?: number
 }
 
@@ -83,10 +89,9 @@ const TILT_MAX = 8
  *
  * It was 6px with a 1.03 scale over 120ms, and it read as the picture "jumping
  * forward quite abruptly". Two reasons to delete the movement rather than slow
- * it: the strip is already translating under the pointer, so a plate that also
+ * it: the sheet may already be moving under the pointer, so a plate that also
  * jumps toward the viewer is two motions competing; and the cue was never the
- * movement — it is the dither lifting off the picture as the read head claims
- * it. (Upstream #17, #46.)
+ * movement. (Upstream #17, #46.)
  */
 const LIFT_PX = 0
 
@@ -95,12 +100,38 @@ const LIFT_PX = 0
  *  rotation. */
 const PARALLAX_PX = 3
 
-/** px/ms of strip travel above which hover is suppressed entirely. */
+/** px/ms of sheet travel above which hover is suppressed entirely. */
 const HOVER_VELOCITY_GATE = 0.15
 /** Exit is slower than enter, so crossing a boundary doesn't flicker. */
 const EXIT_GRACE_MS = 180
 /** The exit hit area is larger than the enter one. */
 const EXIT_SLOP_PX = 14
+
+/* ── The pile's geometry ─────────────────────────────────────────────────── */
+
+/** Desk showing round a sheet, px each side, before scaling: room for the
+ *  rulers and the crop marks. */
+const DESK_X = 44
+const DESK_Y = 38
+/** Degrees a sheet turns as it is swept off — a hand pulling it left. */
+const SWEEP_DEG = -4
+/** px a sheet rises as it is picked up (paired with the lift shadow). */
+const PICKUP_PX = 10
+
+/**
+ * A pile is never square. Each sheet lies a little off true — a fraction of
+ * a degree, a few px — and the edges of the sheets underneath show. Fixed per
+ * sheet (a hash of its index, not random) so the pile is the same every
+ * visit. The cover lies square on the crop marks.
+ */
+function restingOffset(i: number) {
+    if (i === 0) return { x: 0, y: 0, r: 0 }
+    return {
+        x: (((i * 53) % 9) - 4) * 1.1,
+        y: (((i * 29) % 7) - 3) * 1.1,
+        r: (((i * 37) % 7) - 3) * 0.13,
+    }
+}
 
 export function initScrollRig(options: ScrollRigOptions = {}): () => void {
     const {
@@ -120,30 +151,71 @@ export function initScrollRig(options: ScrollRigOptions = {}): () => void {
     const reduce = !!window.matchMedia?.("(prefers-reduced-motion: reduce)")
         .matches
 
+    const sheets = Array.from(strip.children).filter((el) =>
+        el.classList.contains("tc-sector")
+    ) as HTMLElement[]
+    const n = sheets.length
+    const rest = sheets.map((_, i) => restingOffset(i))
+    /** Each sheet's last written t, so a frame only touches what moved. */
+    const lastT = new Float32Array(n).fill(-1)
+
+    /*
+     * Stock, once. Each sheet carries its own four derived tokens, so type on
+     * it is measured against IT, even while the sheet above is still sliding
+     * off. Written on every layout: the vertical read is sheets too.
+     * z-order is the pile's: the cover on top.
+     */
+    sheets.forEach((sheet, i) => {
+        const c = sheetTint(i, n, stops)
+        sheet.style.setProperty("--tc-bg", c.bg)
+        sheet.style.setProperty("--tc-fg", c.fg)
+        sheet.style.setProperty("--tc-fg-dim", c.dim)
+        sheet.style.setProperty("--tc-field", c.bg)
+        sheet.style.zIndex = String(n - i)
+    })
+
     let target = 0
     let current = 0
     let raf = 0
     let running = false
-    let distance = 0
+    let stageW = 1
+    /** How far, in the pile's own (unscaled) px, a sheet must go to be gone. */
+    let travel = 0
     let measuredAt = -Infinity
     let panVelocity = 0
 
     /**
      * Bounds are re-measured on a short staleness window rather than cached at
-     * mount. Measuring once is a trap: if the strip mounts before layout
-     * settles — fonts still loading, images without intrinsic size — travel
-     * distance comes back as zero and the pan stays dead until something
-     * happens to fire a resize.
+     * mount. Measuring once is a trap: if the pile mounts before layout
+     * settles, the scale comes back wrong until something fires a resize.
+     *
+     * Measured against the STAGE — the desk that clips the pile — not the
+     * window (upstream #8). offsetWidth, not getBoundingClientRect: the strip
+     * is scaled, and a rect would measure the scale back in (upstream #6).
      */
     function measure() {
-        // Measured against the STAGE — the box that actually clips the strip —
-        // not the window. Upstream #8: inside Framer the stage sat in a centred
-        // breakpoint narrower than the viewport, and measuring the window left
-        // the final sector permanently unreachable. We control the layout now,
-        // but the stage remains the correct thing to measure and costs nothing.
         const stage = strip!.parentElement
-        const vw = stage?.clientWidth || window.innerWidth || 1
-        distance = Math.max(0, strip!.scrollWidth - vw)
+        stageW = stage?.clientWidth || window.innerWidth || 1
+        const stageH = stage?.clientHeight || window.innerHeight || 1
+        const w = strip!.offsetWidth || 1400
+        const h = strip!.offsetHeight || 880
+        const s = Math.max(
+            0.2,
+            Math.min(1, (stageW - 2 * DESK_X) / w, (stageH - 2 * DESK_Y) / h)
+        )
+        // On the stage, so the back cover lays itself out on the sheet's
+        // footprint too; the strip inherits it.
+        const host = stage ?? strip!
+        const prev = host.style.getPropertyValue("--sheet-s")
+        const next = s.toFixed(4)
+        if (prev !== next) {
+            host.style.setProperty("--sheet-s", next)
+            // A new scale changes how far "gone" is: rewrite every sheet.
+            lastT.fill(-1)
+        }
+        // From the pile's centre to clear the desk's left edge, in the pile's
+        // own px, with room for the sweep's rotation and the shadow.
+        travel = w / 2 + stageW / (2 * s) + 180
         measuredAt = performance.now()
     }
     function measureIfStale() {
@@ -153,10 +225,7 @@ export function initScrollRig(options: ScrollRigOptions = {}): () => void {
     /**
      * Verification override. A backgrounded tab dispatches no scroll events at
      * all, so progress has to be injectable — and it has to be injected HERE,
-     * at the source. Writing the pan directly instead leaves the loop still
-     * reading the page's real scroll position (zero) and lerping straight back
-     * to it, so every capture lands somewhere different along that decay and it
-     * reads as a rendering bug. (Upstream #5.)
+     * at the source. (Upstream #5.)
      */
     let pinned: number | null = null
 
@@ -168,34 +237,49 @@ export function initScrollRig(options: ScrollRigOptions = {}): () => void {
         return Math.min(1, Math.max(0, -r.top / scrollable))
     }
 
-    function publish(p: number, velocity: number, panX: number) {
-        const root = document.documentElement
-        const c = tint(stops, p)
-        root.style.setProperty("--tc-p", p.toFixed(5))
-        root.style.setProperty("--tc-pan", `${-panX}px`)
-        root.style.setProperty("--tc-bg", c.bg)
-        root.style.setProperty("--tc-fg", c.fg)
-        root.style.setProperty("--tc-fg-dim", c.dim)
-        // Anything inverted (a chip filled with ink) paints its text in
-        // whatever the page currently IS, or it goes black-on-black the moment
-        // the ramp lightens. Upstream #34 — where this had to be a Framer token
-        // override; here it is just a variable.
-        root.style.setProperty("--tc-field", c.bg)
-        // NOTE: upstream also wrote the stage's backgroundColor imperatively,
-        // because in Framer the stage's fill was authored and a variable would
-        // never reach it. Our stage reads `background: var(--tc-bg)` in CSS, so
-        // that write is deleted rather than ported.
+    function publish(p: number, velocity: number, f: number) {
+        document.documentElement.style.setProperty("--tc-p", p.toFixed(5))
         window.dispatchEvent(
             new CustomEvent<TcScrollDetail>("tc:scroll", {
-                detail: { p, panX, targetX: target, velocity },
+                detail: {
+                    p,
+                    f,
+                    n,
+                    page: pageAt(f, n),
+                    exposed: exposedAt(f, n),
+                    end: sheetT(f, n - 1, reduce),
+                    velocity,
+                },
             })
         )
     }
 
-    function apply(p: number, velocity: number) {
-        strip!.style.transform = `translate3d(${-current}px, 0, 0)`
-        panVelocity = velocity / 16 // px per frame → px per ms
-        publish(p, velocity, current)
+    /** Lay the pile out for f: only the sheets whose share of f changed. */
+    function place(f: number) {
+        for (let i = 0; i < n; i++) {
+            const t = sheetT(f, i, reduce)
+            if (t === lastT[i]) continue
+            lastT[i] = t
+            const sheet = sheets[i]!
+            const o = rest[i]!
+            const e = smoothstep(t)
+            // Picked up quickly, carried, then gone: the shadow deepens over
+            // the first third of the slide and stays.
+            const lift = Math.min(1, t * 3)
+            const x = o.x - e * travel
+            const y = o.y - lift * PICKUP_PX
+            const r = o.r + e * SWEEP_DEG
+            sheet.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) rotate(${r.toFixed(3)}deg)`
+            sheet.style.setProperty("--lift", t >= 1 ? "0" : lift.toFixed(3))
+            sheet.classList.toggle("is-moving", t > 0 && t < 1)
+            sheet.classList.toggle("is-gone", t >= 1)
+        }
+    }
+
+    function apply(p: number, df: number) {
+        place(current)
+        panVelocity = (df * stageW) / 16 // sheets per frame → px per ms, roughly
+        publish(p, df * stageW, current)
         refreshHover()
     }
 
@@ -203,23 +287,31 @@ export function initScrollRig(options: ScrollRigOptions = {}): () => void {
         if (!running) return
         measureIfStale()
         const p = progress()
-        target = p * distance
+        target = p * n
         const prev = current
         current += (target - current) * ease
-        if (Math.abs(target - current) < 0.5) current = target
+        if (Math.abs(target - current) < 0.0005) current = target
         if (current !== prev || prev === 0) apply(p, current - prev)
         raf = requestAnimationFrame(frame)
     }
 
     const enabled = () => window.innerWidth > mobileMax
 
+    /** Below the cutoff nothing is placed: the sheets are in flow. */
+    function clearPile() {
+        lastT.fill(-1)
+        for (const sheet of sheets) {
+            sheet.style.transform = ""
+            sheet.style.removeProperty("--lift")
+            sheet.classList.remove("is-moving", "is-gone")
+        }
+    }
+
     /* ───────────────────────────────────────────── mobile fallback
-       Below the cutoff the strip does not pan — the page is an ordinary
-       vertical read. But the CHROME must not die with the pan: the rail, the
-       accreting log, the decode ticks and the card's park are all fed by
-       `tc:scroll`, and with no publisher the whole fiction goes inert on a
-       phone. So the same progress → tint → publish pipeline runs off vertical
-       scroll; the head simply reads DOWN the page. No transform is written and
+       Below the cutoff there is no pile — the page is an ordinary vertical
+       read. But the CHROME must not die with it: the page number and the
+       back cover's release are fed by `tc:scroll`, so the same progress →
+       publish pipeline runs off vertical scroll. No transform is written and
        hover is never resolved (touch). Upstream #9. */
     let mobileRaf = 0
     let mobileRunning = false
@@ -230,7 +322,7 @@ export function initScrollRig(options: ScrollRigOptions = {}): () => void {
         const p = progress()
         const velocity = (p - mobilePrev) * 900 // scaled to feel like px-ish
         mobilePrev = p
-        publish(p, velocity, 0)
+        publish(p, velocity, p * n)
         mobileRaf = requestAnimationFrame(mobileFrame)
     }
     function startMobile() {
@@ -247,14 +339,14 @@ export function initScrollRig(options: ScrollRigOptions = {}): () => void {
     function settleImmediately() {
         measure()
         const p = progress()
-        target = p * distance
+        target = p * n
         current = target
         apply(p, 0)
     }
 
     function start() {
         if (!enabled()) {
-            strip!.style.transform = ""
+            clearPile()
             running = false
             cancelAnimationFrame(raf)
             startMobile()
@@ -262,8 +354,7 @@ export function initScrollRig(options: ScrollRigOptions = {}): () => void {
         }
         stopMobile()
         if (reduce) {
-            // No glide: map scroll straight through, so there is no motion the
-            // reader did not ask for.
+            // No glide and no slide: the page changes where the scroll says.
             settleImmediately()
             return
         }
@@ -428,7 +519,7 @@ export function initScrollRig(options: ScrollRigOptions = {}): () => void {
     }
 
     /**
-     * Re-resolve what sits under the cursor. Called as the strip pans, so a
+     * Re-resolve what sits under the cursor. Called as the pile moves, so a
      * reader who holds still while scrolling keeps getting a live readout
      * instead of one that vanishes and never comes back — the cursor has not
      * moved, so no pointer event would ever fire to restore it.
@@ -518,7 +609,7 @@ export function initScrollRig(options: ScrollRigOptions = {}): () => void {
        be driven by synthetic pointer events, so verification injects directly. */
     window.__tcPan = (p: number) => {
         const clamped = Math.min(1, Math.max(0, p))
-        // On a narrow viewport there is no pan to force, but progress still
+        // On a narrow viewport there is no pile to force, but progress still
         // has to reach the chrome.
         //
         // Upstream only set `pinned` here and left the publishing to the mobile
@@ -529,12 +620,12 @@ export function initScrollRig(options: ScrollRigOptions = {}): () => void {
         if (!enabled()) {
             pinned = clamped
             mobilePrev = clamped
-            publish(clamped, 0, 0)
+            publish(clamped, 0, clamped * n)
             return
         }
         measure()
         pinned = clamped
-        target = pinned * distance
+        target = pinned * n
         current = target
         apply(pinned, 0)
     }
@@ -555,7 +646,7 @@ export function initScrollRig(options: ScrollRigOptions = {}): () => void {
         strip.removeEventListener("pointermove", onPointerMove)
         strip.removeEventListener("pointerleave", onPointerLeave)
         setHover(null)
-        strip.style.transform = ""
+        clearPile()
         delete window.__tcPan
         delete window.__tcRelease
         delete window.__tcHover
