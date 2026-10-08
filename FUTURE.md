@@ -56,10 +56,6 @@ work is Hendri's direction, not more build.
 - **A scan of the real paper** for `src/assets/textures/paper.png` (600dpi,
   a blank area, made seamless). Then delete `scripts/make-paper-texture.ts`
   and set `TEXTURE_MEAN` from the scan (Q20).
-- **The pile on a phone.** The vertical read could stack too — each sheet
-  `position: sticky; top: 0` so the next slides up over it — but a sheet
-  taller than the screen would then never show its bottom. Needs sticky
-  with `top: calc(100svh - height)`, measured per sheet.
 - **Remember the page across a resize.** The track is in viewport heights,
   so resizing the window lands on a different sheet (the strip did the
   same). Re-anchor scroll to the page on top after a resize.

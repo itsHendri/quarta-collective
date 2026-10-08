@@ -763,3 +763,40 @@ signup form on the site itself, asking two things: an email (required) and
 
 This is a third interactive feature beyond the two notebook pages and the
 lightbox (Q11); Hendri asked for it.
+
+---
+
+### Q26. The pile on a phone; real faces; a link preview
+
+**2026-10-08, Hendri,** to share the site with friends. Chosen from three
+phone models: "a pile you scroll through" (over a swipe deck, or a tidied
+long scroll).
+
+- **Sticky by the bottom edge.** On the vertical read each sheet is
+  `position: sticky` with `top: min(0, 100svh − its height)`. A sheet taller
+  than the screen scrolls through first and pins only once its last line is
+  showing; the next sheet then slides up over it with a shadowed edge. The
+  rig measures each sheet's height into `--h` with a ResizeObserver
+  (pictures load, text reflows). The desk's z-order (cover on top) is reset
+  on this layout so later sheets cover earlier ones. This was the open
+  FUTURE.md item; the "sheet taller than the screen" problem it named is
+  what the bottom-edge offset solves.
+- **The page number** on a phone is read from the DOM (the last sheet whose
+  top has passed the middle of the screen), not `floor(p × n)`: sheets are
+  of uneven height there.
+- **A top bar.** The wordmark and "p. N" used to float over the text; they
+  now sit in a 44px strip of desk across the top, and sheets slide under it.
+- **Collage, not posters.** Clippings keep their authored proportion
+  (`--ar`) and take a width by shape (wide 78%, square 64%, tall 54%),
+  alternating left and right. Notes and stamps no longer stretch to the
+  column (the sheet is a flex column; they are `align-self: flex-start`).
+  Measured at 390 × 844: no element overlaps another on any sheet, nothing
+  wider than the screen, about 16 screens long (was 19).
+- **Real faces.** Hendri, Bruno (in the cap) and Tiuri (no shirt), cropped
+  square to the face from Hendri's photos, 512px, metadata (including GPS)
+  stripped. In `src/assets/people/`.
+- **Link preview.** `og:image` (and `twitter:image`) is the cover, 1200 ×
+  630, an 88 KB JPEG from the Figma frame "Link preview — 1200 × 630" with
+  the real faces composited in locally. Absolute URL from `site`. The page
+  description now reads "A space to make and create with friends. Three of
+  us, one table, Wednesday evenings."

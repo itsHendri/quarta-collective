@@ -1,16 +1,17 @@
 /**
- * The three of us — the avatars on the cover (Q24).
+ * The three of us — the avatars on the cover (Q24, Q25).
  *
- * The names are real (Hendri, Bruno, Tiuri). The PHOTOGRAPHS are still
- * placeholders until Hendri adds the real ones. The photos are
- * Unsplash portraits (HEAD-checked, Q4) of people who are not in the
- * collective. Replace them before this goes on the public site: a stranger's
- * face captioned with a member's name is worse than no face.
+ * Hendri, Bruno and Tiuri, cropped square to the face from Hendri's own
+ * photos (512px; EXIF, including location, stripped by the crop). Swap a
+ * picture by replacing its file in src/assets/people/.
  *
- * `photo` is either an Unsplash id (`photo-…`, fetched and optimised at
- * build like the clippings) or, once there are real pictures, a local
- * import from src/assets.
+ * `photo` is a local import, or an Unsplash id (`photo-…`) fetched and
+ * optimised at build like the clippings.
  */
+
+import hendri from "~/assets/people/hendri.jpg"
+import bruno from "~/assets/people/bruno.jpg"
+import tiuri from "~/assets/people/tiuri.jpg"
 
 export interface Person {
     /** Shown in the tooltip and used as the photo's alt text. */
@@ -19,9 +20,9 @@ export interface Person {
 }
 
 export const PEOPLE: Person[] = [
-    { name: "Hendri", photo: "photo-1500648767791-00dcc994a43e" },
-    { name: "Bruno", photo: "photo-1438761681033-6461ffad8d80" },
-    { name: "Tiuri", photo: "photo-1539571696357-5a69c17a67c6" },
+    { name: "Hendri", photo: hendri },
+    { name: "Bruno", photo: bruno },
+    { name: "Tiuri", photo: tiuri },
 ]
 
 /** The "+" tooltip. The "+" opens the signup sheet (content/signup.ts). */

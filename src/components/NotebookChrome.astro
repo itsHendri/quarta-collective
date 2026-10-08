@@ -183,18 +183,37 @@ const rulerVars = `--tc-bg:${ruler.bg};--tc-fg:${ruler.fg};--tc-fg-dim:${ruler.d
         .tabs-rule {
             display: none;
         }
+        /*
+         * On a phone the chrome is a slim bar across the top (Q26): the
+         * desk showing above the pile, with the wordmark on the left and
+         * "p. N" on the right. Sheets slide up under it, so nothing is ever
+         * printed over a page's text — it was, when the wordmark and the
+         * page number floated loose over the content.
+         */
         .tabs {
+            left: 0;
             bottom: auto;
             width: auto;
-            background: none;
-            box-shadow: none;
+            height: 44px;
+            background-color: var(--desk);
+            background-image:
+                linear-gradient(to right, var(--desk-line) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--desk-line) 1px, transparent 1px);
+            background-size: 10px 10px;
+            background-position: 0 0;
+            background-blend-mode: normal;
+            box-shadow: 0 1px 0 rgb(var(--shadow-rgb) / 0.14);
         }
         .tabs-mark {
-            padding-top: 16px;
+            top: 15px;
+            left: 20px;
         }
         .page {
-            left: 20px;
-            bottom: 16px;
+            top: 12px;
+            right: 20px;
+            left: auto;
+            bottom: auto;
+            z-index: 7; /* over the bar */
         }
     }
 </style>

@@ -252,23 +252,49 @@
     .spread-title::after {
         width: min(36%, 300px);
     }
-    /* Clippings and notes stack in flow rather than being placed. Rotation
-     * is kept but small enough not to overflow the column. */
+    /*
+     * A collage, not a column of posters (Q26). Clippings stack in flow,
+     * keep their own proportion (`--ar`, from the authored box) and their
+     * authored tilt, and take a width by shape: wide pictures most of the
+     * column, tall ones a little over half. They alternate left and right,
+     * as if pasted in one after another.
+     */
     .clipping {
         position: relative;
         left: auto !important;
         top: auto !important;
-        width: 100% !important;
+        width: 78% !important;
         height: auto !important;
         box-sizing: border-box;
-        aspect-ratio: 3 / 2;
-        margin: 36px 0 44px;
+        aspect-ratio: var(--ar, 3 / 2);
+        margin: 28px 0 40px;
+        align-self: flex-start;
+    }
+    .clipping[data-shape="square"] {
+        width: 64% !important;
+    }
+    .clipping[data-shape="tall"] {
+        width: 54% !important;
+    }
+    .clipping:nth-of-type(even) {
+        align-self: flex-end;
+    }
+    /* The caption hangs below its picture, so the next picture leaves it
+     * room rather than tucking under. */
+    .clipping + .clipping {
+        margin-top: 8px;
     }
     .clipping[data-kind="polaroid"] {
         aspect-ratio: auto;
     }
     .clipping[data-kind="polaroid"] img {
-        aspect-ratio: 4 / 3;
+        aspect-ratio: var(--ar, 4 / 3);
+    }
+    /* Flex children stretch by default; the things pasted on keep their
+     * own width. */
+    .note,
+    .tc-sector .sticker {
+        align-self: flex-start;
     }
     .note {
         position: static;

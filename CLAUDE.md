@@ -116,8 +116,10 @@ node scripts/sweep-contrast.ts
   notebook paper should replace `src/assets/textures/paper.png`.
 - The copy is a first draft of the real notebook project; Hendri owns it.
 - The two prompts on the visitor's pages are first drafts.
-- **The cover's three photos are placeholders** (`src/content/people.ts`);
-  the names (Hendri, Bruno, Tiuri) are real. Do not ship stranger faces.
+- **On a phone the pile is vertical** (Q26): sheets are sticky by their
+  bottom edge (`--h`, measured by the rig) and the next slides up over the
+  last. Never give a phone-layout ancestor of the strip `overflow` other
+  than visible, or the sheets stop pinning (upstream #14).
 - **The signup form is not connected** until `endpoint` is set in
   `src/content/signup.ts` (Formspree or Web3Forms).
 - "Quarta = Wednesday" is a reading of the name, not a brief. Easy to change

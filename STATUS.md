@@ -98,9 +98,8 @@ check. The agent tab ran no rAF while the pane was hidden.
 
 ## Next — Hendri's
 
-0. **Before deploying the cover:** three real photos of Hendri, Bruno and
-   Tiuri (`src/content/people.ts`), and a Formspree or Web3Forms endpoint for
-   the signup sheet (`src/content/signup.ts`).
+0. **Before sharing:** a Formspree or Web3Forms endpoint for the signup
+   sheet (`src/content/signup.ts`). The photos and the link preview are in.
 1. **⌘P the pile.** How long a page rests (HOLD, 35% of its scroll), how far
    it turns as it goes (−4°), and the back cover. All three are one
    constant each in `pile.ts` / `scroll-rig.ts`.
